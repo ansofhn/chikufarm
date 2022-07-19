@@ -11,7 +11,7 @@ export default function GuestRegister({ header, title, children }) {
                     <title>{title}</title>
                 </Head>
                 {/* Login Section */}
-                <div className="w-2/5 px-12 shadow-md bg-maroon text-cream rounded-tl-2xl rounded-bl-2xl py-36">
+                <div className="w-2/5 px-12 py-40 shadow-md bg-maroon text-cream rounded-tl-2xl rounded-bl-2xl">
                     <h2 className="mb-2 text-3xl font-bold">Dear Guest!</h2>
                     <p className="mb-10">
                         Lets have a look our farm management system

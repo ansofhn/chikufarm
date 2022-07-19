@@ -1,8 +1,13 @@
 import React from "react";
+import Navbar from "../components/Navbar";
 import App from "../layouts/App";
 
 export default function Home() {
-    return <div className="space-x-2">Tailwind CSS</div>;
+    return (
+        <>
+            <Navbar></Navbar>
+        </>
+    )
 }
 
 Home.getLayout = (page) => <App children={page} />;

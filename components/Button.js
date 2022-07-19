@@ -7,8 +7,8 @@ export default function Button({ children, className, ...props }) {
             className={`${
                 className
                     ? className
-                    : "bg-maroon border-cream border-2 hover:bg-cream"
-            } border-2 px-10 py-2.5 text-sm font-medium transition duration-300 rounded-xl`}
+                    : "bg-blue-200 hover:bg-blue-600"
+            } px-6 py-2.5 text-sm font-medium transition duration-400 rounded-xl`}
         >
             {children}
         </button>

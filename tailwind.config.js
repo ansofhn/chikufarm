@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: "1rem",
+      },
       colors: {
         cream : "#F9EAE1",
         softBrown : "#C09F80",
