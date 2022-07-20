@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
 import App from "../layouts/App";
 
 export default function Home() {
     return (
         <>
-            <Navbar></Navbar>
+            <Hero></Hero>
         </>
     )
 }

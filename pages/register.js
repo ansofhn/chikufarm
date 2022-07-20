@@ -18,7 +18,12 @@ export default function Register() {
             </div>
             <div className="mb-6">
                 <Label forInput="email"></Label>
-                <Input type="email" name="email" id="email" placeholder="Email" />
+                <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                />
             </div>
             <div className="mb-6">
                 <Label forInput="phone"></Label>
@@ -26,10 +31,19 @@ export default function Register() {
             </div>
             <div className="mb-6">
                 <Label forInput="password"></Label>
-                <Input type="password" name="password" id="password" placeholder="Password" />
+                <Input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Password"
+                />
             </div>
             <Link href={"#"}>
-                <Button className={"transition duration-300 w-full text-semibold px-6 py-2.5 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"}>
+                <Button
+                    className={
+                        "transition duration-300 w-full text-semibold px-6 py-2.5 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
+                    }
+                >
                     Sign Up
                 </Button>
             </Link>
@@ -38,5 +52,9 @@ export default function Register() {
 }
 
 Register.getLayout = (page) => (
-    <GuestRegister header={"Create Guest Account"} title="Register" children={page} />
+    <GuestRegister
+        header={"Create Guest Account"}
+        title="Register"
+        children={page}
+    />
 );

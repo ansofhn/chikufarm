@@ -16,15 +16,26 @@ export default function Login() {
             </div>
             <div className="mb-6">
                 <Label forInput="password"></Label>
-                <Input type="password" name="password" id="password" placeholder="Password" />
+                <Input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Password"
+                />
             </div>
             <div className="flex items-center justify-between mb-5">
                 <Link href={"#"}>
-                    <Button className={"transition duration-300 text-semibold px-6 py-2.5 ml-1 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"}>
+                    <Button
+                        className={
+                            "transition duration-300 text-semibold px-6 py-2.5 ml-1 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
+                        }
+                    >
                         Login
                     </Button>
                 </Link>
-                <a href="#" className="mr-2 text-textColor">Forgot password?</a>
+                <a href="#" className="mr-2 text-textColor">
+                    Forgot password?
+                </a>
             </div>
         </form>
     );
