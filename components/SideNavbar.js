@@ -19,80 +19,80 @@ export default function SideNavbar() {
     return (
         <div>
             <Disclosure as="nav">
-                <Disclosure.Button className="absolute md:hidden top-4 right-4 inline-flex items-center peer justify-center transition duration-200 rounded-md p-2 text-textColor bg-white hover:text-cream focus:outline-none group hover:bg-textColor">
+                <Disclosure.Button className="absolute inline-flex items-center justify-center p-2 transition duration-200 bg-white rounded-md md:hidden top-5 right-5 peer text-textColor hover:text-cream focus:outline-none group hover:bg-textColor">
                     <GiHamburgerMenu
-                        className="block md:hidden h-6 w-6"
+                        className="block w-6 h-6 md:hidden"
                         area-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className="p-6 w-1/2 h-screen bg-white z-20 fixed top-0 lg:top-4 lg:bottom-4 lg:left-4 -left-96 lg:w-60 lg:rounded-xl peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
-                    <div className="flex flex-col justify-start items-center">
+                <div className="fixed top-0 z-20 w-1/2 h-screen p-6 duration-200 ease-out delay-150 bg-white lg:top-4 lg:bottom-4 lg:left-4 -left-96 lg:w-60 lg:rounded-xl peer-focus:left-0 peer:transition">
+                    <div className="flex flex-col items-center justify-start">
                         {/* Logo */}
-                        <div className="text-base text-center cursor-pointer border-b border-gray-100 pb-4 w-full">
+                        <div className="w-full pb-4 text-base text-center border-b border-gray-100 cursor-pointer">
                             <Image src={Logo} />
                         </div>
 
                         {/* Sidebar items */}
-                        <div className="my-4 w-full border-b border-gray-100 pb-4">
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                        <div className="w-full pb-4 my-4 border-b border-gray-100">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Dashboard
                                 </h3>
                             </div>
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <TbReportAnalytics className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Report Harian
                                 </h3>
                             </div>
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <FaRegUser className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     User
                                 </h3>
                             </div>
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <RiHome2Line className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Kandang
                                 </h3>
                             </div>
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <RiHandCoinLine className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Pakan
                                 </h3>
                             </div>
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <FiFeather className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Ternak
                                 </h3>
                             </div>
                         </div>
 
                         {/* setting and more  */}
-                        <div className="my-4 w-full border-b border-gray-100 pb-4">
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                        <div className="w-full pb-4 my-4 border-b border-gray-100">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <MdOutlineSettings className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Settings
                                 </h3>
                             </div>
-                            <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                 <MdOutlineMoreHoriz className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     More
                                 </h3>
                             </div>
                         </div>
 
                         {/* logout Section */}
-                        <div className="my-4 w-full border-b border-gray-100 pb-4">
-                            <div className="flex mb-2 justify-start border border-shadowColor items-center gap-4 px-5 hover:bg-textColor p-2 rounded-md group transition duration-200 cursor-pointer m-auto">
+                        <div className="w-full pb-4 my-4 border-b border-gray-100">
+                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:bg-textColor group">
                                 <HiOutlineLogout className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base text-textColor group-hover:text-cream font-semibold">
+                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
                                     Logout
                                 </h3>
                             </div>
