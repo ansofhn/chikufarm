@@ -19,7 +19,7 @@ export default function SideNavbar() {
     return (
         <div>
             <Disclosure as="nav">
-                <Disclosure.Button className="absolute inline-flex items-center justify-center p-2 transition duration-200 bg-white rounded-md md:hidden top-5 right-5 peer text-textColor hover:text-cream focus:outline-none group hover:bg-textColor">
+                <Disclosure.Button className="absolute inline-flex items-center justify-center p-2 transition duration-200 bg-white rounded-md md:hidden top-10 right-5 peer text-textColor hover:text-cream focus:outline-none group hover:bg-textColor">
                     <GiHamburgerMenu
                         className="block w-6 h-6 md:hidden"
                         area-hidden="true"

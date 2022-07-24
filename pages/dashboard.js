@@ -5,15 +5,11 @@ import SideNavbar from "../components/SideNavbar";
 
 export default function dashboard() {
     return (
-        <div>
+        <div className="py-5 bg-gray-100 ">
             <div>
                 <SideNavbar />
-                <div>
-                    <Header />
-                </div>
-                <div>
-                    <Content />
-                </div>
+                <Header/>
+                <Content/>
             </div>
         </div>
     );
