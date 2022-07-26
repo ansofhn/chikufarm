@@ -1,7 +1,7 @@
 import React from "react";
 import { MdExpandMore } from "react-icons/md";
 
-export default function Content() {
+export default function DashboardContent() {
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">

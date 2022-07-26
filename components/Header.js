@@ -10,8 +10,8 @@ export default function Header() {
                     <Image src={Profile} />
                 </div>
                 <div className="items-center">
-                    <div className="text-xs font-normal">Welcome back,</div>
-                    <div className="text-xl font-medium">ansofhn</div>
+                    <div className="text-xs font-light">Welcome back,</div>
+                    <div className="text-lg font-medium">ansofhn</div>
                 </div>
             </div>
         </div>
