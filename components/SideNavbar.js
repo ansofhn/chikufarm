@@ -25,7 +25,7 @@ export default function SideNavbar() {
                         area-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className="fixed top-0 z-20 w-1/2 h-screen p-6 ease-out delay-150 bg-white shadow-sm shadow-shadowColor lg:top-4 lg:bottom-4 lg:left-4 -left-96 lg:w-60 lg:rounded-xl peer-focus:left-0 peer:transition">
+                <div className="fixed top-0 z-20 w-1/2 h-screen p-6 ease-out delay-150 bg-white lg:top-4 lg:bottom-4 lg:left-4 -left-96 lg:w-60 lg:rounded-xl peer-focus:left-0 peer:transition">
                     <div className="flex flex-col items-center justify-start">
                         {/* Logo */}
                         <div className="w-full pb-4 text-base text-center border-b border-gray-100 cursor-pointer">
