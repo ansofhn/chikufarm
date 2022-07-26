@@ -14,6 +14,7 @@ import { FaRegUser } from "react-icons/fa";
 import { RiHome2Line, RiHandCoinLine } from "react-icons/ri";
 import { FiFeather } from "react-icons/fi";
 import { HiOutlineLogout } from "react-icons/hi";
+import Link from "next/link";
 
 export default function SideNavbar() {
     return (
@@ -34,42 +35,54 @@ export default function SideNavbar() {
 
                         {/* Sidebar items */}
                         <div className="w-full pb-4 my-4 border-b border-gray-100">
-                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
-                                    Dashboard
-                                </h3>
-                            </div>
-                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                <TbReportAnalytics className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
-                                    Report Harian
-                                </h3>
-                            </div>
-                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                <FaRegUser className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
-                                    User
-                                </h3>
-                            </div>
-                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                <RiHome2Line className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
-                                    Kandang
-                                </h3>
-                            </div>
-                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                <RiHandCoinLine className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
-                                    Pakan
-                                </h3>
-                            </div>
-                            <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                <FiFeather className="text-2xl text-maroon group-hover:text-cream" />
-                                <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
-                                    Ternak
-                                </h3>
-                            </div>
+                            <Link href={"/dashboard"}>
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
+                                    <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-cream" />
+                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                        Dashboard
+                                    </h3>
+                                </div>
+                            </Link>
+                            <Link href={"/dashboard/report"}>
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
+                                    <TbReportAnalytics className="text-2xl text-maroon group-hover:text-cream" />
+                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                        Report Harian
+                                    </h3>
+                                </div>
+                            </Link>
+                            <Link href={"/dashboard/user"}>
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
+                                    <FaRegUser className="text-2xl text-maroon group-hover:text-cream" />
+                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                        User
+                                    </h3>
+                                </div>
+                            </Link>
+                            <Link href={"/dashboard/kandang"}>
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
+                                    <RiHome2Line className="text-2xl text-maroon group-hover:text-cream" />
+                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                        Kandang
+                                    </h3>
+                                </div>
+                            </Link>
+                            <Link href={"/dashboard/pakan"}>
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
+                                    <RiHandCoinLine className="text-2xl text-maroon group-hover:text-cream" />
+                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                        Pakan
+                                    </h3>
+                                </div>
+                            </Link>
+                            <Link href={"/dashboard/ternak"}>
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 m-auto mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
+                                    <FiFeather className="text-2xl text-maroon group-hover:text-cream" />
+                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                        Ternak
+                                    </h3>
+                                </div>
+                            </Link>
                         </div>
 
                         {/* setting and more  */}

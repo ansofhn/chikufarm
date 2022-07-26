@@ -1,5 +1,5 @@
 import React from "react";
-import DashboardContent from "../../components/DashboardContent";
+import DashboardContent from "../../components/content/DashboardContent";
 import DashboardLayout from "../../layouts/DashboardLayout";
 
 export default function dashboard() {

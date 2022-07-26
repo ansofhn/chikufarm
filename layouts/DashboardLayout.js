@@ -5,7 +5,7 @@ import Header from "../components/Header";
 
 export default function DashboardLayout({ title, children }) {
     return (
-        <div className="py-5 bg-gray-100 ">
+        <div className="py-5 bg-gray-100">
             <Head>
                 <title>{title}</title>
             </Head>
