@@ -3,7 +3,6 @@ import Image from "next/image";
 import Banner from "../public/Banner.png";
 import Navbar from "./Navbar";
 
-
 export default function Hero() {
     return (
         <div>

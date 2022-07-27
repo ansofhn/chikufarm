@@ -1,5 +1,4 @@
 import React from "react";
-import { MdExpandMore } from "react-icons/md";
 
 export default function DashboardContent() {
     return (
@@ -30,8 +29,7 @@ export default function DashboardContent() {
             <div className="flex items-center justify-between">
                 <div className="p-4 text-sm text-textColor">Statistics</div>
                 <div className="flex items-center justify-center gap-1 p-4 text-sm text-textColor">
-                    This Month
-                    <MdExpandMore />
+                    {/* <DropDown/> */}
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-5 p-2">

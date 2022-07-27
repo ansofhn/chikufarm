@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { MdAdd } from "react-icons/md";
 import Button from "../Button";
 import Pagination from "../Pagination";
 import SearchBar from "../SearchBar";
@@ -16,9 +17,10 @@ export default function TernakContent() {
                     <Link href={"#"}>
                         <Button
                             className={
-                                "transition duration-300 text-semibold px-4 py-2 bg-maroon text-cream"
+                                "transition duration-300 text-semibold items-center gap-2 flex px-4 py-2 bg-maroon text-cream"
                             }
                         >
+                            <MdAdd className="self-center text-lg"/>
                             Add
                         </Button>
                     </Link>

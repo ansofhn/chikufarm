@@ -1,10 +1,16 @@
 import React from "react";
 import PakanContent from "../../components/content/PakanContent";
+import ProfileMenu from "../../components/ProfileMenu";
+import SideNavbar from "../../components/SideNavbar";
 import DashboardLayout from "../../layouts/DashboardLayout";
 
 export default function pakan() {
     return (
-        <PakanContent/>
+        <div>
+            <ProfileMenu/>
+            <SideNavbar/>
+            <PakanContent/>
+        </div>
     );
 }
 

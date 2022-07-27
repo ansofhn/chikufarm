@@ -1,10 +1,16 @@
 import React from "react";
 import DashboardContent from "../../components/content/DashboardContent";
+import ProfileMenu from "../../components/ProfileMenu";
+import SideNavbar from "../../components/SideNavbar";
 import DashboardLayout from "../../layouts/DashboardLayout";
 
 export default function dashboard() {
     return (
-        <DashboardContent />
+        <>
+            <ProfileMenu/>
+            <SideNavbar />
+            <DashboardContent />
+        </>
     );
 }
 

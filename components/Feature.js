@@ -7,7 +7,10 @@ import Button from "./Button";
 export default function Feature() {
     return (
         <div className="grid w-4/5 grid-cols-2 gap-20 mx-auto mb-20">
-            <Image src={Group} />
+            <div className="p-5">
+                <Image src={Group} />
+            </div>
+
             <div className="self-center p-10 text-left text-textColor">
                 <div className="text-4xl font-bold">Our Feature</div>
                 <div className="my-2 text-base">
@@ -23,7 +26,7 @@ export default function Feature() {
                 <Link href={"/register"}>
                     <Button
                         className={
-                            "transition duration-300 text-semibold px-4 py-2 bg-maroon text-cream"
+                            "transition rounded-md duration-300 text-semibold px-14 py-2 bg-maroon text-cream"
                         }
                     >
                         Sign Up

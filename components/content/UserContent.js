@@ -3,6 +3,7 @@ import React from "react";
 import Button from "../Button";
 import Pagination from "../Pagination";
 import SearchBar from "../SearchBar";
+import { MdAdd } from "react-icons/md"
 
 export default function UserContent() {
     return (
@@ -16,9 +17,10 @@ export default function UserContent() {
                     <Link href={"#"}>
                         <Button
                             className={
-                                "transition duration-300 text-semibold px-4 py-2 bg-maroon text-cream"
+                                "transition duration-300 text-semibold items-center gap-2 flex px-4 py-2 bg-maroon text-cream"
                             }
                         >
+                            <MdAdd className="self-center text-lg"/>
                             Add User
                         </Button>
                     </Link>
