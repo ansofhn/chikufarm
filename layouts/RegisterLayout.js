@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Button from "../components/Button";
 
-export default function GuestRegister({ header, title, children }) {
+export default function RegisterLayout({ header, title, children }) {
     return (
         <div className="flex flex-col items-center justify-center w-full min-h-screen antialiased tracking-tighter text-center">
             <div className="flex w-3/5 max-w-4xl shadow-md bg-cream rounded-2xl">
@@ -12,7 +12,7 @@ export default function GuestRegister({ header, title, children }) {
                 </Head>
                 {/* Login Section */}
                 <div className="w-2/5 px-12 py-40 shadow-md bg-maroon text-cream rounded-tl-2xl rounded-bl-2xl">
-                    <h2 className="mb-2 text-3xl font-bold">Dear Guest!</h2>
+                    <h2 className="mb-2 text-3xl font-sans text-cream font-bold">Dear Guest!</h2>
                     <p className="mb-10">
                         Lets have a look our farm management system
                     </p>

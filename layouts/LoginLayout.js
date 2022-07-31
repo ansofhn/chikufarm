@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Button from "../components/Button";
 
-export default function GuestLogin({ header, title, children }) {
+export default function LoginLayout({ header, title, children }) {
     return (
         <div className="flex flex-col items-center justify-center w-full antialiased tracking-tighter text-center md:bg-white md:min-h-screen">
             <div className="flex items-center w-3/5 max-w-4xl shadow-md bg-cream rounded-2xl">
@@ -19,7 +19,7 @@ export default function GuestLogin({ header, title, children }) {
                 </div>
                 {/* Sign Up Section */}
                 <div className="w-2/5 px-12 shadow-md bg-maroon text-cream rounded-tr-2xl rounded-br-2xl py-36">
-                    <h2 className="mb-2 text-3xl font-bold">
+                    <h2 className="mb-2 text-3xl font-sans text-cream font-bold">
                         Let's be Partner!
                     </h2>
                     <p className="mb-10">
