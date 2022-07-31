@@ -12,7 +12,7 @@ export default function Feature() {
             </div>
 
             <div className="self-center p-10 text-left text-textColor">
-                <div className="text-4xl font-bold">Our Feature</div>
+                <div className="text-4xl font-montserrat font-bold">Our Feature</div>
                 <div className="my-2 text-base">
                     Specially developed to manage
                 </div>

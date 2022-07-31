@@ -3,7 +3,7 @@ import Link from "next/link";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Label from "../components/Label";
-import GuestRegister from "../layouts/GuestRegister";
+import RegisterLayout from "../layouts/RegisterLayout";
 
 export default function Register() {
     return (
@@ -52,7 +52,7 @@ export default function Register() {
 }
 
 Register.getLayout = (page) => (
-    <GuestRegister
+    <RegisterLayout
         header={"Create Guest Account"}
         title="Register"
         children={page}

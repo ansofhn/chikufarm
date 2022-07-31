@@ -1,6 +1,9 @@
 import { useRef } from "react";
+import { Input } from "antd";
 
 const SearchBar = () => {
+    const onSearch = (value) => console.log(value);
+
     const clickPoint = useRef();
     const handleFocus = () => {
         clickPoint.current.style.display = "none";
@@ -12,10 +15,7 @@ const SearchBar = () => {
 
     return (
         <div className="relative mr-3">
-            <div
-                className="absolute top-3 left-3 items-center"
-                ref={clickPoint}
-            >
+            <div className="absolute p-2.5 items-center" ref={clickPoint}>
                 <svg
                     className="w-5 h-5 text-textColor"
                     fill="currentColor"
@@ -29,12 +29,13 @@ const SearchBar = () => {
                     ></path>
                 </svg>
             </div>
-            <input
+            <Input
                 type="text"
-                className="block p-2 pl-10 w-70 text-textColor bg-white rounded-lg border border-shadowColor focus:pl-3 focus:ring-0 focus:border-shadowColor"
+                className="block p-2 pl-10 w-70 text-sm text-textColor bg-white rounded-lg border border-shadowColor focus:pl-3 focus:ring-0 focus:border-shadowColor"
                 placeholder="Search"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                onPressEnter={onSearch}
             />
         </div>
     );

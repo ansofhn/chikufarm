@@ -11,6 +11,9 @@ module.exports = {
         center: true,
         padding: "1rem",
       },
+      fontFamily: { // add new font family
+        montserrat: ['Montserrat', 'sans-serif']
+      },
       colors: {
         cream : "#F9EAE1",
         softBrown : "#C09F80",

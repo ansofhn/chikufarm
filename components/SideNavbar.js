@@ -38,7 +38,7 @@ export default function SideNavbar() {
                             <Link href={"/dashboard"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                     <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className=" text-sm font-semibold text-textColor group-hover:text-cream">
                                         Dashboard
                                     </h3>
                                 </div>
@@ -46,7 +46,7 @@ export default function SideNavbar() {
                             <Link href={"/dashboard/report"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                     <TbReportAnalytics className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
                                         Report Harian
                                     </h3>
                                 </div>
@@ -54,7 +54,7 @@ export default function SideNavbar() {
                             <Link href={"/dashboard/user"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                     <FaRegUser className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
                                         User
                                     </h3>
                                 </div>
@@ -62,7 +62,7 @@ export default function SideNavbar() {
                             <Link href={"/dashboard/kandang"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                     <RiHome2Line className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
                                         Kandang
                                     </h3>
                                 </div>
@@ -70,7 +70,7 @@ export default function SideNavbar() {
                             <Link href={"/dashboard/pakan"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                     <RiHandCoinLine className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
                                         Pakan
                                     </h3>
                                 </div>
@@ -78,7 +78,7 @@ export default function SideNavbar() {
                             <Link href={"/dashboard/ternak"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
                                     <FiFeather className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
                                         Ternak
                                     </h3>
                                 </div>
@@ -91,7 +91,7 @@ export default function SideNavbar() {
                             <Link href={"/"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:bg-textColor group">
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-base font-semibold text-textColor group-hover:text-cream">
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
                                         Logout
                                     </h3>
                                 </div>

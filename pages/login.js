@@ -5,7 +5,7 @@ import Logo from "../public/logo.png";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Label from "../components/Label";
-import GuestLogin from "../layouts/GuestLogin";
+import LoginLayout from "../layouts/LoginLayout";
 
 export default function Login() {
     return (
@@ -42,5 +42,5 @@ export default function Login() {
 }
 
 Login.getLayout = (page) => (
-    <GuestLogin header={<Image src={Logo} />} title="Login" children={page} />
+    <LoginLayout header={<Image src={Logo} />} title="Login" children={page} />
 );

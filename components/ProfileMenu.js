@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, LogoutIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import Photo from "../public/pp.png";
 
@@ -17,7 +17,7 @@ export default function ProfileMenu() {
         <div className="flex justify-end md:mx-10 my-4 text-textColor ml-72">
             <Menu as="div" className="relative inline-block text-left">
                 <div>
-                    <Menu.Button className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 bg-white text-sm font-medium text-textColor hover:bg-gray-50 focus:outline-none">
+                    <Menu.Button className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 bg-white text-sm font-medium text-textColor focus:outline-none">
                         <div className="flex gap-2">
                             <div className="flex items-center mx-2">
                                 <Image src={Photo} />
@@ -47,7 +47,7 @@ export default function ProfileMenu() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="py-1">
                             <Menu.Item>
                                 {({ active }) => (
@@ -55,7 +55,7 @@ export default function ProfileMenu() {
                                         href="#"
                                         className={classNames(
                                             active
-                                                ? "bg-gray-100 text-gray-900"
+                                                ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
                                                 : "text-gray-700",
                                             "block px-4 py-2 text-sm"
                                         )}
@@ -71,7 +71,7 @@ export default function ProfileMenu() {
                                         href="#"
                                         className={classNames(
                                             active
-                                                ? "bg-gray-100 text-gray-900"
+                                                ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
                                                 : "text-gray-700",
                                             "block px-4 py-2 text-sm"
                                         )}
@@ -80,14 +80,14 @@ export default function ProfileMenu() {
                                     </a>
                                 )}
                             </Menu.Item>
-                            <form method="POST" action="#">
+                            <form method="POST" action="/">
                                 <Menu.Item>
                                     {({ active }) => (
                                         <button
                                             type="submit"
                                             className={classNames(
                                                 active
-                                                    ? "bg-gray-100 text-gray-900"
+                                                    ? "bg-white text-textColor hover:bg-gray-50"
                                                     : "text-gray-700",
                                                 "block w-full text-left px-4 py-2 text-sm"
                                             )}
