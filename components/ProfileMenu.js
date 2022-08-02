@@ -26,7 +26,7 @@ export default function ProfileMenu() {
                                 <div className="text-xs font-light">
                                     Welcome back,
                                 </div>
-                                <div className="text-lg font-medium">
+                                <div className="text-start font-medium">
                                     {user.username}
                                 </div>
                             </div>
@@ -52,7 +52,7 @@ export default function ProfileMenu() {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        href="#"
+                                        href="/dashboard/profile"
                                         className={classNames(
                                             active
                                                 ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"

@@ -19,7 +19,7 @@ export default function Hero() {
                                 produce the best quality and quantity
                             </p>
                         </div>
-                        <div className="mx-10 ">
+                        <div className="mx-5 ">
                             <Image src={Banner} />
                         </div>
                     </div>

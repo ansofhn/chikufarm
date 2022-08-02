@@ -16,10 +16,13 @@ module.exports = {
       },
       colors: {
         cream : "#F9EAE1",
-        softBrown : "#C09F80",
+        softBrown : "#DEC9B5",
+        softGrey : "#C4C4C4",
+        softPink : "#FCC6B7",
         shadowColor : "#D7CEC7",
         textColor : "#565656",
         maroon : "#76323F",
+
       }
     },
   },

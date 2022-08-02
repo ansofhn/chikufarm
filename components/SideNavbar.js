@@ -4,11 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import Logo from "../public/Title.png";
 // import icons from react-icons
-import {
-    MdOutlineDashboard,
-    MdOutlineSettings,
-    MdOutlineMoreHoriz,
-} from "react-icons/md";
+import { MdOutlineDashboard } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa";
 import { RiHome2Line, RiHandCoinLine } from "react-icons/ri";
@@ -36,62 +32,61 @@ export default function SideNavbar() {
                         {/* Sidebar items */}
                         <div className="w-full pb-4 my-4 border-b border-gray-100">
                             <Link href={"/dashboard"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                    <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className=" text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className=" text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Dashboard
                                     </h3>
                                 </div>
                             </Link>
                             <Link href={"/dashboard/report"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                    <TbReportAnalytics className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Report Harian
                                     </h3>
                                 </div>
                             </Link>
                             <Link href={"/dashboard/user"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                    <FaRegUser className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <FaRegUser className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         User
                                     </h3>
                                 </div>
                             </Link>
                             <Link href={"/dashboard/kandang"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                    <RiHome2Line className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <RiHome2Line className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Kandang
                                     </h3>
                                 </div>
                             </Link>
                             <Link href={"/dashboard/pakan"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                    <RiHandCoinLine className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <RiHandCoinLine className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Pakan
                                     </h3>
                                 </div>
                             </Link>
                             <Link href={"/dashboard/ternak"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-textColor group">
-                                    <FiFeather className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <FiFeather className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Ternak
                                     </h3>
                                 </div>
                             </Link>
                         </div>
 
-                       
                         {/* logout Section */}
                         <div className="w-full pb-4 my-20 border-gray-100">
                             <Link href={"/"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:bg-textColor group">
-                                    <HiOutlineLogout className="text-2xl text-maroon group-hover:text-cream" />
-                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-cream">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:bg-cream group">
+                                    <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
+                                    <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Logout
                                     </h3>
                                 </div>

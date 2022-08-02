@@ -3,68 +3,44 @@ import { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Label from "../Label";
 import { MdAdd } from "react-icons/md";
-
-import { Select } from "antd";
 import React from "react";
 import axios from "axios";
-import { validate } from "uuid";
+import { Select } from "antd";
+
 const { Option } = Select;
 
 export default function UserContent() {
-    // const [dataDummy, setDataDummy] = useState([]);
-    // const column = [
-    //     {
-    //         title: "ID",
-    //         dataIndex: "id",
-    //     },
-    //     {
-    //         title: "FirstName",
-    //         dataIndex: "firstName",
-    //     },
-    //     {
-    //         title: "LastName",
-    //         dataIndex: "lastName",
-    //     },
-    // ];
-
-    // async function getData() {
-    //     try {
-    //         const data = await axios
-    //             .get("https://dummyjson.com/users")
-    //             .then((respond) => {
-    //                 setDataDummy(respond.data.users);
-    //             });
-    //     } catch (error) {}
-    // }
-
-    // useEffect(()=>{
-    //     getData()
-    //     console.log(dataDummy)
-    // },[])
-
     const [isAdding, setIsAdding] = useState(false);
     const [addingUser, setAddingUser] = useState(null);
-
     const [isEditing, setIsEditing] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
-    const [dataSource, setDataSource] = useState([
-        {
-            id: 9991,
-            fullname: "Ansof Habibunnadjar",
-            username: "ansofhn",
-            email: "ansofhn5@gmail.com",
-            phone: "085692751958",
-            role: "Admin",
-        },
-        {
-            id: 9992,
-            fullname: "Faisal Hari Salam",
-            username: "faisalharie",
-            email: "faisalharie@gmail.com",
-            phone: "081284594562",
-            role: "Admin",
-        },
-    ]);
+
+    const [dataSource, setDataSource] = useState([]);
+
+    const [dataApi, setDataApi] = useState([]);
+
+    async function getData() {
+        try {
+            // const response = await axios
+            //     .get("https://474f-180-244-211-44.ap.ngrok.io/users")
+            //     .then((res) => {
+            //         console.log(res.data.items);
+            //         setDataSource(res.data.items);
+            //     });
+            fetch("https://474f-180-244-211-44.ap.ngrok.io/users/")
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getData();
+    // useEffect(() => {
+    //     getData();
+    // }, []);
+
     const columns = [
         {
             key: "1",
@@ -74,12 +50,12 @@ export default function UserContent() {
         {
             key: "2",
             title: "Fullname",
-            dataIndex: "fullname",
+            dataIndex: "fullName",
         },
         {
             key: "3",
             title: "Username",
-            dataIndex: "username",
+            dataIndex: "userName",
         },
         {
             key: "4",
@@ -204,23 +180,23 @@ export default function UserContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"fullname"}>Fullname</Label>
+                    <Label forInput={"fullName"}>Fullname</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingUser?.fullname}
+                        value={addingUser?.fullName}
                         onChange={(e) => {
                             setAddingUser((pre) => {
-                                return { ...pre, fullname: e.target.value };
+                                return { ...pre, fullName: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"username"}>Username</Label>
+                    <Label forInput={"userName"}>Username</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingUser?.username}
+                        value={addingUser?.userName}
                         onChange={(e) => {
                             setAddingUser((pre) => {
-                                return { ...pre, username: e.target.value };
+                                return { ...pre, userName: e.target.value };
                             });
                         }}
                     />
@@ -315,23 +291,23 @@ export default function UserContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"fullname"}>Fullname</Label>
+                    <Label forInput={"fullName"}>Fullname</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingUser?.fullname}
+                        value={editingUser?.fullName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
-                                return { ...pre, fullname: e.target.value };
+                                return { ...pre, fullName: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"username"}>Username</Label>
+                    <Label forInput={"userName"}>Username</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingUser?.username}
+                        value={editingUser?.userName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
-                                return { ...pre, username: e.target.value };
+                                return { ...pre, userName: e.target.value };
                             });
                         }}
                     />

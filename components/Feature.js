@@ -7,7 +7,7 @@ import Button from "./Button";
 export default function Feature() {
     return (
         <div className="grid w-4/5 grid-cols-2 gap-20 mx-auto mb-20">
-            <div className="p-5">
+            <div className="p-10">
                 <Image src={Group} />
             </div>
 

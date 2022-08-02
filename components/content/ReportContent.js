@@ -1,17 +1,125 @@
-import React from "react";
-import SearchBar from "../SearchBar";
-import Link from "next/link";
-import Button from "../Button";
+import { Button, Table, Modal, Input } from "antd";
+import React, { useState } from "react";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Label from "../Label";
 import { MdAdd } from "react-icons/md";
-import Pagination from "../Pagination";
 
 export default function ReportContent() {
+    const [isAdding, setIsAdding] = useState(false);
+    const [addingReport, setAddingReport] = useState(null);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingReport, setEditingReport] = useState(null);
+    const [dataSource, setDataSource] = useState([
+        {
+            id: 9991,
+            coop: "Kandang 1",
+            population: 25,
+            death: 0,
+            morningStatus: "Sudah",
+            eveningStatus: "Belum",
+        },
+        {
+            id: 9992,
+            coop: "Kandang 2",
+            population: 24,
+            death: 1,
+            morningStatus: "Sudah",
+            eveningStatus: "Belum",
+        },
+    ]);
+    const columns = [
+        {
+            key: "1",
+            title: "Kandang",
+            dataIndex: "coop",
+        },
+        {
+            key: "2",
+            title: "Populasi",
+            dataIndex: "population",
+        },
+        {
+            key: "3",
+            title: "Kematian",
+            dataIndex: "death",
+        },
+        {
+            title: "Status Pakan",
+            children: [
+                {
+                    title: "Pagi",
+                    dataIndex: "morningStatus",
+                    key: "4",
+                    width: 100,
+                },
+                {
+                    title: "Sore",
+                    dataIndex: "eveningStatus",
+                    key: "5",
+                    width: 100,
+                },
+            ],
+        },
+        {
+            key: "6",
+            title: "Actions",
+            render: (record) => {
+                return (
+                    <>
+                        <EditOutlined
+                            onClick={() => {
+                                onEditReport(record);
+                            }}
+                        />
+                        <DeleteOutlined
+                            onClick={() => {
+                                onDeleteReport(record);
+                            }}
+                            style={{ color: "maroon", marginLeft: 12 }}
+                        />
+                    </>
+                );
+            },
+        },
+    ];
+
+    const onAddReport = () => {
+        setIsAdding(true);
+        setAddingReport(null);
+    };
+
+    const resetAdd = () => {
+        setIsAdding(false);
+        setAddingReport(null);
+    };
+
+    const onDeleteReport = (record) => {
+        Modal.confirm({
+            title: "Delete Report",
+            okText: "Yes",
+            okType: "danger",
+            onOk: () => {
+                setDataSource((pre) => {
+                    return pre.filter((report) => report.id !== record.id);
+                });
+            },
+        });
+    };
+    const onEditReport = (record) => {
+        setIsEditing(true);
+        setEditingReport({ ...record });
+    };
+    const resetEditing = () => {
+        setIsEditing(false);
+        setEditingReport(null);
+    };
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
                 Report Harian
             </div>
-            <div className="grid grid-cols-4 gap-5 p-2 ">
+            <div className="grid grid-cols-4 gap-5 mb-5 ">
                 <div className="w-full p-3 bg-white rounded-xl">
                     <div className="text-sm text-textColor">Total Populasi</div>
                     <div className="text-lg font-bold text-textColor">56</div>
@@ -31,97 +139,219 @@ export default function ReportContent() {
                     <div className="text-lg font-bold text-textColor">5</div>
                 </div>
             </div>
-            <div className="mt-10 p-10 bg-white rounded-lg">
-                <div className="flex justify-between pb-5 border-b border-gray-200">
-                    <SearchBar />
-                    <Link href={"#"}>
-                        <Button
-                            className={
-                                "transition duration-300 text-semibold items-center gap-2 flex px-4 py-2 bg-maroon text-cream"
-                            }
-                        >
-                            <MdAdd className="self-center text-lg" />
-                            Add Report
-                        </Button>
-                    </Link>
+            <div className="p-10 bg-white rounded-lg">
+                <div className="flex justify-end mb-5 pb-5 border-b border-gray-200">
+                    <Button
+                        className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        onClick={onAddReport}
+                    >
+                        <MdAdd className="self-center text-lg" />
+                        Add
+                    </Button>
                 </div>
-                <table className="w-full my-10">
-                    <thead className="bg-cream border border-shadowColor">
-                        <tr>
-                            <th className="text-maroon p-3 text-sm font-semibold tracking-wide text-left">
-                                Kandang
-                            </th>
-                            <th className="text-maroon p-3 text-sm font-semibold tracking-wide text-left">
-                                Populasi
-                            </th>
-                            <th className="text-maroon p-3 text-sm font-semibold tracking-wide text-left">
-                                Status Pakan
-                            </th>
-                            <th className="text-maroon p-3 text-sm font-semibold tracking-wide text-left">
-                                Kematian
-                            </th>
-                            <th className="text-maroon p-3 text-sm font-semibold tracking-wide text-left">
-                                Jumlah Pakan / Hari
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="border border-shadowColor">
-                        <tr className="bg-white">
-                            <td className="p-3 text-sm text-textColor">
-                                Kandang 1
-                            </td>
-                            <td className="p-3 text-sm text-textColor">20</td>
-                            <td className="p-3 text-sm text-textColor">
-                                <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
-                                    Done
-                                </span>
-                            </td>
-                            <td className="p-3 text-sm text-textColor">
-                                1
-                            </td>
-                            <td className="p-3 text-sm text-textColor">
-                                200Kg
-                            </td>
-                        </tr>
-                        <tr className="bg-white">
-                            <td className="p-3 text-sm text-textColor">
-                                Kandang 2
-                            </td>
-                            <td className="p-3 text-sm text-textColor">19</td>
-                            <td className="p-3 text-sm text-textColor">
-                                <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
-                                    Done
-                                </span>
-                            </td>
-                            <td className="p-3 text-sm text-textColor">
-                                1
-                            </td>
-                            <td className="p-3 text-sm text-textColor">
-                                150Kg
-                            </td>
-                        </tr>
-                        <tr className="bg-white">
-                            <td className="p-3 text-sm text-textColor">
-                                Kandang 3
-                            </td>
-                            <td className="p-3 text-sm text-textColor">17</td>
-                            <td className="p-3 text-sm text-textColor">
-                                <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-maroon bg-red-200 rounded-lg bg-opacity-50">
-                                    Not Yet
-                                </span>
-                            </td>
-                            <td className="p-3 text-sm text-textColor">
-                                3
-                            </td>
-                            <td className="p-3 text-sm text-textColor">
-                                250Kg
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div className="flex justify-end border-t border-gray-200 pt-5">
-                    <Pagination />
-                </div>
+                <Table
+                    bordered={true}
+                    columns={columns}
+                    dataSource={dataSource}
+                ></Table>
+
+                {/* Add Report */}
+                <Modal
+                    className="rounded-lg overflow-hidden p-0"
+                    title="Add Report"
+                    visible={isAdding}
+                    footer={[
+                        <div className="flex justify-center">
+                            <Button
+                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetAdd();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                onClick={() => {
+                                    const uuid = Math.floor(
+                                        1000 + Math.random() * 9000
+                                    );
+                                    addingReport["id"] = uuid;
+
+                                    setDataSource([
+                                        ...dataSource,
+                                        addingReport,
+                                    ]);
+                                    resetAdd();
+                                }}
+                            >
+                                Add
+                            </Button>
+                        </div>,
+                    ]}
+                >
+                    <Label forInput={"coop"}>Kandang</Label>
+                    <Input
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        value={addingReport?.coop}
+                        onChange={(e) => {
+                            setAddingReport((pre) => {
+                                return { ...pre, coop: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"population"}>Populasi</Label>
+                    <Input
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        value={addingReport?.population}
+                        onChange={(e) => {
+                            setAddingReport((pre) => {
+                                return { ...pre, population: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"death"}>Kematian</Label>
+                    <Input
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        value={addingReport?.death}
+                        onChange={(e) => {
+                            setAddingReport((pre) => {
+                                return { ...pre, death: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"morningStatus"}>Status Pakan</Label>
+                    <div className="flex gap-4">
+                        <Input
+                            className="rounded-lg w-1/2 text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingReport?.morningStatus}
+                            placeholder="Pagi"
+                            onChange={(e) => {
+                                setAddingReport((pre) => {
+                                    return {
+                                        ...pre,
+                                        morningStatus: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Input
+                            className="rounded-lg w-1/2 text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingReport?.eveningStatus}
+                            placeholder="Sore"
+                            onChange={(e) => {
+                                setAddingReport((pre) => {
+                                    return {
+                                        ...pre,
+                                        eveningStatus: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                    </div>
+                </Modal>
+
+                {/* Edit User */}
+                <Modal
+                    className="rounded-lg overflow-hidden p-0"
+                    title="Edit Report"
+                    visible={isEditing}
+                    footer={[
+                        <div className="flex justify-center">
+                            <Button
+                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetEditing();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                onClick={() => {
+                                    setDataSource((pre) => {
+                                        return pre.map((report) => {
+                                            if (
+                                                report.id === editingReport.id
+                                            ) {
+                                                return editingReport;
+                                            } else {
+                                                return report;
+                                            }
+                                        });
+                                    });
+                                    resetEditing();
+                                }}
+                            >
+                                Save
+                            </Button>
+                        </div>,
+                    ]}
+                >
+                    <Label forInput={"coop"}>Kandang</Label>
+                    <Input
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        value={editingReport?.coop}
+                        onChange={(e) => {
+                            setEditingReport((pre) => {
+                                return { ...pre, coop: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"population"}>Populasi</Label>
+                    <Input
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        value={editingReport?.population}
+                        onChange={(e) => {
+                            setEditingReport((pre) => {
+                                return { ...pre, population: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"death"}>Kematian</Label>
+                    <Input
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        value={editingReport?.death}
+                        onChange={(e) => {
+                            setEditingReport((pre) => {
+                                return { ...pre, death: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"morningStatus"}>Status Pakan</Label>
+                    <div className="flex gap-4">
+                        <Input
+                            className="rounded-lg w-1/2 text-sm border-textColor my-1 hover:border-textColor "
+                            value={editingReport?.morningStatus}
+                            placeholder="Pagi"
+                            onChange={(e) => {
+                                setEditingReport((pre) => {
+                                    return {
+                                        ...pre,
+                                        morningStatus: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Input
+                            className="rounded-lg w-1/2 text-sm border-textColor my-1 hover:border-textColor "
+                            value={editingReport?.eveningStatus}
+                            placeholder="Sore"
+                            onChange={(e) => {
+                                setEditingReport((pre) => {
+                                    return {
+                                        ...pre,
+                                        eveningStatus: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                    </div>
+                </Modal>
             </div>
         </div>
     );

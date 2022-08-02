@@ -1,17 +1,19 @@
 import React from "react";
-import UserContent from "../../components/content/UserContent";
-import ProfileMenu from "../../components/ProfileMenu";
-import SideNavbar from "../../components/SideNavbar";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import ProfileSetting from "../../../components/content/ProfileSetting";
+import ProfileMenu from "../../../components/ProfileMenu";
+import SideNavbar from "../../../components/SideNavbar";
+import DashboardLayout from "../../../layouts/DashboardLayout";
 
-export default function user() {
+export default function profile() {
     return (
         <div>
-            <ProfileMenu/>
-            <SideNavbar/>
-            <UserContent/>
+            <ProfileMenu />
+            <SideNavbar />
+            <ProfileSetting/>
         </div>
     );
 }
 
-user.getLayout = (page) => <DashboardLayout title="Profile Setting" children={page} />;
+profile.getLayout = (page) => (
+    <DashboardLayout title="profile" children={page} />
+);

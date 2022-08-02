@@ -24,8 +24,8 @@ export default function Navbar() {
                         </div>
                         <div className="flex items-center gap-x-2">
                             <NavLink url={"/dashboard"}>Home</NavLink>
-                            <NavLink url={"#"}>About</NavLink>
-                            <NavLink url={"#"}>Contact</NavLink>
+                            <NavLink url={"/about"}>About</NavLink>
+                            <NavLink url={"/contact"}>Contact</NavLink>
                         </div>
                         {auth.check ? (
                             <div className="flex items-center gap-x-2">

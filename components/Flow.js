@@ -10,21 +10,21 @@ export default function Flow() {
             <div className="text-center">
                 <h3 className="mb-20 text-3xl font-bold text-textColor font-monserrat">How it Works</h3>
                 <div className="mx-auto w-4/5 grid grid-cols-3 gap-5">
-                    <div>
+                    <div className="w-1/2 self-center mx-auto">
                         <Image src={Step1} />
                         <h3 className="text-lg text-textColor font-semibold my-2">Login</h3>
                         <p className="text-sm font-normal">
                             Login to get started
                         </p>
                     </div>
-                    <div>
+                    <div className="w-1/2 self-center mx-auto">
                         <Image src={Step2} />
                         <h3 className="text-lg text-textColor font-semibold my-2">Add & Report</h3>
                         <p className="text-sm font-normal">
                             Add data and report
                         </p>
                     </div>
-                    <div>
+                    <div className="w-1/2 self-center mx-auto">
                         <Image src={Step3} />
                         <h3 className="text-lg text-textColor font-semibold my-2">Manage Your Own</h3>
                         <p className="text-sm font-normal">
