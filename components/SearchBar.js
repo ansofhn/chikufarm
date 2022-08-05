@@ -35,14 +35,14 @@ const SearchBar = ({ onChangeSearch, onChangeSelect }) => {
                 <input
                     onChange={onChangeSearch}
                     type="text"
-                    className="block p-2 pl-10 w-70 text-textColor text-sm rounded-md border border-gray-300 focus:ring-0 focus:border-maroon focus:pl-3"
+                    className="block p-2 pl-10 w-70 text-textColor text-sm rounded-md border border-gray-300 focus:ring-0 focus:border-gray-300 focus:pl-3"
                     placeholder="Search Here..."
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                 />
             </div>
             <Select
-                className="my-1 text-sm border rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
+                className="my-1 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
                 onSelect={onChangeSelect}
                 placeholder="Role"
                 style={{
@@ -72,7 +72,7 @@ const SearchBar = ({ onChangeSearch, onChangeSelect }) => {
                     className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                     value=""
                 >
-                    Cancel
+                    All Data
                 </Option>
             </Select>
         </div>

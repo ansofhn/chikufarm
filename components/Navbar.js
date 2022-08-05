@@ -1,12 +1,11 @@
-import React from 'react'
-import NavLink from './Navlink'
-import Image from "next/image"
-import Button from './Button';
-import Link from 'next/link'
-import Logo from "../public/logo-navbar.png"
+import React from "react";
+import NavLink from "./NavLink";
+import Image from "next/image";
+import Button from "./Button";
+import Link from "next/link";
+import Logo from "../public/logo-navbar.png";
 
 export default function Navbar() {
-
     const auth = {
         check: false,
         user: {
@@ -14,9 +13,9 @@ export default function Navbar() {
         },
     };
 
-  return (
-    <div>
-      <div className="fixed top-0 z-10 w-full bg-white border-b border-gray-100">
+    return (
+        <div>
+            <div className="fixed top-0 z-10 w-full bg-white border-b border-gray-100">
                 <div className="container">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center py-2 gap-x-2">
@@ -56,6 +55,6 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-    </div>
-  )
+        </div>
+    );
 }

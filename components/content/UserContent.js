@@ -15,8 +15,8 @@ export default function UserContent() {
     const [addingUser, setAddingUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
-    const [search, setSearch] = useState([])
-    const [filter, setFilter] = useState([])
+    const [search, setSearch] = useState([]);
+    const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
 
     async function getData() {
@@ -24,7 +24,6 @@ export default function UserContent() {
             const response = await axios
                 .get("https://chikufarm-app.herokuapp.com/api/users")
                 .then((res) => {
-                    console.log(res.data.items);
                     setDataSource(res.data.items);
                 });
         } catch (error) {
@@ -45,7 +44,7 @@ export default function UserContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    setDataSource(dataSource.concat(res.data))
+                    setDataSource(dataSource.concat(res.data));
                     resetAdd();
                 });
         } catch (error) {
@@ -66,9 +65,7 @@ export default function UserContent() {
         }
     }
 
-    async function searchData() {
-        console.log(search)
-        console.log(filter)
+    async function searchData(search, filter) {
         try {
             const response = await axios
                 .get(
@@ -173,12 +170,12 @@ export default function UserContent() {
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchBar
                         onChangeSearch={(e) => {
-                            setSearch(e.target.value)
-                            searchData()
+                            setSearch(e.target.value);
+                            searchData(e.target.value, filter);
                         }}
                         onChangeSelect={(value) => {
-                            setFilter(value)
-                            searchData()
+                            setFilter(value);
+                            searchData(search, value);
                         }}
                     />
                     <Button

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Logo from "../public/logo.png";
+import Logo from "../public/Logo.png";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Label from "../components/Label";
@@ -32,11 +32,11 @@ export default function Login() {
                 )
                 .then((respond) => {
                     console.log(respond.data.access_token);
-                    const access_token = respond.data.access_token
-                    localStorage.setItem("access_token", access_token)
-                    if(respond.status === 201 || 200) {
-                        window.alert("Login Success !!")
-                        router.push("/dashboard")
+                    const access_token = respond.data.access_token;
+                    localStorage.setItem("access_token", access_token);
+                    if (respond.status === 201 || 200) {
+                        window.alert("Login Success !!");
+                        router.push("/dashboard");
                     }
                 });
         } catch (e) {
