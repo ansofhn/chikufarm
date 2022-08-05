@@ -52,6 +52,56 @@ export default function UserContent() {
         }
     }
 
+    async function editData() {
+        const userId = editingUser.id;
+        const fullName = editingUser.fullName;
+        const userName = editingUser.userName;
+        const email = editingUser.email;
+        const phone = editingUser.phone;
+        const roleId = editingUser.roleId;
+        const updateUser = {
+            fullName: fullName,
+            userName: userName,
+            email: email,
+            phone: phone,
+        };
+        const updateRole = {
+            id: userId,
+            roleId: roleId,
+        };
+        try {
+            const respons1 = await axios
+                .put(
+                    `https://chikufarm-app.herokuapp.com/api/users/${userId}`,
+                    updateUser,
+                    {
+                        headers: { "content-type": "application/json" },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    resetEditing();
+                });
+
+            const response2 = await axios
+                .put(
+                    "https://chikufarm-app.herokuapp.com/api/users/role/update",
+                    updateRole,
+                    {
+                        headers: { "content-type": "application/json" },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    resetEditing();
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async function deleteData(record) {
         const id = record.id;
         try {
@@ -160,6 +210,8 @@ export default function UserContent() {
     const onChangeForm = (e) => {
         e.preventDefault();
     };
+
+    console.log(editingUser);
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
@@ -324,18 +376,20 @@ export default function UserContent() {
                             <Button
                                 className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={() => {
-                                    setDataSource((pre) => {
-                                        return pre.map((user) => {
-                                            if (user.id === editingUser.id) {
-                                                return editingUser;
-                                            } else {
-                                                return user;
-                                            }
-                                        });
-                                    });
-                                    resetEditing();
-                                }}
+                                type="submit"
+                                onClick={editData}
+                                // onClick={() => {
+                                // setDataSource((pre) => {
+                                //     return pre.map((user) => {
+                                //         if (user.id === editingUser.id) {
+                                //             return editingUser;
+                                //         } else {
+                                //             return user;
+                                //         }
+                                //     });
+                                // });
+                                //     resetEditing();
+                                // }}
                             >
                                 Save
                             </Button>
