@@ -18,7 +18,7 @@ module.exports = {
         cream : "#F9EAE1",
         softBrown : "#DEC9B5",
         softGrey : "#C4C4C4",
-        softPink : "#FCC6B7",
+        softPink : "#EAB3BE",
         shadowColor : "#D7CEC7",
         textColor : "#565656",
         maroon : "#76323F",

@@ -8,7 +8,7 @@ export default function about() {
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">
-                    <div className="grid grid-cols-2 p-2 gap-4 mx-5 my-32 bg-white">
+                    <div className="grid grid-cols-2 p-2 gap-4 mx-20 my-32 bg-white">
                         <div className="p-2">
                             <h3 className="font-bold text-3xl text-textColor">
                                 Chikufarm Platform
@@ -18,7 +18,7 @@ export default function about() {
                                 credit
                             </p>
                         </div>
-                        <div className="bg-softPink rounded-lg col-start-1 p-8">
+                        <div className="bg-gray-100 pb-96 rounded-lg col-start-1 p-8">
                             <h3 className="font-bold text-xl mb-2 text-textColor">
                                 What we do
                             </h3>

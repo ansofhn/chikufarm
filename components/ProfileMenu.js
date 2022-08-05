@@ -17,7 +17,7 @@ export default function ProfileMenu() {
         <div className="flex justify-end md:mx-10 my-4 text-textColor ml-72">
             <Menu as="div" className="relative inline-block text-left">
                 <div>
-                    <Menu.Button className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 bg-white text-sm font-medium text-textColor focus:outline-none">
+                    <Menu.Button className="inline-flex justify-center w-full rounded-lg shadow-sm px-4 py-2 bg-white text-sm font-medium text-textColor focus:outline-none">
                         <div className="flex gap-2">
                             <div className="flex items-center mx-2">
                                 <Image src={Photo} />
@@ -47,7 +47,7 @@ export default function ProfileMenu() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-lg shadow-lg bg-white focus:outline-none">
                         <div className="py-1">
                             <Menu.Item>
                                 {({ active }) => (

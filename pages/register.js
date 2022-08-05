@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Label from "../components/Label";
 import RegisterLayout from "../layouts/RegisterLayout";
 
 import axios from "axios";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export default function Register() {
     const [fullName, setFullName] = useState("");
@@ -15,7 +14,18 @@ export default function Register() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
 
+    // const [dataInput, setDataInput] = useState([
+    //     {
+    //         fullName: fullName,
+    //         userName: userName,
+    //         email: email,
+    //         phone: phone,
+    //         password: password,
+    //     },
+    // ]);
+
     const router = useRouter();
+
     const onFinish = async () => {
         try {
             const data = {
@@ -28,7 +38,7 @@ export default function Register() {
             console.log(data);
             let response = await axios
                 .post(
-                    "https://d4dd-101-255-119-166.ap.ngrok.io/users",
+                    "https://chikufarm-app.herokuapp.com/api/users/register",
                     data,
                     {
                         headers: { "content-type": "application/json" },
@@ -36,7 +46,7 @@ export default function Register() {
                 )
                 .then((respond) => {
                     if (respond.status === 201 || 200) {
-                        window.alert("sukses registrasi");
+                        window.alert("Sukses Registrasi");
                         router.push("/login");
                     }
                 });
@@ -44,33 +54,34 @@ export default function Register() {
             e.message;
         }
     };
+    // useEffect(() => {
+    //     getData();
+    // }, []);
 
     const onChangeFullname = (e) => {
         setFullName(e.target.value);
-        console.log(fullName);
     };
     const onChangeUsername = (e) => {
         setUserName(e.target.value);
-        console.log(userName);
     };
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
-        console.log(email);
     };
     const onChangePhone = (e) => {
         setPhone(e.target.value);
-        console.log(phone);
     };
     const onChangePassword = (e) => {
         setPassword(e.target.value);
-        console.log(password);
     };
-
+    const onChangeForm = (e) => {
+        e.preventDefault();
+    };
     return (
-        <form>
+        <form onSubmit={onChangeForm} method="POST">
             <div className="mb-6">
                 <Label forInput="fullname"></Label>
                 <Input
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
                     name="fullname"
                     id="fullname"
                     placeholder="Fullname"
@@ -80,6 +91,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="username"></Label>
                 <Input
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
                     name="username"
                     id="username"
                     placeholder="Username"
@@ -89,6 +101,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="email"></Label>
                 <Input
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
                     type="email"
                     name="email"
                     id="email"
@@ -99,6 +112,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="phone"></Label>
                 <Input
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
                     name="phone"
                     id="phone"
                     placeholder="Phone"
@@ -108,6 +122,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="password"></Label>
                 <Input
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
                     type="password"
                     name="password"
                     id="password"
@@ -117,9 +132,10 @@ export default function Register() {
             </div>
 
             <Button
+                type="submit"
                 onClick={onFinish}
                 className={
-                    "transition duration-300 w-full text-semibold px-6 py-2.5 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
+                    "transition duration-300 w-full font-semibold px-6 py-2.5 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
                 }
             >
                 Sign Up

@@ -7,21 +7,21 @@ export default function DashboardContent() {
                 Dashboard / Home
             </div>
             <div className="grid grid-cols-4 gap-5 p-2 ">
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Total Populasi</div>
                     <div className="text-lg font-bold text-textColor">592</div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Total Kandang</div>
                     <div className="text-lg font-bold text-textColor">29</div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Total Pakan</div>
                     <div className="text-lg font-bold text-textColor">
                         3.5 ton
                     </div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Kematian</div>
                     <div className="text-lg font-bold text-textColor">9</div>
                 </div>
@@ -33,26 +33,26 @@ export default function DashboardContent() {
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-5 p-2">
-                <div className="w-full p-3 text-sm bg-white h-60 rounded-xl text-textColor">
+                <div className="w-full p-3 text-sm bg-white h-96 rounded-lg text-textColor">
                     Progress Populasi
                     <div className="text-4xl font-bold text-textColor">
                         15 %
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-5">
-                    <div className="w-full p-3 text-sm bg-white text-textColor rounded-xl">
+                    <div className="w-full p-3 text-sm bg-white text-textColor rounded-lg">
                         Populasi Terbaru
-                        <div className="text-xl font-bold text-textColor">
+                        <div className="text-lg font-bold text-textColor">
                             592
                         </div>
                     </div>
-                    <div className="w-full p-3 text-sm bg-white text-textColor rounded-xl">
+                    <div className="w-full p-3 text-sm bg-white text-textColor rounded-lg">
                         Populasi Terakhir
-                        <div className="text-xl font-bold text-textColor">
+                        <div className="text-lg font-bold text-textColor">
                             580
                         </div>
                     </div>
-                    <div className="grid w-full col-span-2 grid-rows-3 p-3 text-sm bg-white text-textColor rounded-xl">
+                    <div className="grid w-full col-span-2 grid-rows-3 p-3 text-sm bg-white text-textColor rounded-lg">
                         <div className="flex items-center justify-between">
                             <div>Populasi</div>
                             <div className="pr-4">12</div>
@@ -77,10 +77,10 @@ export default function DashboardContent() {
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-5 p-2 ">
-                <div className="w-full h-32 p-3 text-sm bg-white text-textColor rounded-xl">
+                <div className="w-full h-32 p-3 text-sm bg-white text-textColor rounded-lg">
                     Kategori Hewan Ternak
                 </div>
-                <div className="w-full h-32 p-3 text-sm bg-white text-textColor rounded-xl">
+                <div className="w-full h-32 p-3 text-sm bg-white text-textColor rounded-lg">
                     Persentase Kematian
                 </div>
             </div>

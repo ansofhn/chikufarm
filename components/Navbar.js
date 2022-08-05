@@ -23,7 +23,7 @@ export default function Navbar() {
                             <Image src={Logo} />
                         </div>
                         <div className="flex items-center gap-x-2">
-                            <NavLink url={"/dashboard"}>Home</NavLink>
+                            <NavLink url={"/"}>Home</NavLink>
                             <NavLink url={"/about"}>About</NavLink>
                             <NavLink url={"/contact"}>Contact</NavLink>
                         </div>

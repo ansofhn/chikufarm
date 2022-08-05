@@ -6,6 +6,7 @@ import { MdAdd } from "react-icons/md";
 import React from "react";
 import axios from "axios";
 import { Select } from "antd";
+import SearchBar from "../SearchBar";
 
 const { Option } = Select;
 
@@ -17,63 +18,94 @@ export default function UserContent() {
 
     const [dataSource, setDataSource] = useState([]);
 
-    const [dataApi, setDataApi] = useState([]);
-
     async function getData() {
         try {
-            // const response = await axios
-            //     .get("https://474f-180-244-211-44.ap.ngrok.io/users")
-            //     .then((res) => {
-            //         console.log(res.data.items);
-            //         setDataSource(res.data.items);
-            //     });
-            fetch("https://474f-180-244-211-44.ap.ngrok.io/users/")
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
+            const response = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/users")
+                .then((res) => {
+                    console.log(res.data.items);
+                    setDataSource(res.data.items);
                 });
         } catch (error) {
             console.log(error);
         }
     }
-    getData();
-    // useEffect(() => {
-    //     getData();
-    // }, []);
+
+    async function addData() {
+        console.log(addingUser);
+        try {
+            const response = await axios
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/users/register",
+                    addingUser,
+                    {
+                        headers: { "content-type": "application/json" },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    resetAdd();
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function deleteData(record) {
+        const id = record.id;
+        try {
+            const response = await axios
+                .delete(`https://chikufarm-app.herokuapp.com/api/users/${id}`)
+                .then((res) => {
+                    console.log(res);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function searchData(record) {
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/users?search=${record}`
+                )
+                .then((res) => {
+                    console.log(res.data);
+                    setDataSource(res.data.items);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     const columns = [
         {
-            key: "1",
-            title: "ID",
-            dataIndex: "id",
-        },
-        {
-            key: "2",
             title: "Fullname",
             dataIndex: "fullName",
         },
         {
-            key: "3",
             title: "Username",
             dataIndex: "userName",
         },
         {
-            key: "4",
             title: "Email",
             dataIndex: "email",
         },
         {
-            key: "5",
             title: "Phone",
             dataIndex: "phone",
         },
         {
-            key: "6",
             title: "Role",
             dataIndex: "role",
+            render: (role) => role.roleName,
         },
         {
-            key: "7",
             title: "Actions",
             render: (record) => {
                 return (
@@ -114,6 +146,7 @@ export default function UserContent() {
                 setDataSource((pre) => {
                     return pre.filter((user) => user.id !== record.id);
                 });
+                deleteData(record);
             },
         });
     };
@@ -125,15 +158,25 @@ export default function UserContent() {
         setIsEditing(false);
         setEditingUser(null);
     };
+
+    const onChangeForm = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
                 Data User / All
             </div>
             <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-end mb-5 pb-5 border-b border-gray-200">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
+                    <SearchBar
+                        onChange={(e) => {
+                            searchData(e.target.value);
+                        }}
+                    />
                     <Button
-                        className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex items-center gap-2 px-4 py-4 transition duration-300 border-none rounded-lg text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddUser}
                     >
                         <MdAdd className="self-center text-lg" />
@@ -148,13 +191,13 @@ export default function UserContent() {
 
                 {/* Add User */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="p-0 -my-24 overflow-hidden rounded-lg"
                     title="Add User"
                     visible={isAdding}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAdd();
@@ -163,106 +206,111 @@ export default function UserContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={() => {
-                                    const uuid = Math.floor(
-                                        1000 + Math.random() * 9000
-                                    );
-                                    addingUser["id"] = uuid;
-
-                                    setDataSource([...dataSource, addingUser]);
-                                    resetAdd();
-                                }}
+                                type="submit"
+                                onClick={addData}
                             >
                                 Add
                             </Button>
                         </div>,
                     ]}
                 >
-                    <Label forInput={"fullName"}>Fullname</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingUser?.fullName}
-                        onChange={(e) => {
-                            setAddingUser((pre) => {
-                                return { ...pre, fullName: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"userName"}>Username</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingUser?.userName}
-                        onChange={(e) => {
-                            setAddingUser((pre) => {
-                                return { ...pre, userName: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"email"}>Email</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingUser?.email}
-                        onChange={(e) => {
-                            setAddingUser((pre) => {
-                                return { ...pre, email: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"phone"}>Phone</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingUser?.phone}
-                        onChange={(e) => {
-                            setAddingUser((pre) => {
-                                return { ...pre, phone: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"role"}>User Role</Label>
-                    <Select
-                        className="rounded-lg text-sm border border-textColor my-1 hover:border-textColor"
-                        onSelect={(value) => {
-                            setAddingUser((pre) => {
-                                return { ...pre, role: value };
-                            });
-                        }}
-                        style={{
-                            width: 120,
-                        }}
-                        bordered={false}
-                    >
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="Admin"
+                    <form onSubmit={onChangeForm} method="POST">
+                        <Label forInput={"fullName"}>Fullname</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            value={addingUser?.fullName}
+                            onChange={(e) => {
+                                setAddingUser((pre) => {
+                                    return { ...pre, fullName: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"userName"}>Username</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            value={addingUser?.userName}
+                            onChange={(e) => {
+                                setAddingUser((pre) => {
+                                    return { ...pre, userName: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"email"}>Email</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            value={addingUser?.email}
+                            onChange={(e) => {
+                                setAddingUser((pre) => {
+                                    return { ...pre, email: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"phone"}>Phone</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            value={addingUser?.phone}
+                            onChange={(e) => {
+                                setAddingUser((pre) => {
+                                    return { ...pre, phone: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"password"}>Password</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            value={addingUser?.password}
+                            onChange={(e) => {
+                                setAddingUser((pre) => {
+                                    return { ...pre, password: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"role"}>User Role</Label>
+                        <Select
+                            className="my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            onSelect={(value) => {
+                                setAddingUser((pre) => {
+                                    return { ...pre, roleId: value };
+                                });
+                            }}
+                            style={{
+                                width: 120,
+                            }}
+                            bordered={false}
                         >
-                            Admin
-                        </Option>
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="Farmer"
-                        >
-                            Farmer
-                        </Option>
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="Guest"
-                        >
-                            Guest
-                        </Option>
-                    </Select>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="b6727f48-e1ac-4403-932e-5de35057de73"
+                            >
+                                Admin
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="4d8b3231-814b-411d-9886-3c806522062d"
+                            >
+                                Farmer
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="84fa3508-e865-44bc-b328-070783f9ca30"
+                            >
+                                Guest
+                            </Option>
+                        </Select>
+                    </form>
                 </Modal>
 
                 {/* Edit User */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="p-0 overflow-hidden rounded-lg"
                     title="Edit User"
                     visible={isEditing}
                     footer={[
                         <div className="flex justify-center">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditing();
@@ -271,7 +319,7 @@ export default function UserContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 onClick={() => {
                                     setDataSource((pre) => {
@@ -293,7 +341,7 @@ export default function UserContent() {
                 >
                     <Label forInput={"fullName"}>Fullname</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={editingUser?.fullName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -303,7 +351,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"userName"}>Username</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={editingUser?.userName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -313,7 +361,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"email"}>Email</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={editingUser?.email}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -323,7 +371,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"phone"}>Phone</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={editingUser?.phone}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -333,11 +381,11 @@ export default function UserContent() {
                     />
                     <Label forInput={"role"}>User Role</Label>
                     <Select
-                        className="rounded-lg text-sm border border-textColor my-1 hover:border-textColor"
-                        defaultValue={editingUser?.role}
+                        className="my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                        defaultValue={editingUser?.role.roleName}
                         onChange={(value) => {
                             setEditingUser((pre) => {
-                                return { ...pre, role: value };
+                                return { ...pre, roleId: value };
                             });
                         }}
                         style={{
@@ -347,19 +395,19 @@ export default function UserContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="Admin"
+                            value="b6727f48-e1ac-4403-932e-5de35057de73"
                         >
                             Admin
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="Farmer"
+                            value="4d8b3231-814b-411d-9886-3c806522062d"
                         >
                             Farmer
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="Guest"
+                            value="84fa3508-e865-44bc-b328-070783f9ca30"
                         >
                             Guest
                         </Option>

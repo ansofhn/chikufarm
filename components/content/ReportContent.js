@@ -116,25 +116,25 @@ export default function ReportContent() {
     };
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
-            <div className="p-4 text-lg font-bold text-textColor">
+            <div className="p-4 text-lg font-bold mb-3 text-textColor">
                 Report Harian
             </div>
-            <div className="grid grid-cols-4 gap-5 mb-5 ">
-                <div className="w-full p-3 bg-white rounded-xl">
+            <div className="grid grid-cols-4 gap-5 mb-16">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Total Populasi</div>
                     <div className="text-lg font-bold text-textColor">56</div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Total Kandang</div>
                     <div className="text-lg font-bold text-textColor">3</div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Total Pakan</div>
                     <div className="text-lg font-bold text-textColor">
                         600 Kg
                     </div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-xl">
+                <div className="w-full p-3 bg-white rounded-lg">
                     <div className="text-sm text-textColor">Kematian</div>
                     <div className="text-lg font-bold text-textColor">5</div>
                 </div>
