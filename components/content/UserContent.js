@@ -15,7 +15,8 @@ export default function UserContent() {
     const [addingUser, setAddingUser] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
-
+    const [search, setSearch] = useState([])
+    const [filter, setFilter] = useState([])
     const [dataSource, setDataSource] = useState([]);
 
     async function getData() {
@@ -44,6 +45,7 @@ export default function UserContent() {
                 )
                 .then((res) => {
                     console.log(res);
+                    setDataSource(dataSource.concat(res.data))
                     resetAdd();
                 });
         } catch (error) {
@@ -64,25 +66,24 @@ export default function UserContent() {
         }
     }
 
-    async function searchData(record) {
+    async function searchData() {
+        console.log(search)
+        console.log(filter)
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/users?search=${record}`
+                    `https://chikufarm-app.herokuapp.com/api/users?search=${search}&role=${filter}`
                 )
                 .then((res) => {
-                    console.log(res.data);
                     setDataSource(res.data.items);
                 });
         } catch (error) {
             console.log(error);
         }
     }
-
     useEffect(() => {
         getData();
     }, []);
-
     const columns = [
         {
             title: "Fullname",
@@ -171,8 +172,13 @@ export default function UserContent() {
             <div className="p-10 bg-white rounded-lg">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchBar
-                        onChange={(e) => {
-                            searchData(e.target.value);
+                        onChangeSearch={(e) => {
+                            setSearch(e.target.value)
+                            searchData()
+                        }}
+                        onChangeSelect={(value) => {
+                            setFilter(value)
+                            searchData()
                         }}
                     />
                     <Button

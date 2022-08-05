@@ -82,9 +82,9 @@ export default function SideNavbar() {
                         </div>
 
                         {/* logout Section */}
-                        <div className="w-full pb-4 my-20 border-gray-100">
+                        <div className="w-full pb-4 my-40 border-gray-100">
                             <Link href={"/"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:bg-cream group">
+                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group">
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Logout

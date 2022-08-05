@@ -1,6 +1,8 @@
+import { Select } from "antd";
 import { useRef } from "react";
+const { Option } = Select;
 
-const SearchBar = ({onChange}) => {
+const SearchBar = ({ onChangeSearch, onChangeSelect }) => {
     const clickPoint = useRef();
     const handleFocus = () => {
         clickPoint.current.style.display = "none";
@@ -9,8 +11,6 @@ const SearchBar = ({onChange}) => {
     const handleBlur = () => {
         clickPoint.current.style.display = "block";
     };
-
-    
 
     return (
         <div className="items-center px-4 flex justify-center">
@@ -33,7 +33,7 @@ const SearchBar = ({onChange}) => {
                     </svg>
                 </div>
                 <input
-                    onChange={onChange}
+                    onChange={onChangeSearch}
                     type="text"
                     className="block p-2 pl-10 w-70 text-textColor text-sm rounded-md border border-gray-300 focus:ring-0 focus:border-maroon focus:pl-3"
                     placeholder="Search Here..."
@@ -41,6 +41,40 @@ const SearchBar = ({onChange}) => {
                     onBlur={handleBlur}
                 />
             </div>
+            <Select
+                className="my-1 text-sm border rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
+                onSelect={onChangeSelect}
+                placeholder="Role"
+                style={{
+                    width: 100,
+                }}
+                bordered={false}
+            >
+                <Option
+                    className="hover:bg-cream hover:text-textColor focus:bg-cream  focus:text-textColor"
+                    value="admin"
+                >
+                    Admin
+                </Option>
+                <Option
+                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                    value="farmer"
+                >
+                    Farmer
+                </Option>
+                <Option
+                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                    value="guest"
+                >
+                    Guest
+                </Option>
+                <Option
+                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                    value=""
+                >
+                    Cancel
+                </Option>
+            </Select>
         </div>
     );
 };
