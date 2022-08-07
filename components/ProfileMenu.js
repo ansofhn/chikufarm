@@ -52,7 +52,7 @@ export default function ProfileMenu() {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        href="/dashboard/profile"
+                                        href="/dashboard/profile/accountSetting"
                                         className={classNames(
                                             active
                                                 ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
@@ -68,7 +68,7 @@ export default function ProfileMenu() {
                             <Menu.Item>
                                 {({ active }) => (
                                     <a
-                                        href="#"
+                                        href="dashboard/profile/passwordSetting"
                                         className={classNames(
                                             active
                                                 ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"

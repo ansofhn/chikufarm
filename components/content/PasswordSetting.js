@@ -5,7 +5,7 @@ import Button from "../Button";
 import Label from "../Label";
 import Input from "../Input";
 
-export default function ProfileSetting() {
+export default function PasswordSetting() {
     const [fullName, setFullName] = useState("");
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
