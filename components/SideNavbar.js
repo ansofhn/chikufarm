@@ -11,10 +11,15 @@ import { RiHome2Line, RiHandCoinLine } from "react-icons/ri";
 import { FiFeather } from "react-icons/fi";
 import { HiOutlineLogout } from "react-icons/hi";
 import Link from "next/link";
+import { Button } from "antd";
+import Router, {useRouter} from 'next/router'
 
 export default function SideNavbar() {
+    const router = useRouter()
+
     const handleLogout = () => {
         localStorage.removeItem("access_token")
+        router.push("/")
     }
     return (
         <div>
@@ -86,14 +91,14 @@ export default function SideNavbar() {
 
                         {/* logout Section */}
                         <div className="w-full pb-4 my-40 border-gray-100">
-                            <Link onClick={handleLogout} href={"/"}>
-                                <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group">
+                            
+                                <Button onClick={handleLogout} className="w-full flex items-center justify-start gap-4 py-5 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group">
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                         Logout
                                     </h3>
-                                </div>
-                            </Link>
+                                </Button>
+                            
                         </div>
                     </div>
                 </div>
