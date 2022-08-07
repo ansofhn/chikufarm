@@ -2,7 +2,7 @@ import { Select } from "antd";
 import { useRef } from "react";
 const { Option } = Select;
 
-const SearchFarm = ({ onChangeSearch, onChangeSelect }) => {
+const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
     const clickPoint = useRef();
     const handleFocus = () => {
         clickPoint.current.style.display = "none";
@@ -76,4 +76,4 @@ const SearchFarm = ({ onChangeSearch, onChangeSelect }) => {
     );
 };
 
-export default SearchFarm;
+export default SearchCoop;

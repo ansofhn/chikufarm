@@ -43,28 +43,28 @@ export default function SearchFeed({ onChangeSearch, onChangeSelect }) {
                 />
             </div>
             <Select
-                className="w-40 my-1 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
+                className=" w-36 my-1 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
                 onSelect={onChangeSelect}
                 placeholder="Category"
                 bordered={false}
             >
                 <Option
                     className="hover:bg-cream hover:text-textColor focus:bg-cream  focus:text-textColor active:bg-cream"
-                    value="Ayam petelur"
+                    value="Ayam Petelur"
                 >
                     Ayam Petelur
                 </Option>
                 <Option
                     className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="Ayam pedaging"
+                    value="Ayam Pedaging"
                 >
                     Ayam Pedaging
                 </Option>
                 <Option
                     className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="Ayam petarunk"
+                    value="Ayam Aduan"
                 >
-                    Ayam Petarunk
+                    Ayam Aduan
                 </Option>
                 <Option
                     className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
