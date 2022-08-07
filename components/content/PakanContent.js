@@ -1,55 +1,111 @@
-import { Button, Table, Modal, Input } from "antd";
-import { useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import Label from "../Label";
-import { MdAdd } from "react-icons/md";
 import React from "react";
+import { useEffect, useState } from "react";
+import { Button, Table, Modal, Input, Select } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { MdAdd } from "react-icons/md";
+import axios from "axios";
+import Label from "../Label";
+import SearchFeed from "../SearchFeed";
+
+const { Option } = Select;
 
 export default function UserContent() {
     const [isAdding, setIsAdding] = useState(false);
     const [addingPakan, setAddingPakan] = useState(null);
-
     const [isEditing, setIsEditing] = useState(false);
     const [editingPakan, setEditingPakan] = useState(null);
-    const [dataSource, setDataSource] = useState([
-        {
-            id: 9991,
-            name: "Sorgum",
-            type: "Pakan Ayam",
-            stock: "200 Kg",
-            status: "Tersedia",
-        },
-        {
-            id: 9992,
-            name: "Dedak",
-            type: "Pakan Bebek",
-            stock: "150 Kg",
-            status: "Tersedia",
-        },
-    ]);
+    const [search, setSearch] = useState([]);
+    const [filter, setFilter] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
+
+    const [breedData, setBreedData] = useState([]);
+
+    const getData = async () => {
+        try {
+            const response = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/feed", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                    setDataSource(res.data[0]);
+                });
+
+            const breedId = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/breed", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data[0]);
+                    setBreedData(res.data[0])
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    const addData = async () => {
+        console.log(addingPakan);
+        try {
+            const response = await axios
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/feed",
+                    addingPakan,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data);
+                    setDataSource(dataSource.concat(res.data));
+                    resetAdd();
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const columns = [
         {
-            key: "1",
             title: "Nama Pakan",
-            dataIndex: "name",
+            dataIndex: "feedName",
         },
         {
-            key: "2",
             title: "Jenis Pakan",
-            dataIndex: "type",
+            dataIndex: "feedType",
         },
         {
-            key: "3",
+            title: "Harga / Kg",
+            dataIndex: "pricePerKg",
+        },
+        {
             title: "Stock",
-            dataIndex: "stock",
+            dataIndex: "feedStock",
+            render: (feedStock) => feedStock[0].stock,
         },
         {
-            key: "4",
             title: "Status",
-            dataIndex: "status",
+            dataIndex: "feedHistory",
+            render: (feedHistory) => feedHistory[0].historyStatus,
         },
         {
-            key: "5",
             title: "Actions",
             render: (record) => {
                 return (
@@ -101,6 +157,10 @@ export default function UserContent() {
         setIsEditing(false);
         setEditingPakan(null);
     };
+    const onChangeForm = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -123,7 +183,7 @@ export default function UserContent() {
                     dataSource={dataSource}
                 ></Table>
 
-                {/* Add User */}
+                {/* Add Pakan */}
                 <Modal
                     className="rounded-lg overflow-hidden p-0"
                     title="Add Pakan"
@@ -142,62 +202,92 @@ export default function UserContent() {
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={() => {
-                                    const uuid = Math.floor(
-                                        1000 + Math.random() * 9000
-                                    );
-                                    addingPakan["id"] = uuid;
-
-                                    setDataSource([...dataSource, addingPakan]);
-                                    resetAdd();
-                                }}
+                                type="submit"
+                                onClick={addData}
                             >
                                 Add
                             </Button>
                         </div>,
                     ]}
                 >
-                    <Label forInput={"name"}>Nama Pakan</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingPakan?.name}
-                        onChange={(e) => {
-                            setAddingPakan((pre) => {
-                                return { ...pre, name: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"type"}>Jenis Pakan</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingPakan?.type}
-                        onChange={(e) => {
-                            setAddingPakan((pre) => {
-                                return { ...pre, type: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"stock"}>Stock Pakan</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingPakan?.stock}
-                        onChange={(e) => {
-                            setAddingPakan((pre) => {
-                                return { ...pre, stock: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"status"}>Status</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingPakan?.status}
-                        onChange={(e) => {
-                            setAddingPakan((pre) => {
-                                return { ...pre, status: e.target.value };
-                            });
-                        }}
-                    />
-                    
+                    <form onSubmit={onChangeForm} method="POST">
+                        <Label forInput={"feedName"}>Nama Pakan</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingPakan?.feedName}
+                            onChange={(e) => {
+                                setAddingPakan((pre) => {
+                                    return { ...pre, feedName: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"feedType"}>Jenis Pakan</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingPakan?.feedType}
+                            onChange={(e) => {
+                                setAddingPakan((pre) => {
+                                    return { ...pre, feedType: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"feedQuantity"}>Stock Pakan</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingPakan?.feedQuantity}
+                            onChange={(e) => {
+                                setAddingPakan((pre) => {
+                                    return {
+                                        ...pre,
+                                        feedQuantity: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"pricePerKg"}>Harga / Kg</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingPakan?.pricePerKg}
+                            onChange={(e) => {
+                                setAddingPakan((pre) => {
+                                    return {
+                                        ...pre,
+                                        pricePerKg: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"categoryTernak"}>Kategori Ternak</Label>
+                        <Select
+                            className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Category Ternak"
+                            onSelect={(value) => {
+                                setAddingPakan((pre) => {
+                                    return { ...pre, breedId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                        >
+                            Ayam Petelur
+                        </Option>
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="d54f904b-6741-469b-842a-7012131dd093"
+                        >
+                            Ayam Pedaging
+                        </Option>
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                        >
+                            Ayam Petarunk
+                        </Option>
+                        </Select>
+                    </form>
                 </Modal>
 
                 {/* Edit User */}
@@ -237,43 +327,43 @@ export default function UserContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"name"}>Nama Pakan</Label>
+                    <Label forInput={"feedName"}>Nama Pakan</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingPakan?.name}
+                        value={editingPakan?.feedName}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
-                                return { ...pre, name: e.target.value };
+                                return { ...pre, feedName: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"type"}>Jenis Pakan</Label>
+                    <Label forInput={"feedType"}>Jenis Pakan</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingPakan?.type}
+                        value={editingPakan?.feedType}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
-                                return { ...pre, type: e.target.value };
+                                return { ...pre, feedType: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"stock"}>Stock Pakan</Label>
+                    <Label forInput={"feedQuantity"}>Stock Pakan</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingPakan?.stock}
+                        value={editingPakan?.feedQuantity}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
-                                return { ...pre, stock: e.target.value };
+                                return { ...pre, feedQuantity: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"status"}>Status</Label>
+                    <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingPakan?.status}
+                        value={editingPakan?.pricePerKg}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
-                                return { ...pre, status: e.target.value };
+                                return { ...pre, pricePerKg: e.target.value };
                             });
                         }}
                     />

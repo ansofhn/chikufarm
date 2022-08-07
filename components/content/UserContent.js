@@ -1,12 +1,11 @@
-import { Button, Table, Modal, Input } from "antd";
-import { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import Label from "../Label";
-import { MdAdd } from "react-icons/md";
 import React from "react";
+import { useEffect, useState } from "react";
+import { Button, Table, Modal, Input, Select } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { MdAdd } from "react-icons/md";
 import axios from "axios";
-import { Select } from "antd";
-import SearchBar from "../SearchBar";
+import Label from "../Label";
+import SearchUser from "../SearchUser";
 
 const { Option } = Select;
 
@@ -19,19 +18,23 @@ export default function UserContent() {
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
 
-    async function getData() {
+    const getData = async () => {
         try {
             const response = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/users")
+                .get("https://chikufarm-app.herokuapp.com/api/users", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                    },
+                })
                 .then((res) => {
                     setDataSource(res.data.items);
                 });
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    async function addData() {
+    const addData = async () => {
         console.log(addingUser);
         try {
             const response = await axios
@@ -39,7 +42,10 @@ export default function UserContent() {
                     "https://chikufarm-app.herokuapp.com/api/users/register",
                     addingUser,
                     {
-                        headers: { "content-type": "application/json" },
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        },
                     }
                 )
                 .then((res) => {
@@ -50,32 +56,33 @@ export default function UserContent() {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    async function editData() {
+    const editData = async () => {
         const userId = editingUser.id;
-        const fullName = editingUser.fullName;
-        const userName = editingUser.userName;
-        const email = editingUser.email;
-        const phone = editingUser.phone;
         const roleId = editingUser.roleId;
+
         const updateUser = {
-            fullName: fullName,
-            userName: userName,
-            email: email,
-            phone: phone,
+            fullName: editingUser.fullName,
+            userName: editingUser.userName,
+            email: editingUser.email,
+            phone: editingUser.phone,
         };
         const updateRole = {
             id: userId,
             roleId: roleId,
         };
+
         try {
-            const respons1 = await axios
+            const responseUser = await axios
                 .put(
                     `https://chikufarm-app.herokuapp.com/api/users/${userId}`,
                     updateUser,
                     {
-                        headers: { "content-type": "application/json" },
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        },
                     }
                 )
                 .then((res) => {
@@ -84,12 +91,15 @@ export default function UserContent() {
                     resetEditing();
                 });
 
-            const response2 = await axios
+            const responseRole = await axios
                 .put(
                     "https://chikufarm-app.herokuapp.com/api/users/role/update",
                     updateRole,
                     {
-                        headers: { "content-type": "application/json" },
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            "content-type": "application/json",
+                        },
                     }
                 )
                 .then((res) => {
@@ -100,26 +110,29 @@ export default function UserContent() {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    async function deleteData(record) {
+    const deleteData = async (record) => {
         const id = record.id;
         try {
             const response = await axios
-                .delete(`https://chikufarm-app.herokuapp.com/api/users/${id}`)
+                .delete(`https://chikufarm-app.herokuapp.com/api/users/${id}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+                })
                 .then((res) => {
                     console.log(res);
                 });
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    async function searchData(search, filter) {
+    const searchData = async (search, filter) => {
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/users?search=${search}&role=${filter}`
+                    `https://chikufarm-app.herokuapp.com/api/users?search=${search}&role=${filter}`,
+                    { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
                 )
                 .then((res) => {
                     setDataSource(res.data.items);
@@ -127,10 +140,12 @@ export default function UserContent() {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
     useEffect(() => {
         getData();
     }, []);
+
     const columns = [
         {
             title: "Fullname",
@@ -198,10 +213,12 @@ export default function UserContent() {
             },
         });
     };
+
     const onEditUser = (record) => {
         setIsEditing(true);
         setEditingUser({ ...record });
     };
+
     const resetEditing = () => {
         setIsEditing(false);
         setEditingUser(null);
@@ -211,8 +228,6 @@ export default function UserContent() {
         e.preventDefault();
     };
 
-    console.log(editingUser);
-
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -220,7 +235,7 @@ export default function UserContent() {
             </div>
             <div className="p-10 bg-white rounded-lg">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
-                    <SearchBar
+                    <SearchUser
                         onChangeSearch={(e) => {
                             setSearch(e.target.value);
                             searchData(e.target.value, filter);
@@ -378,18 +393,6 @@ export default function UserContent() {
                                 key="submit"
                                 type="submit"
                                 onClick={editData}
-                                // onClick={() => {
-                                // setDataSource((pre) => {
-                                //     return pre.map((user) => {
-                                //         if (user.id === editingUser.id) {
-                                //             return editingUser;
-                                //         } else {
-                                //             return user;
-                                //         }
-                                //     });
-                                // });
-                                //     resetEditing();
-                                // }}
                             >
                                 Save
                             </Button>

@@ -13,6 +13,9 @@ import { HiOutlineLogout } from "react-icons/hi";
 import Link from "next/link";
 
 export default function SideNavbar() {
+    const handleLogout = () => {
+        localStorage.removeItem("access_token")
+    }
     return (
         <div>
             <Disclosure as="nav">
@@ -83,7 +86,7 @@ export default function SideNavbar() {
 
                         {/* logout Section */}
                         <div className="w-full pb-4 my-40 border-gray-100">
-                            <Link href={"/"}>
+                            <Link onClick={handleLogout} href={"/"}>
                                 <div className="flex items-center justify-start gap-4 p-2 px-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group">
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
