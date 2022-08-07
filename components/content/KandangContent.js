@@ -1,60 +1,182 @@
-import { Button, Table, Modal, Input } from "antd";
-import { useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import Label from "../Label";
-import { MdAdd } from "react-icons/md";
 import React from "react";
+import { useEffect, useState } from "react";
+import { Button, Table, Modal, Input, Select } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { MdAdd } from "react-icons/md";
+import axios from "axios";
+import Label from "../Label";
+import SearchCoop from "../SearchCoop";
 
-export default function UserContent() {
+const { Option } = Select;
+
+export default function KandangContent() {
     const [isAdding, setIsAdding] = useState(false);
     const [addingKandang, setAddingKandang] = useState(null);
-
     const [isEditing, setIsEditing] = useState(false);
     const [editingKandang, setEditingKandang] = useState(null);
-    const [dataSource, setDataSource] = useState([
-        {
-            noKandang: "K" + 9991,
-            type: "Ayam",
-            population: 25,
-            dateIn: "24-12-22",
-            status: "Progress",
-        },
-        {
-            noKandang: "K" + 9992,
-            type: "Bebek",
-            population: 20,
-            dateIn: "25-12-22",
-            status: "Progress",
-        },
-    ]);
+    const [search, setSearch] = useState([]);
+    const [filter, setFilter] = useState([]);
+    const [dataSource, setDataSource] = useState([]);
+
+    const getData = async () => {
+        try {
+            const coopdata = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/coop", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    setDataSource(res.data.items);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const addData = async () => {
+        console.log(addingKandang);
+        try {
+            const response = await axios
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/coop",
+                    addingKandang,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setDataSource(dataSource.concat(res.data));
+                    resetAdd();
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const editData = async () => {
+        const coopId = editingKandang.id;
+        const breedId = editingKandang.breedId;
+
+        const updateCoop = {
+            farmName: editingKandang.farmName,
+            buyPrice: editingKandang.buyPrice,
+            growthTime: editingKandang.growthTime,
+        };
+        const updateBreed = {
+            breedType: editingKandang.breed.breedType,
+        };
+
+        try {
+            const responseFarm = await axios
+                .put(
+                    `https://chikufarm-app.herokuapp.com/api/farm/${coopId}`,
+                    updateCoop,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    resetEditing();
+                });
+
+            const responseBreed = await axios
+                .put(
+                    `https://chikufarm-app.herokuapp.com/api/breed/${breedId}`,
+                    updateBreed,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                            "content-type": "application/json",
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    resetEditing();
+                });
+        } catch (error) {}
+    };
+
+    const deleteData = async (record) => {
+        const id = record.id;
+        try {
+            const response = await axios
+                .delete(`https://chikufarm-app.herokuapp.com/api/coop/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                });
+        } catch (error) {}
+    };
+
+    const searchData = async (search, filter) => {
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/coop?search=${search}&breed=${filter}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setDataSource(res.data.items);
+                });
+        } catch (error) {}
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     const columns = [
         {
-            key: "1",
-            title: "Kode Kandang",
-            dataIndex: "noKandang",
+            title: "Nomor Kandang",
+            dataIndex: "coopNumber",
         },
         {
-            key: "2",
-            title: "Jenis Ternak",
-            dataIndex: "type",
+            title: "Populasi Awal",
+            dataIndex: "populationStart",
         },
         {
-            key: "3",
-            title: "Populasi",
-            dataIndex: "population",
+            title: "Populasi Update",
+            dataIndex: "populationUpdate",
         },
         {
-            key: "4",
             title: "Tanggal Masuk",
             dataIndex: "dateIn",
         },
         {
-            key: "5",
-            title: "Status",
-            dataIndex: "status",
+            title: "Tanggal Panen",
+            dataIndex: "harvestTime",
         },
         {
-            key: "6",
             title: "Actions",
             render: (record) => {
                 return (
@@ -93,7 +215,9 @@ export default function UserContent() {
             okType: "danger",
             onOk: () => {
                 setDataSource((pre) => {
-                    return pre.filter((kandang) => kandang.noKandang !== record.noKandang);
+                    return pre.filter(
+                        (kandang) => kandang.noKandang !== record.noKandang
+                    );
                 });
             },
         });
@@ -106,6 +230,11 @@ export default function UserContent() {
         setIsEditing(false);
         setEditingKandang(null);
     };
+
+    const onChangeForm = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -113,7 +242,17 @@ export default function UserContent() {
             </div>
 
             <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-end mb-5 pb-5 border-b border-gray-200">
+                <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">
+                    <SearchCoop
+                        onChangeSearch={(e) => {
+                            setSearch(e.target.value);
+                            searchData(e.target.value, filter);
+                        }}
+                        onChangeSelect={(value) => {
+                            setFilter(value);
+                            searchData(search, value);
+                        }}
+                    />
                     <Button
                         className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddKandang}
@@ -147,65 +286,62 @@ export default function UserContent() {
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={() => {
-                                    const uuid = Math.floor(
-                                        1000 + Math.random() * 9000
-                                    );
-                                    addingKandang["noKandang"] = "K" + uuid;
-
-                                    setDataSource([...dataSource, addingKandang]);
-                                    resetAdd();
-                                }}
+                                type="submit"
+                                onClick={addData}
                             >
                                 Add
                             </Button>
                         </div>,
                     ]}
                 >
-                    <Label forInput={"type"}>Jenis Ternak</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingKandang?.type}
-                        onChange={(e) => {
-                            setAddingKandang((pre) => {
-                                return { ...pre, type: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"population"}>Populasi</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingKandang?.population}
-                        onChange={(e) => {
-                            setAddingKandang((pre) => {
-                                return { ...pre, population: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"dateIn"}>Tanggal Masuk</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingKandang?.dateIn}
-                        onChange={(e) => {
-                            setAddingKandang((pre) => {
-                                return { ...pre, dateIn: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"status"}>Status</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingKandang?.status}
-                        onChange={(e) => {
-                            setAddingKandang((pre) => {
-                                return { ...pre, status: e.target.value };
-                            });
-                        }}
-                    />
-                    
+                    <form onSubmit={onChangeForm} method="POST">
+                        <Label forInput={"type"}>Jenis Ternak</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingKandang?.type}
+                            onChange={(e) => {
+                                setAddingKandang((pre) => {
+                                    return { ...pre, type: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"population"}>Populasi</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingKandang?.population}
+                            onChange={(e) => {
+                                setAddingKandang((pre) => {
+                                    return {
+                                        ...pre,
+                                        population: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"dateIn"}>Tanggal Masuk</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingKandang?.dateIn}
+                            onChange={(e) => {
+                                setAddingKandang((pre) => {
+                                    return { ...pre, dateIn: e.target.value };
+                                });
+                            }}
+                        />
+                        <Label forInput={"status"}>Status</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingKandang?.status}
+                            onChange={(e) => {
+                                setAddingKandang((pre) => {
+                                    return { ...pre, status: e.target.value };
+                                });
+                            }}
+                        />
+                    </form>
                 </Modal>
 
-                {/* Edit User */}
+                {/* Edit Kandang */}
                 <Modal
                     className="rounded-lg overflow-hidden p-0"
                     title="Edit Kandang"
@@ -224,18 +360,7 @@ export default function UserContent() {
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={() => {
-                                    setDataSource((pre) => {
-                                        return pre.map((kandang) => {
-                                            if (kandang.noKandang === editingKandang.noKandang) {
-                                                return editingKandang;
-                                            } else {
-                                                return kandang;
-                                            }
-                                        });
-                                    });
-                                    resetEditing();
-                                }}
+                                onClick={editData}
                             >
                                 Save
                             </Button>

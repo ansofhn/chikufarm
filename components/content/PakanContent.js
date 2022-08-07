@@ -9,7 +9,7 @@ import SearchFeed from "../SearchFeed";
 
 const { Option } = Select;
 
-export default function UserContent() {
+export default function PakanContent() {
     const [isAdding, setIsAdding] = useState(false);
     const [addingPakan, setAddingPakan] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -17,8 +17,6 @@ export default function UserContent() {
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
-
-    const [breedData, setBreedData] = useState([]);
 
     const getData = async () => {
         try {
@@ -31,21 +29,8 @@ export default function UserContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
-                    setDataSource(res.data[0]);
-                });
-
-            const breedId = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/breed", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
-                .then((res) => {
-                    console.log(res.data[0]);
-                    setBreedData(res.data[0])
+                    console.log(res.data.items);
+                    setDataSource(res.data.items);
                 });
         } catch (error) {
             console.log(error);
@@ -57,7 +42,6 @@ export default function UserContent() {
     }, []);
 
     const addData = async () => {
-        console.log(addingPakan);
         try {
             const response = await axios
                 .post(
@@ -82,6 +66,75 @@ export default function UserContent() {
         }
     };
 
+    const editData = async () => {
+        const feedId = editingPakan.id;
+
+        const updateFeed = {
+            feedName: editingPakan.feedName,
+            feedType: editingPakan.feedType,
+            pricePerKg: editingPakan.pricePerKg,
+        };
+        console.log(updateFeed);
+
+        try {
+            const response = await axios
+                .put(
+                    `https://chikufarm-app.herokuapp.com/api/feed/${feedId}`,
+                    updateFeed,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    resetEditing();
+                });
+        } catch (error) {}
+    };
+
+    const deleteData = async (record) => {
+        console.log(record.id);
+        const id = record.id;
+        try {
+            const response = await axios
+                .delete(`https://chikufarm-app.herokuapp.com/api/feed/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const searchData = async (search, filter) => {
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/feed?search=${search}&breed=${filter}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setDataSource(res.data.items);
+                });
+        } catch (error) {}
+    };
+
     const columns = [
         {
             title: "Nama Pakan",
@@ -99,6 +152,11 @@ export default function UserContent() {
             title: "Stock",
             dataIndex: "feedStock",
             render: (feedStock) => feedStock[0].stock,
+        },
+        {
+            title: "Kategori Ternak",
+            dataIndex: "breed",
+            render: (breed) => breed.breedType,
         },
         {
             title: "Status",
@@ -146,6 +204,7 @@ export default function UserContent() {
                 setDataSource((pre) => {
                     return pre.filter((pakan) => pakan.id !== record.id);
                 });
+                deleteData(record);
             },
         });
     };
@@ -168,7 +227,17 @@ export default function UserContent() {
             </div>
 
             <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-end mb-5 pb-5 border-b border-gray-200">
+                <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">
+                    <SearchFeed
+                        onChangeSearch={(e) => {
+                            setSearch(e.target.value);
+                            searchData(e.target.value, filter);
+                        }}
+                        onChangeSelect={(value) => {
+                            setFilter(value);
+                            searchData(search, value);
+                        }}
+                    />
                     <Button
                         className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddPakan}
@@ -231,19 +300,7 @@ export default function UserContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"feedQuantity"}>Stock Pakan</Label>
-                        <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={addingPakan?.feedQuantity}
-                            onChange={(e) => {
-                                setAddingPakan((pre) => {
-                                    return {
-                                        ...pre,
-                                        feedQuantity: e.target.value,
-                                    };
-                                });
-                            }}
-                        />
+
                         <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                         <Input
                             className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
@@ -257,10 +314,25 @@ export default function UserContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"categoryTernak"}>Kategori Ternak</Label>
+                        <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={addingPakan?.feedQuantity}
+                            onChange={(e) => {
+                                setAddingPakan((pre) => {
+                                    return {
+                                        ...pre,
+                                        feedQuantity: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"categoryTernak"}>
+                            Kategori Ternak
+                        </Label>
                         <Select
-                            className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Category Ternak"
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Kategori Ternak"
                             onSelect={(value) => {
                                 setAddingPakan((pre) => {
                                     return { ...pre, breedId: value };
@@ -269,23 +341,23 @@ export default function UserContent() {
                             bordered={false}
                         >
                             <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="72274e48-977e-4451-9df1-a1b5a8df59ad"
-                        >
-                            Ayam Petelur
-                        </Option>
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="d54f904b-6741-469b-842a-7012131dd093"
-                        >
-                            Ayam Pedaging
-                        </Option>
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
-                        >
-                            Ayam Petarunk
-                        </Option>
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                            >
+                                Ayam Petelur
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="d54f904b-6741-469b-842a-7012131dd093"
+                            >
+                                Ayam Pedaging
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                            >
+                                Ayam Aduan
+                            </Option>
                         </Select>
                     </form>
                 </Modal>
@@ -309,18 +381,7 @@ export default function UserContent() {
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={() => {
-                                    setDataSource((pre) => {
-                                        return pre.map((pakan) => {
-                                            if (pakan.id === editingPakan.id) {
-                                                return editingPakan;
-                                            } else {
-                                                return pakan;
-                                            }
-                                        });
-                                    });
-                                    resetEditing();
-                                }}
+                                onClick={editData}
                             >
                                 Save
                             </Button>
@@ -344,16 +405,6 @@ export default function UserContent() {
                         onChange={(e) => {
                             setEditingPakan((pre) => {
                                 return { ...pre, feedType: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"feedQuantity"}>Stock Pakan</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingPakan?.feedQuantity}
-                        onChange={(e) => {
-                            setEditingPakan((pre) => {
-                                return { ...pre, feedQuantity: e.target.value };
                             });
                         }}
                     />

@@ -9,7 +9,7 @@ import SearchFarm from "../SearchFarm";
 
 const { Option } = Select;
 
-export default function UserContent() {
+export default function TernakContent() {
     const [isAdding, setIsAdding] = useState(false);
     const [addingTernak, setAddingTernak] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -27,7 +27,6 @@ export default function UserContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     setDataSource(res.data.items);
                 });
         } catch (error) {
@@ -36,6 +35,7 @@ export default function UserContent() {
     };
 
     const addData = async () => {
+        console.log(addingTernak)
         try {
             const response = await axios
                 .post(
@@ -49,8 +49,6 @@ export default function UserContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res);
-                    console.log(dataSource);
                     setDataSource(dataSource.concat(res.data));
                     resetAdd();
                 });
@@ -69,8 +67,7 @@ export default function UserContent() {
             growthTime: editingTernak.growthTime,
         };
         const updateBreed = {
-            id: ternakId,
-            breedId: breedId,
+            breedType: editingTernak.breed.breedType
         };
 
         try {
@@ -342,7 +339,7 @@ export default function UserContent() {
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                 value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
                             >
-                                Ayam Petarunk
+                                Ayam Aduan
                             </Option>
                         </Select>
                     </form>
@@ -404,7 +401,7 @@ export default function UserContent() {
                             });
                         }}
                     />
-                    <Label forInput={"breed"}>Kategori Ternak</Label>
+                    {/* <Label forInput={"breed"}>Kategori Ternak</Label>
                     <Select
                         className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                         defaultValue={editingTernak?.breed.breedType}
@@ -433,7 +430,7 @@ export default function UserContent() {
                         >
                             Ayam Petarunk
                         </Option>
-                    </Select>
+                    </Select> */}
                 </Modal>
             </div>
         </div>
