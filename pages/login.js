@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "../public/Logo.png";
 import Button from "../components/Button";
@@ -11,8 +11,23 @@ import axios from "axios";
 export default function Login() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-
+    
     const router = useRouter();
+
+    const CheckToken = () => {
+        try {
+            if((localStorage.getItem("access_token")) !== null){
+                localStorage.removeItem("access_token")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        CheckToken();
+    }, []);
+
     const onFinish = async () => {
         try {
             const dataLogin = {

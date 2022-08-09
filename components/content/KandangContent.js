@@ -29,6 +29,7 @@ export default function KandangContent() {
                     },
                 })
                 .then((res) => {
+                    console.log(res.data)
                     setDataSource(res.data.items);
                 });
         } catch (error) {

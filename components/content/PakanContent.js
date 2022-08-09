@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Button, Table, Modal, Input, Select } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Table, Modal, Input, Select, Pagination } from "antd";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import Label from "../Label";
@@ -14,9 +14,12 @@ export default function PakanContent() {
     const [addingPakan, setAddingPakan] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editingPakan, setEditingPakan] = useState(null);
+    const [isDetail, setIsDetail] = useState(false);
+    const [detailPakan, setDetailPakan] = useState(null);
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [historySource, setHistorySource] = useState([]);
 
     const getData = async () => {
         try {
@@ -65,8 +68,9 @@ export default function PakanContent() {
             console.log(error);
         }
     };
-
+    
     const editData = async () => {
+        
         const feedId = editingPakan.id;
 
         const updateFeed = {
@@ -74,7 +78,6 @@ export default function PakanContent() {
             feedType: editingPakan.feedType,
             pricePerKg: editingPakan.pricePerKg,
         };
-        console.log(updateFeed);
 
         try {
             const response = await axios
@@ -125,7 +128,9 @@ export default function PakanContent() {
                     `https://chikufarm-app.herokuapp.com/api/feed?search=${search}&breed=${filter}`,
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                         },
                     }
                 )
@@ -133,6 +138,27 @@ export default function PakanContent() {
                     setDataSource(res.data.items);
                 });
         } catch (error) {}
+    };
+
+    const getHistory = async (record) => {
+        console.log(record.id);
+        const id = record.id;
+        try {
+            const response = await axios
+                .get(`https://chikufarm-app.herokuapp.com/api/feed/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data.feedHistory);
+                    setHistorySource(res.data.feedHistory);
+                });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const columns = [
@@ -149,19 +175,9 @@ export default function PakanContent() {
             dataIndex: "pricePerKg",
         },
         {
-            title: "Stock",
-            dataIndex: "feedStock",
-            render: (feedStock) => feedStock[0].stock,
-        },
-        {
             title: "Kategori Ternak",
             dataIndex: "breed",
             render: (breed) => breed.breedType,
-        },
-        {
-            title: "Status",
-            dataIndex: "feedHistory",
-            render: (feedHistory) => feedHistory[0].historyStatus,
         },
         {
             title: "Actions",
@@ -174,10 +190,54 @@ export default function PakanContent() {
                             }}
                         />
                         <DeleteOutlined
+                            className="text-maroon ml-3"
                             onClick={() => {
                                 onDeletePakan(record);
                             }}
-                            style={{ color: "maroon", marginLeft: 12 }}
+                        />
+                        <EyeOutlined
+                            className="text-textColor ml-3"
+                            onClick={() => {
+                                onDetail(record);
+                            }}
+                        />
+                    </>
+                );
+            },
+        },
+    ];
+
+    const columnHistory = [
+        {
+            title: "Date",
+            dataIndex: "createdAt",
+            render:(createdAt)=>{
+                return `${createdAt.substring(0,10)}`
+            }
+        },
+        {
+            title: "Stock",
+            dataIndex: "feedQuantity",
+        },
+        {
+            title: "Status",
+            dataIndex: "historyStatus",
+        },
+        {
+            title: "Actions",
+            render: (record) => {
+                return (
+                    <>
+                        <EditOutlined
+                            onClick={() => {
+                                onEditPakan(record);
+                            }}
+                        />
+                        <DeleteOutlined
+                            className="text-maroon ml-3"
+                            onClick={() => {
+                                onDeletePakan(record);
+                            }}
                         />
                     </>
                 );
@@ -216,10 +276,23 @@ export default function PakanContent() {
         setIsEditing(false);
         setEditingPakan(null);
     };
+
+    const onDetail = (record) => {
+        getHistory(record);
+        setDetailPakan({ ...record });
+        setIsDetail(true);
+    };
+    const resetDetail = () => {
+        setIsDetail(false);
+        setDetailPakan(null);
+    };
+
     const onChangeForm = (e) => {
         e.preventDefault();
     };
 
+    console.log(editingPakan)
+    
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -254,11 +327,11 @@ export default function PakanContent() {
 
                 {/* Add Pakan */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="p-0 -my-24 overflow-hidden rounded-2xl"
                     title="Add Pakan"
                     visible={isAdding}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
@@ -364,11 +437,11 @@ export default function PakanContent() {
 
                 {/* Edit User */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="rounded-2xl overflow-hidden p-0"
                     title="Edit Pakan"
                     visible={isEditing}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center py-2">
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
@@ -418,6 +491,40 @@ export default function PakanContent() {
                             });
                         }}
                     />
+                </Modal>
+
+                {/* Detail Pakan */}
+                <Modal
+                    className="rounded-2xl overflow-hidden p-0 -my-20"
+                    visible={isDetail}
+                    title="History Pakan"
+                    footer={[
+                        <div className="flex justify-center py-2">
+                            <Button
+                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetDetail();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                onClick={editData}
+                            >
+                                Save
+                            </Button>
+                        </div>,
+                    ]}
+                >
+                    <Table
+                        bordered={true}
+                        columns={columnHistory}
+                        dataSource={historySource}
+                        pagination={false}
+                    ></Table>
                 </Modal>
             </div>
         </div>

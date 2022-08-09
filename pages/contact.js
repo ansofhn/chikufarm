@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 
 export default function contact() {
     return (
-        <div>
+        <>
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">
@@ -19,21 +19,21 @@ export default function contact() {
                         </div>
                         <div className="col-start-1">
                             <Label forInput="name">Your name</Label>
-                            <Input className=" rounded-md w-full bg-gray-100 border-none focus:ring-maroon" name="name" id="name" />
+                            <Input className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon" name="name" id="name" />
                         </div>
                         <div className="">
                             <Label forInput="email">Your email</Label>
-                            <Input className=" rounded-md w-full bg-gray-100 border-none focus:ring-maroon" type="email" name="email" id="email" />
+                            <Input className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon" type="email" name="email" id="email" />
                         </div>
                         <div className="">
                             
                             <Label forInput="email">Phone</Label>
-                            <Input className=" rounded-md w-full bg-gray-100 border-none focus:ring-maroon" type="email" name="email" id="email" />
+                            <Input className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon" type="email" name="email" id="email" />
                         </div>
                         <div>
                             <Label forInput="email">What your role</Label>
                             <Input
-                                className=" rounded-md w-full bg-gray-100 border-none focus:ring-maroon"
+                                className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon"
                                 type="email"
                                 name="email"
                                 id="email"
@@ -42,9 +42,10 @@ export default function contact() {
                         <div className="col-span-2">
                             <Label forInput="message">Message</Label>
                             <Input
-                                className="rounded-md w-full h-40 p-4 text-start bg-gray-100 border-none focus:ring-maroon"
+                                className="rounded-md w-full h-40 p-4 bg-gray-100 border-none focus:ring-maroon"
                                 name="message"
                                 id="message"
+                                type="textarea"
                             />
                         </div>
                         <div>
@@ -60,6 +61,6 @@ export default function contact() {
                 </div>
             </div>
             <Footer />
-        </div>
+        </>
     );
 }

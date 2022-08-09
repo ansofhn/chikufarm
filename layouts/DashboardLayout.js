@@ -1,13 +1,5 @@
 import React from "react";
 import Head from "next/head";
-// import "antd/dist/antd.variable.css";
-// import { ConfigProvider } from "antd";
-
-// ConfigProvider.config({
-//     theme: {
-//         primaryColor: "",
-//     },
-// });
 
 export default function DashboardLayout({ title, children }) {
     return (

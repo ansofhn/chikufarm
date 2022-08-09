@@ -14,17 +14,21 @@ export default function Register() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
 
-    // const [dataInput, setDataInput] = useState([
-    //     {
-    //         fullName: fullName,
-    //         userName: userName,
-    //         email: email,
-    //         phone: phone,
-    //         password: password,
-    //     },
-    // ]);
-
     const router = useRouter();
+
+    const CheckToken = () => {
+        try {
+            if((localStorage.getItem("access_token")) !== null){
+                localStorage.removeItem("access_token")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        CheckToken();
+    }, []);
 
     const onFinish = async () => {
         try {
@@ -54,9 +58,6 @@ export default function Register() {
             e.message;
         }
     };
-    // useEffect(() => {
-    //     getData();
-    // }, []);
 
     const onChangeFullname = (e) => {
         setFullName(e.target.value);

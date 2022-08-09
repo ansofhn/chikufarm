@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 
 export default function about() {
     return (
-        <div>
+        <>
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">
@@ -82,6 +82,6 @@ export default function about() {
                 </div>
             </div>
             <Footer />
-        </div>
+        </>
     );
 }

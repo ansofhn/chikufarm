@@ -254,11 +254,11 @@ export default function TernakContent() {
 
                 {/* Add Ternak */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="rounded-2xl overflow-hidden p-0"
                     title="Add Ternak"
                     visible={isAdding}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
@@ -347,11 +347,11 @@ export default function TernakContent() {
 
                 {/* Edit Ternak */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="p-0 overflow-hidden rounded-2xl"
                     title="Edit Ternak"
                     visible={isEditing}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"

@@ -261,7 +261,7 @@ export default function UserContent() {
 
                 {/* Add User */}
                 <Modal
-                    className="p-0 -my-24 overflow-hidden rounded-lg"
+                    className="p-0 -my-24 overflow-hidden rounded-2xl"
                     title="Add User"
                     visible={isAdding}
                     footer={[
@@ -289,7 +289,7 @@ export default function UserContent() {
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"fullName"}>Fullname</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.fullName}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
@@ -299,7 +299,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"userName"}>Username</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.userName}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
@@ -309,7 +309,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"email"}>Email</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.email}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
@@ -319,7 +319,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"phone"}>Phone</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.phone}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
@@ -329,7 +329,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"password"}>Password</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.password}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
@@ -339,7 +339,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"role"}>User Role</Label>
                         <Select
-                            className="my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm border rounded-lg border-textColor hover:border-textColor "
                             onSelect={(value) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, roleId: value };
@@ -374,11 +374,11 @@ export default function UserContent() {
 
                 {/* Edit User */}
                 <Modal
-                    className="p-0 overflow-hidden rounded-lg"
+                    className="p-0 -my-10 overflow-hidden rounded-2xl"
                     title="Edit User"
                     visible={isEditing}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
                                 className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"

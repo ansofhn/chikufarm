@@ -51,7 +51,7 @@ const SearchUser = ({ onChangeSearch, onChangeSelect }) => {
                 bordered={false}
             >
                 <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream  focus:text-textColor active:bg-cream"
+                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                     value="admin"
                 >
                     Admin

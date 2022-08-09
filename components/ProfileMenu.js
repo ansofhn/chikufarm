@@ -1,18 +1,62 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import Photo from "../public/pp.png";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import {useRouter} from "next/router";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
-const user = {
-    username: "ansofhn",
-};
-
 export default function ProfileMenu() {
+    const [dataUser, setDataUser] = useState([]);
+    const router = useRouter();
+
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        router.push("/");
+    };
+
+    const CheckToken = () => {
+        try {
+            if (localStorage.getItem("access_token") !== null) {
+                return jwt_decode(localStorage.getItem("access_token"));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getData = async () => {
+        const decoded = CheckToken()
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/users/${decoded.sub}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setDataUser(res.data.data);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    console.log(dataUser);
     return (
         <div className="flex justify-end md:mx-10 my-4 text-textColor ml-72">
             <Menu as="div" className="relative inline-block text-left">
@@ -27,7 +71,7 @@ export default function ProfileMenu() {
                                     Welcome back,
                                 </div>
                                 <div className="text-start font-medium">
-                                    {user.username}
+                                    {dataUser.userName}
                                 </div>
                             </div>
                         </div>
@@ -84,6 +128,7 @@ export default function ProfileMenu() {
                                 <Menu.Item>
                                     {({ active }) => (
                                         <button
+                                            onClick={handleLogout}
                                             type="submit"
                                             className={classNames(
                                                 active
