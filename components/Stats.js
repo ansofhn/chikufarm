@@ -10,7 +10,7 @@ export default function Stats() {
                     <Image src={Line} />
                 </div>
                 <div className="p-2">
-                    <h3 className=" text-3xl text-textColor font-bold">40</h3>
+                    <h3 className=" text-2xl text-textColor font-bold">40</h3>
                     <p className="text-sm text-textColor">Total Populasi</p>
                 </div>
             </div>
@@ -19,7 +19,7 @@ export default function Stats() {
                     <Image src={Line} />
                 </div>
                 <div className="p-2">
-                    <h3 className=" text-3xl text-textColor font-bold">540 ton</h3>
+                    <h3 className=" text-2xl text-textColor font-bold">540 ton</h3>
                     <p className="text-sm text-textColor">Total Pakan</p>
                 </div>
             </div>
@@ -28,7 +28,7 @@ export default function Stats() {
                     <Image src={Line} />
                 </div>
                 <div className="p-2">
-                    <h3 className=" text-3xl text-textColor font-bold">300</h3>
+                    <h3 className=" text-2xl text-textColor font-bold">300</h3>
                     <p className="text-sm text-textColor">Total Kandang</p>
                 </div>
             </div>
@@ -37,7 +37,7 @@ export default function Stats() {
                     <Image src={Line} />
                 </div>
                 <div className="p-2">
-                    <h3 className=" text-3xl text-textColor font-bold">25</h3>
+                    <h3 className=" text-2xl text-textColor font-bold">25</h3>
                     <p className="text-sm text-textColor">Total Farmer</p>
                 </div>
             </div>
