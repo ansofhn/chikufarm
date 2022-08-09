@@ -16,14 +16,16 @@ export default function TernakContent() {
     const [editingTernak, setEditingTernak] = useState(null);
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
-    const [dataSource, setDataSource] = useState([])
+    const [dataSource, setDataSource] = useState([]);
 
     const getData = async () => {
         try {
             const farmdata = await axios
                 .get("https://chikufarm-app.herokuapp.com/api/farm", {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
                     },
                 })
                 .then((res) => {
@@ -35,7 +37,7 @@ export default function TernakContent() {
     };
 
     const addData = async () => {
-        console.log(addingTernak)
+        console.log(addingTernak);
         try {
             const response = await axios
                 .post(
@@ -44,7 +46,9 @@ export default function TernakContent() {
                     {
                         headers: {
                             "content-type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                         },
                     }
                 )
@@ -67,8 +71,10 @@ export default function TernakContent() {
             growthTime: editingTernak.growthTime,
         };
         const updateBreed = {
-            breedType: editingTernak.breed.breedType
+            id: ternakId,
+            breedId: breedId,
         };
+        console.log(updateBreed);
 
         try {
             const responseFarm = await axios
@@ -78,7 +84,9 @@ export default function TernakContent() {
                     {
                         headers: {
                             "content-type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                         },
                     }
                 )
@@ -90,11 +98,13 @@ export default function TernakContent() {
 
             const responseBreed = await axios
                 .put(
-                    `https://chikufarm-app.herokuapp.com/api/breed/${breedId}`,
+                    "https://chikufarm-app.herokuapp.com/api/farm/breed/update",
                     updateBreed,
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                             "content-type": "application/json",
                         },
                     }
@@ -113,7 +123,9 @@ export default function TernakContent() {
             const response = await axios
                 .delete(`https://chikufarm-app.herokuapp.com/api/farm/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
                     },
                 })
                 .then((res) => {
@@ -129,7 +141,9 @@ export default function TernakContent() {
                     `https://chikufarm-app.herokuapp.com/api/farm?search=${search}&breed=${filter}`,
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                         },
                     }
                 )
@@ -239,7 +253,7 @@ export default function TernakContent() {
                         }}
                     />
                     <Button
-                        className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex gap-2 items-center px-4 py-3 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddTernak}
                     >
                         <MdAdd className="self-center text-lg" />
@@ -254,13 +268,13 @@ export default function TernakContent() {
 
                 {/* Add Ternak */}
                 <Modal
-                    className="rounded-2xl overflow-hidden p-0"
+                    className="overflow-hidden p-0 rounded-2xl"
                     title="Add Ternak"
                     visible={isAdding}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAdd();
@@ -269,7 +283,7 @@ export default function TernakContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addData}
@@ -282,7 +296,7 @@ export default function TernakContent() {
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"farmName"}>Nama Ternak</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingTernak?.farmName}
                             onChange={(e) => {
                                 setAddingTernak((pre) => {
@@ -292,7 +306,7 @@ export default function TernakContent() {
                         />
                         <Label forInput={"buyPrice"}>Harga</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingTernak?.buyPrice}
                             onChange={(e) => {
                                 setAddingTernak((pre) => {
@@ -302,7 +316,7 @@ export default function TernakContent() {
                         />
                         <Label forInput={"growthTime"}>Masa Pembesaran</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingTernak?.growthTime}
                             onChange={(e) => {
                                 setAddingTernak((pre) => {
@@ -315,7 +329,7 @@ export default function TernakContent() {
                         />
                         <Label forInput={"breed"}>Kategori Ternak</Label>
                         <Select
-                            className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
                             onSelect={(value) => {
                                 setAddingTernak((pre) => {
                                     return { ...pre, breedId: value };
@@ -347,13 +361,13 @@ export default function TernakContent() {
 
                 {/* Edit Ternak */}
                 <Modal
-                    className="p-0 overflow-hidden rounded-2xl"
+                    className="overflow-hidden p-0 rounded-2xl"
                     title="Edit Ternak"
                     visible={isEditing}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditing();
@@ -362,7 +376,7 @@ export default function TernakContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 onClick={editData}
                             >
@@ -373,7 +387,7 @@ export default function TernakContent() {
                 >
                     <Label forInput={"farmName"}>Nama Ternak</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingTernak?.farmName}
                         onChange={(e) => {
                             setEditingTernak((pre) => {
@@ -383,7 +397,7 @@ export default function TernakContent() {
                     />
                     <Label forInput={"buyPrice"}>Harga</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingTernak?.buyPrice}
                         onChange={(e) => {
                             setEditingTernak((pre) => {
@@ -393,7 +407,7 @@ export default function TernakContent() {
                     />
                     <Label forInput={"growthTime"}>Masa Pembesaran</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingTernak?.growthTime}
                         onChange={(e) => {
                             setEditingTernak((pre) => {
@@ -401,9 +415,9 @@ export default function TernakContent() {
                             });
                         }}
                     />
-                    {/* <Label forInput={"breed"}>Kategori Ternak</Label>
+                    <Label forInput={"breed"}>Kategori Ternak</Label>
                     <Select
-                        className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
                         defaultValue={editingTernak?.breed.breedType}
                         onSelect={(value) => {
                             setEditingTernak((pre) => {
@@ -430,7 +444,7 @@ export default function TernakContent() {
                         >
                             Ayam Petarunk
                         </Option>
-                    </Select> */}
+                    </Select>
                 </Modal>
             </div>
         </div>

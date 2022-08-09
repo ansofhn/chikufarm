@@ -5,7 +5,7 @@ import Image from "next/image";
 import Photo from "../public/pp.png";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -31,7 +31,7 @@ export default function ProfileMenu() {
     };
 
     const getData = async () => {
-        const decoded = CheckToken()
+        const decoded = CheckToken();
         try {
             const response = await axios
                 .get(
@@ -56,12 +56,11 @@ export default function ProfileMenu() {
         getData();
     }, []);
 
-    console.log(dataUser);
     return (
-        <div className="flex justify-end md:mx-10 my-4 text-textColor ml-72">
-            <Menu as="div" className="relative inline-block text-left">
+        <div className="flex justify-end my-4 ml-72 md:mx-10 text-textColor">
+            <Menu as="div" className="inline-block relative text-left">
                 <div>
-                    <Menu.Button className="inline-flex justify-center w-full rounded-lg shadow-sm px-4 py-2 bg-white text-sm font-medium text-textColor focus:outline-none">
+                    <Menu.Button className="inline-flex justify-center px-4 py-2 w-full text-sm font-medium bg-white rounded-lg shadow-sm text-textColor focus:outline-none">
                         <div className="flex gap-2">
                             <div className="flex items-center mx-2">
                                 <Image src={Photo} />
@@ -70,13 +69,13 @@ export default function ProfileMenu() {
                                 <div className="text-xs font-light">
                                     Welcome back,
                                 </div>
-                                <div className="text-start font-medium">
+                                <div className="font-medium text-start">
                                     {dataUser.userName}
                                 </div>
                             </div>
                         </div>
                         <ChevronDownIcon
-                            className="-mr-1 ml-20 self-center h-5 w-5"
+                            className="self-center -mr-1 ml-20 w-5 h-5"
                             aria-hidden="true"
                         />
                     </Menu.Button>
@@ -91,7 +90,7 @@ export default function ProfileMenu() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-56 rounded-lg shadow-lg bg-white focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 bg-white rounded-lg shadow-lg origin-top-right focus:outline-none">
                         <div className="py-1">
                             <Menu.Item>
                                 {({ active }) => (
@@ -134,7 +133,7 @@ export default function ProfileMenu() {
                                                 active
                                                     ? "bg-white text-textColor hover:bg-gray-50"
                                                     : "text-gray-700",
-                                                "block w-full text-left px-4 py-2 text-sm"
+                                                "block px-4 py-2 w-full text-sm text-left"
                                             )}
                                         >
                                             Sign out

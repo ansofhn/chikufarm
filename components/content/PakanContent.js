@@ -68,19 +68,22 @@ export default function PakanContent() {
             console.log(error);
         }
     };
-    
-    const editData = async () => {
-        
-        const feedId = editingPakan.id;
 
+    const editData = async () => {
+        const feedId = editingPakan.id;
+        const breedId = editingPakan.breedId;
         const updateFeed = {
             feedName: editingPakan.feedName,
             feedType: editingPakan.feedType,
             pricePerKg: editingPakan.pricePerKg,
         };
+        const updateBreed = {
+            id: feedId,
+            breedId: breedId,
+        };
 
         try {
-            const response = await axios
+            const responseFeed = await axios
                 .put(
                     `https://chikufarm-app.herokuapp.com/api/feed/${feedId}`,
                     updateFeed,
@@ -90,6 +93,25 @@ export default function PakanContent() {
                             Authorization: `Bearer ${localStorage.getItem(
                                 "access_token"
                             )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    resetEditing();
+                });
+
+            const responseBreed = await axios
+                .put(
+                    "https://chikufarm-app.herokuapp.com/api/feed/breed/update",
+                    updateBreed,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                            "content-type": "application/json",
                         },
                     }
                 )
@@ -190,13 +212,13 @@ export default function PakanContent() {
                             }}
                         />
                         <DeleteOutlined
-                            className="text-maroon ml-3"
+                            className="ml-3 text-maroon"
                             onClick={() => {
                                 onDeletePakan(record);
                             }}
                         />
                         <EyeOutlined
-                            className="text-textColor ml-3"
+                            className="ml-3 text-textColor"
                             onClick={() => {
                                 onDetail(record);
                             }}
@@ -211,9 +233,9 @@ export default function PakanContent() {
         {
             title: "Date",
             dataIndex: "createdAt",
-            render:(createdAt)=>{
-                return `${createdAt.substring(0,10)}`
-            }
+            render: (createdAt) => {
+                return `${createdAt.substring(0, 10)}`;
+            },
         },
         {
             title: "Stock",
@@ -234,7 +256,7 @@ export default function PakanContent() {
                             }}
                         />
                         <DeleteOutlined
-                            className="text-maroon ml-3"
+                            className="ml-3 text-maroon"
                             onClick={() => {
                                 onDeletePakan(record);
                             }}
@@ -291,8 +313,8 @@ export default function PakanContent() {
         e.preventDefault();
     };
 
-    console.log(editingPakan)
-    
+    console.log(editingPakan);
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -300,7 +322,7 @@ export default function PakanContent() {
             </div>
 
             <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchFeed
                         onChangeSearch={(e) => {
                             setSearch(e.target.value);
@@ -312,7 +334,7 @@ export default function PakanContent() {
                         }}
                     />
                     <Button
-                        className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex gap-2 items-center px-4 py-3 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddPakan}
                     >
                         <MdAdd className="self-center text-lg" />
@@ -327,13 +349,13 @@ export default function PakanContent() {
 
                 {/* Add Pakan */}
                 <Modal
-                    className="p-0 -my-24 overflow-hidden rounded-2xl"
+                    className="overflow-hidden p-0 -my-24 rounded-2xl"
                     title="Add Pakan"
                     visible={isAdding}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAdd();
@@ -342,7 +364,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addData}
@@ -355,7 +377,7 @@ export default function PakanContent() {
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"feedName"}>Nama Pakan</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.feedName}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
@@ -365,7 +387,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"feedType"}>Jenis Pakan</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.feedType}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
@@ -376,7 +398,7 @@ export default function PakanContent() {
 
                         <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.pricePerKg}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
@@ -389,7 +411,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.feedQuantity}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
@@ -404,7 +426,7 @@ export default function PakanContent() {
                             Kategori Ternak
                         </Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
                             placeholder="Kategori Ternak"
                             onSelect={(value) => {
                                 setAddingPakan((pre) => {
@@ -437,13 +459,13 @@ export default function PakanContent() {
 
                 {/* Edit User */}
                 <Modal
-                    className="rounded-2xl overflow-hidden p-0"
+                    className="overflow-hidden p-0 rounded-2xl"
                     title="Edit Pakan"
                     visible={isEditing}
                     footer={[
                         <div className="flex justify-center py-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditing();
@@ -452,7 +474,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 onClick={editData}
                             >
@@ -463,7 +485,7 @@ export default function PakanContent() {
                 >
                     <Label forInput={"feedName"}>Nama Pakan</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingPakan?.feedName}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
@@ -473,7 +495,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"feedType"}>Jenis Pakan</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingPakan?.feedType}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
@@ -483,7 +505,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingPakan?.pricePerKg}
                         onChange={(e) => {
                             setEditingPakan((pre) => {
@@ -491,17 +513,47 @@ export default function PakanContent() {
                             });
                         }}
                     />
+                    <Label forInput={"breed"}>Kategori Ternak</Label>
+                    <Select
+                        className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        defaultValue={editingPakan?.breed.breedType}
+                        onSelect={(value) => {
+                            setEditingPakan((pre) => {
+                                return { ...pre, breedId: value };
+                            });
+                        }}
+                        bordered={false}
+                    >
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                        >
+                            Ayam Petelur
+                        </Option>
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="d54f904b-6741-469b-842a-7012131dd093"
+                        >
+                            Ayam Pedaging
+                        </Option>
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                        >
+                            Ayam Petarunk
+                        </Option>
+                    </Select>
                 </Modal>
 
                 {/* Detail Pakan */}
                 <Modal
-                    className="rounded-2xl overflow-hidden p-0 -my-20"
+                    className="overflow-hidden p-0 -my-20 rounded-2xl"
                     visible={isDetail}
                     title="History Pakan"
                     footer={[
                         <div className="flex justify-center py-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetDetail();
@@ -510,7 +562,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 onClick={editData}
                             >
