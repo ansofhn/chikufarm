@@ -18,7 +18,9 @@ export default function dashboard() {
         }
     };
 
-    CheckToken()
+    useEffect(() => {
+        CheckToken();
+    }, []);
 
     return (
         <>

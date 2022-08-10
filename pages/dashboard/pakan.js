@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PakanContent from "../../components/content/PakanContent";
 import ProfileMenu from "../../components/ProfileMenu";
 import SideNavbar from "../../components/SideNavbar";
@@ -17,7 +17,9 @@ export default function pakan() {
             console.log(error);
         }
     };
-    CheckToken();
+    useEffect(() => {
+        CheckToken();
+    }, []);
     return (
         <div>
             <ProfileMenu />

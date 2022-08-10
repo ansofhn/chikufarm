@@ -1,6 +1,9 @@
 import React from "react";
-import AreaChartComp from "../AreaChartComp";
+import ProgressChartComp from "../ProgressChartComp";
 import PieChartComp from "../PieChartComp";
+import Population from "../Population";
+import Death from "../Death";
+import Feed from "../Feed";
 
 export default function DashboardContent() {
     return (
@@ -28,46 +31,46 @@ export default function DashboardContent() {
                     <div className="text-lg font-bold text-textColor">9</div>
                 </div>
             </div>
-            <div className="flex justify-between items-center">
-                <div className="p-4 text-sm text-textColor">Statistics</div>
-                <div className="flex gap-1 justify-center items-center p-4 text-sm text-textColor">
-                    {/* <DropDown/> */}
-                </div>
-            </div>
+
+            <div className="p-4 text-sm font-semibold text-textColor">Statistics</div>
+
             <div className="grid grid-cols-2 gap-5 p-2">
                 <div className="overflow-hidden w-full text-sm bg-white rounded-lg text-textColor">
                     <div className="p-4">Progress Populasi</div>
-                    <div className="p-5 text-4xl font-bold text-textColor">
+                    <div className="p-5 text-5xl font-bold text-textColor">
                         15 %
                     </div>
                     <div className="self-end">
-                        <AreaChartComp />
+                        <ProgressChartComp />
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-5">
-                    <div className="p-3 w-full text-sm bg-white rounded-lg text-textColor">
+                    <div className="p-4 w-full text-sm bg-white rounded-lg text-textColor">
                         Populasi Terbaru
-                        <div className="text-lg font-bold text-textColor">
+                        <div className="text-2xl mt-2 font-bold text-textColor">
                             592
                         </div>
                     </div>
-                    <div className="p-3 w-full text-sm bg-white rounded-lg text-textColor">
+                    <div className="p-4 w-full text-sm bg-white rounded-lg text-textColor">
                         Populasi Terakhir
-                        <div className="text-lg font-bold text-textColor">
+                        <div className="text-2xl mt-2 font-bold text-textColor">
                             580
                         </div>
                     </div>
-                    <div className="grid col-span-2 grid-rows-3 p-3 w-full text-sm bg-white rounded-lg text-textColor">
+                    <div className="grid col-span-2 grid-rows-3 p-3 w-full h-56 text-sm bg-white rounded-lg text-textColor">
                         <div className="flex justify-between items-center">
                             <div>Populasi</div>
+                            <Population />
                             <div className="pr-4">12</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div>Kematian</div>
+                            <Death/>
                             <div className="pr-4">2</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div>Pakan</div>
+                            <Feed/>
                             <div className="pr-4">0.5</div>
                         </div>
                     </div>
@@ -97,7 +100,7 @@ export default function DashboardContent() {
                     </div>
                 </div>
 
-                <div className="p-4 w-full text-sm bg-white rounded-lg text-textColor">
+                <div className="p-4 w-full text-sm font-semibold bg-white rounded-lg text-textColor">
                     Persentase Kematian
                 </div>
             </div>

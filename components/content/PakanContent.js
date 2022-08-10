@@ -20,6 +20,7 @@ export default function PakanContent() {
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
     const [historySource, setHistorySource] = useState([]);
+    const [feedRecommend, setFeedRecommend] = useState([]);
 
     const getData = async () => {
         try {
@@ -34,6 +35,22 @@ export default function PakanContent() {
                 .then((res) => {
                     console.log(res.data.items);
                     setDataSource(res.data.items);
+                });
+
+            const responseRecommend = await axios
+                .get(
+                    "https://chikufarm-app.herokuapp.com/api/feed-recomendation",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data.items);
+                    setFeedRecommend(res.data.items);
                 });
         } catch (error) {
             console.log(error);
@@ -267,6 +284,27 @@ export default function PakanContent() {
         },
     ];
 
+    const columnRecommend = [
+        {
+            title: "Week",
+            dataIndex: "week",
+        },
+        {
+            title: "Jumlah Pakan",
+            dataIndex: "feedQuantity",
+        },
+        {
+            title: "Nama Pakan",
+            dataIndex: "masterFeed",
+            render: (masterFeed) => masterFeed.feedName,
+        },
+        {
+            title: "Nama Ternak",
+            dataIndex: "farm",
+            render: (farm) => farm.farmName,
+        },
+    ];
+
     const onAddPakan = () => {
         setIsAdding(true);
         setAddingPakan(null);
@@ -313,15 +351,13 @@ export default function PakanContent() {
         e.preventDefault();
     };
 
-    console.log(editingPakan);
-
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
                 Data Pakan / All
             </div>
 
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchFeed
                         onChangeSearch={(e) => {
@@ -578,6 +614,33 @@ export default function PakanContent() {
                         pagination={false}
                     ></Table>
                 </Modal>
+            </div>
+            <div className="p-10 mt-10 bg-white rounded-xl">
+                <div className="flex justify-center pb-5 mb-5 border-b border-gray-200">
+                    <div className="pb-4 text-lg font-bold text-textColor">
+                        Rekomendasi Pakan
+                    </div>
+                </div>
+                <Table
+                    bordered={true}
+                    columns={columnRecommend}
+                    dataSource={feedRecommend}
+                    pagination={false}
+                ></Table>
+                <div className="flex justify-center gap-3 mt-10">
+                    <Button
+                        className="w-24 text-center font-bold rounded-lg border-none shadow-sm transition duration-300 bg-cream text-maroon hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        onClick={onAddPakan}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        className="w-24 text-center font-bold rounded-lg border-none transition duration-300 bg-cream text-maroon hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        onClick={onAddPakan}
+                    >
+                        Add
+                    </Button>
+                </div>
             </div>
         </div>
     );

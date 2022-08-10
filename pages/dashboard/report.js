@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReportContent from "../../components/content/ReportContent";
 import ProfileMenu from "../../components/ProfileMenu";
 import SideNavbar from "../../components/SideNavbar";
@@ -17,7 +17,9 @@ export default function report() {
             console.log(error);
         }
     };
-    CheckToken();
+    useEffect(() => {
+        CheckToken();
+    }, []);
     return (
         <div>
             <ProfileMenu />
