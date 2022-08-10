@@ -10,16 +10,16 @@ export default function Hero() {
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">
-                    <div className="grid items-center justify-center grid-cols-2 mx-5 my-24 bg-white">
+                    <div className="grid grid-cols-2 justify-center items-center mx-5 my-24 bg-white">
                         <div className="px-20 py-20">
-                            <h1 className="font-monserrat text-textColor text-4xl font-bold">
+                            <h1 className="text-4xl font-bold font-monserrat text-textColor">
                                 Manage Your Daily for Best Investment
                             </h1>
-                            <p className="mt-4 mb-6 font-monserrat text-textColor text-xl font-light leading-relaxed">
+                            <p className="mt-4 mb-6 text-xl font-light leading-relaxed font-monserrat text-textColor">
                                 start management from small things to be able to
                                 produce the best quality and quantity
                             </p>
-                            <Button className={"bg-cream text-maroon w-40 hover:bg-maroon hover:text-cream"}>Get Started</Button>
+                            {/* <Button className={"w-40 bg-cream text-maroon hover:bg-maroon hover:text-cream"}>Get Started</Button> */}
                         </div>
                         <Image src={Banner} />
                     </div>

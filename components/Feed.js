@@ -40,7 +40,7 @@ const data = [
 
 export default function Feed() {
     return (
-        <div style={{ width: 270, height: 40 }}>
+        <div style={{ width: 260, height: 40 }}>
             <ResponsiveContainer>
                 <AreaChart
                     data={data}

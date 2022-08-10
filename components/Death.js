@@ -41,7 +41,7 @@ const data = [
 
 export default function Death() {
     return (
-        <div style={{ width: 260, height: 30 }}>
+        <div style={{ width: 260, height: 40 }}>
             <ResponsiveContainer>
                 <AreaChart
                     data={data}
