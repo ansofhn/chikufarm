@@ -23,7 +23,9 @@ export default function UserContent() {
             const response = await axios
                 .get("https://chikufarm-app.herokuapp.com/api/users", {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
                     },
                 })
                 .then((res) => {
@@ -44,7 +46,9 @@ export default function UserContent() {
                     {
                         headers: {
                             "content-type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                         },
                     }
                 )
@@ -81,7 +85,9 @@ export default function UserContent() {
                     {
                         headers: {
                             "content-type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                         },
                     }
                 )
@@ -97,7 +103,9 @@ export default function UserContent() {
                     updateRole,
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
                             "content-type": "application/json",
                         },
                     }
@@ -117,7 +125,11 @@ export default function UserContent() {
         try {
             const response = await axios
                 .delete(`https://chikufarm-app.herokuapp.com/api/users/${id}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
                 })
                 .then((res) => {
                     console.log(res);
@@ -132,7 +144,13 @@ export default function UserContent() {
             const response = await axios
                 .get(
                     `https://chikufarm-app.herokuapp.com/api/users?search=${search}&role=${filter}`,
-                    { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
                 )
                 .then((res) => {
                     setDataSource(res.data.items);
@@ -246,7 +264,7 @@ export default function UserContent() {
                         }}
                     />
                     <Button
-                        className="flex items-center gap-2 px-4 py-4 transition duration-300 border-none rounded-lg text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex gap-2 items-center px-4 py-4 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddUser}
                     >
                         <MdAdd className="self-center text-lg" />
@@ -261,13 +279,13 @@ export default function UserContent() {
 
                 {/* Add User */}
                 <Modal
-                    className="p-0 -my-24 overflow-hidden rounded-2xl"
+                    className="overflow-hidden p-0 -my-24 rounded-2xl"
                     title="Add User"
                     visible={isAdding}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAdd();
@@ -276,7 +294,7 @@ export default function UserContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addData}
@@ -339,7 +357,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"role"}>User Role</Label>
                         <Select
-                            className="mb-2 text-sm border rounded-lg border-textColor hover:border-textColor "
+                            className="mb-2 text-sm rounded-lg border border-textColor hover:border-textColor"
                             onSelect={(value) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, roleId: value };
@@ -374,13 +392,13 @@ export default function UserContent() {
 
                 {/* Edit User */}
                 <Modal
-                    className="p-0 -my-10 overflow-hidden rounded-2xl"
+                    className="overflow-hidden p-0 -my-10 rounded-2xl"
                     title="Edit User"
                     visible={isEditing}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditing();
@@ -389,7 +407,7 @@ export default function UserContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={editData}
@@ -401,7 +419,7 @@ export default function UserContent() {
                 >
                     <Label forInput={"fullName"}>Fullname</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingUser?.fullName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -411,7 +429,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"userName"}>Username</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingUser?.userName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -421,7 +439,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"email"}>Email</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingUser?.email}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -431,7 +449,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"phone"}>Phone</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                         value={editingUser?.phone}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -441,7 +459,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"role"}>User Role</Label>
                     <Select
-                        className="my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border border-textColor hover:border-textColor"
                         defaultValue={editingUser?.role.roleName}
                         onChange={(value) => {
                             setEditingUser((pre) => {

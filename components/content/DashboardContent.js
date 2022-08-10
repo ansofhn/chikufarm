@@ -32,7 +32,9 @@ export default function DashboardContent() {
                 </div>
             </div>
 
-            <div className="p-4 text-sm font-semibold text-textColor">Statistics</div>
+            <div className="p-4 text-sm font-semibold text-textColor">
+                Statistics
+            </div>
 
             <div className="grid grid-cols-2 gap-5 p-2">
                 <div className="overflow-hidden w-full text-sm bg-white rounded-lg text-textColor">
@@ -47,30 +49,30 @@ export default function DashboardContent() {
                 <div className="grid grid-cols-2 gap-5">
                     <div className="p-4 w-full text-sm bg-white rounded-lg text-textColor">
                         Populasi Terbaru
-                        <div className="text-2xl mt-2 font-bold text-textColor">
+                        <div className="mt-2 text-2xl font-bold text-textColor">
                             592
                         </div>
                     </div>
                     <div className="p-4 w-full text-sm bg-white rounded-lg text-textColor">
                         Populasi Terakhir
-                        <div className="text-2xl mt-2 font-bold text-textColor">
+                        <div className="mt-2 text-2xl font-bold text-textColor">
                             580
                         </div>
                     </div>
                     <div className="grid col-span-2 grid-rows-3 p-3 w-full h-56 text-sm bg-white rounded-lg text-textColor">
                         <div className="flex justify-between items-center">
-                            <div>Populasi</div>
+                            <div className="pr-4 pl-2">Populasi</div>
                             <Population />
                             <div className="pr-4">12</div>
                         </div>
                         <div className="flex justify-between items-center">
-                            <div>Kematian</div>
-                            <Death/>
+                            <div className="pl-2">Kematian</div>
+                            <Death />
                             <div className="pr-4">2</div>
                         </div>
                         <div className="flex justify-between items-center">
-                            <div>Pakan</div>
-                            <Feed/>
+                            <div className="pr-8 pl-2">Pakan</div>
+                            <Feed />
                             <div className="pr-4">0.5</div>
                         </div>
                     </div>
@@ -92,16 +94,23 @@ export default function DashboardContent() {
                     </div>
                     <div className="self-center font-medium">
                         <div className="mb-6">
-                            Ayam <span></span>
+                            Ayam <span className="ml-2 text-lg">67%</span>
                         </div>
                         <div>
-                            Bebek <span></span>
+                            Bebek <span className="ml-2 text-lg">33%</span>
                         </div>
                     </div>
                 </div>
-
-                <div className="p-4 w-full text-sm font-semibold bg-white rounded-lg text-textColor">
+                <div className="grid grid-cols-2 p-4 w-full text-sm font-semibold bg-white rounded-lg text-textColor">
                     Persentase Kematian
+                    <div className="col-start-1 ml-5 font-medium">
+                        <div className="mb-6">
+                            Ayam <span className="ml-14 text-lg">2.3%</span>
+                        </div>
+                        <div>
+                            Bebek <span className="ml-14 text-lg">2.0%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

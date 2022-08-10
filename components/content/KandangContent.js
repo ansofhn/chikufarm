@@ -17,6 +17,9 @@ export default function KandangContent() {
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [farm, setFarm] = useState([]);
+    const [feed, setFeed] = useState([]);
+    const [feedRecommend, setFeedRecommend] = useState([]);
 
     const getData = async () => {
         try {
@@ -29,8 +32,47 @@ export default function KandangContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data)
+                    console.log(res.data.items);
                     setDataSource(res.data.items);
+                });
+            const responseFarm = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/farm", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data.items);
+                    setFarm(res.data.items);
+                });
+            const responseFeed = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/feed", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data.items);
+                    setFeed(res.data.items);
+                });
+            const responseRecommend = await axios
+                .get(
+                    "https://chikufarm-app.herokuapp.com/api/feed-recomendation",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data.items);
+                    setFeedRecommend(res.data.items);
                 });
         } catch (error) {
             console.log(error);
@@ -162,6 +204,11 @@ export default function KandangContent() {
             dataIndex: "coopNumber",
         },
         {
+            title: "Nama Ternak",
+            dataIndex: "farm",
+            render: (farm) => farm.farmName,
+        },
+        {
             title: "Populasi Awal",
             dataIndex: "populationStart",
         },
@@ -220,6 +267,7 @@ export default function KandangContent() {
                         (kandang) => kandang.noKandang !== record.noKandang
                     );
                 });
+                deleteData(record);
             },
         });
     };
@@ -243,7 +291,7 @@ export default function KandangContent() {
             </div>
 
             <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchCoop
                         onChangeSearch={(e) => {
                             setSearch(e.target.value);
@@ -255,7 +303,7 @@ export default function KandangContent() {
                         }}
                     />
                     <Button
-                        className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex gap-2 items-center px-4 py-3 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddKandang}
                     >
                         <MdAdd className="self-center text-lg" />
@@ -268,15 +316,15 @@ export default function KandangContent() {
                     dataSource={dataSource}
                 ></Table>
 
-                {/* Add User */}
+                {/* Add Coop */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
+                    className="overflow-hidden p-0 rounded-2xl"
                     title="Add Kandang"
                     visible={isAdding}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAdd();
@@ -285,7 +333,7 @@ export default function KandangContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addData}
@@ -296,61 +344,90 @@ export default function KandangContent() {
                     ]}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"type"}>Jenis Ternak</Label>
+                        <Label forInput={"coopNumber"}>Nomor Kandang</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={addingKandang?.type}
-                            onChange={(e) => {
-                                setAddingKandang((pre) => {
-                                    return { ...pre, type: e.target.value };
-                                });
-                            }}
-                        />
-                        <Label forInput={"population"}>Populasi</Label>
-                        <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={addingKandang?.population}
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            value={addingKandang?.coopNumber}
                             onChange={(e) => {
                                 setAddingKandang((pre) => {
                                     return {
                                         ...pre,
-                                        population: e.target.value,
+                                        coopNumber: e.target.value,
                                     };
                                 });
                             }}
                         />
-                        <Label forInput={"dateIn"}>Tanggal Masuk</Label>
+                        <Label forInput={"populationStart"}>
+                            Populasi Awal
+                        </Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={addingKandang?.dateIn}
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            value={addingKandang?.populationStart}
                             onChange={(e) => {
                                 setAddingKandang((pre) => {
-                                    return { ...pre, dateIn: e.target.value };
+                                    return {
+                                        ...pre,
+                                        populationStart: e.target.value,
+                                    };
                                 });
                             }}
                         />
-                        <Label forInput={"status"}>Status</Label>
-                        <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={addingKandang?.status}
-                            onChange={(e) => {
+                        <Label forInput={"farmName"}>Nama Ternak</Label>
+                        <Select
+                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            placeholder="Choose Farm Name"
+                            onSelect={(value) => {
                                 setAddingKandang((pre) => {
-                                    return { ...pre, status: e.target.value };
+                                    return { ...pre, farmId: value };
                                 });
                             }}
-                        />
+                            bordered={false}
+                        >
+                            {farm.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {dataId.farmName}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"feedName"}>Nama Pakan</Label>
+                        <Select
+                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            placeholder="Choose Feed Name"
+                            onSelect={(value) => {
+                                setAddingKandang((pre) => {
+                                    return { ...pre, masterFeedId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            {feed.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {dataId.feedName}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
                     </form>
                 </Modal>
 
-                {/* Edit Kandang */}
+                {/* Edit Recomendation */}
                 <Modal
-                    className="rounded-lg overflow-hidden p-0"
-                    title="Edit Kandang"
+                    className="overflow-hidden p-0 rounded-2xl"
+                    title="Edit Feed Recomendation"
                     visible={isEditing}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditing();
@@ -359,8 +436,9 @@ export default function KandangContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
+                                type="submit"
                                 onClick={editData}
                             >
                                 Save
@@ -368,46 +446,98 @@ export default function KandangContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"type"}>Jenis Ternak</Label>
+                    <Label forInput={"week"}>Week</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingKandang?.type}
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        value={editingKandang?.week}
                         onChange={(e) => {
                             setEditingKandang((pre) => {
-                                return { ...pre, type: e.target.value };
+                                return {
+                                    ...pre,
+                                    week: e.target.value,
+                                };
                             });
                         }}
                     />
-                    <Label forInput={"population"}>Populasi</Label>
+                    <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingKandang?.population}
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        value={editingKandang?.feedQuantity}
                         onChange={(e) => {
                             setEditingKandang((pre) => {
-                                return { ...pre, population: e.target.value };
+                                return {
+                                    ...pre,
+                                    feedQuantity: e.target.value,
+                                };
                             });
                         }}
                     />
-                    <Label forInput={"dateIn"}>Tanggal Masuk</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingKandang?.dateIn}
-                        onChange={(e) => {
+                    <Label forInput={"farmName"}>Nama Ternak</Label>
+                    <Select
+                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        placeholder={editingKandang?.farm.farmName}
+                        onSelect={(value) => {
                             setEditingKandang((pre) => {
-                                return { ...pre, dateIn: e.target.value };
+                                return { ...pre, farmId: value };
                             });
                         }}
-                    />
-                    <Label forInput={"status"}>Status</Label>
-                    <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={editingKandang?.status}
-                        onChange={(e) => {
+                        bordered={false}
+                    >
+                        {farm.map((dataId) => {
+                            return (
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value={dataId.id}
+                                >
+                                    {dataId.farmName}
+                                </Option>
+                            );
+                        })}
+                    </Select>
+                    <Label forInput={"feedName"}>Nama Pakan</Label>
+                    <Select
+                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        placeholder={editingKandang?.masterFeed.feedName}
+                        onSelect={(value) => {
                             setEditingKandang((pre) => {
-                                return { ...pre, status: e.target.value };
+                                return { ...pre, masterFeedId: value };
                             });
                         }}
-                    />
+                        bordered={false}
+                    >
+                        {feed.map((dataId) => {
+                            return (
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value={dataId.id}
+                                >
+                                    {dataId.feedName}
+                                </Option>
+                            );
+                        })}
+                    </Select>
+                    <Label forInput={"feedRecommend"}>Nama Pakan</Label>
+                    <Select
+                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        placeholder={editingKandang?.masterFeed.feedRecommend}
+                        onSelect={(value) => {
+                            setEditingKandang((pre) => {
+                                return { ...pre, feedRecomendationId: value };
+                            });
+                        }}
+                        bordered={false}
+                    >
+                        {feedRecommend.map((dataId) => {
+                            return (
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value={dataId.id}
+                                >
+                                    {dataId.farm}
+                                </Option>
+                            );
+                        })}
+                    </Select>
                 </Modal>
             </div>
         </div>
