@@ -1,9 +1,34 @@
 import { Select } from "antd";
-import { useRef } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 const { Option } = Select;
 
 const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
+    const [farm, setFarm] = useState([]);
     const clickPoint = useRef();
+
+    const getData = async () => {
+        try {
+            const responseFarm = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/farm", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    setFarm(res.data.items);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     const handleFocus = () => {
         clickPoint.current.style.display = "none";
     };
@@ -11,7 +36,6 @@ const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
     const handleBlur = () => {
         clickPoint.current.style.display = "block";
     };
-
     return (
         <div className="items-center px-4 flex justify-center">
             <div className="relative mr-3">
@@ -47,24 +71,17 @@ const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
                 placeholder="Category"
                 bordered={false}
             >
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream  focus:text-textColor active:bg-cream"
-                    value="Ayam Petelur"
-                >
-                    Ayam Petelur
-                </Option>
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="Ayam Pedaging"
-                >
-                    Ayam Pedaging
-                </Option>
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="Ayam Aduan"
-                >
-                    Ayam Aduan
-                </Option>
+                {farm.map((dataId) => {
+                    return (
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value={dataId.farmName}
+                        >
+                            {dataId.farmName}
+                            
+                        </Option>
+                    );
+                })}
                 <Option
                     className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                     value=""

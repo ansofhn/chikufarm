@@ -1,11 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Button, Table, Modal, Input, Select, Pagination } from "antd";
+import { Button, Table, Modal, Input, Select } from "antd";
 import {
     EditOutlined,
     DeleteOutlined,
     EyeOutlined,
-    PlusCircleOutlined,
 } from "@ant-design/icons";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
@@ -49,7 +48,6 @@ export default function PakanContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data.items);
                     setDataSource(res.data.items);
                 });
 
@@ -65,7 +63,6 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data.items);
                     setFeedRecommend(res.data.items);
                 });
 
@@ -78,7 +75,6 @@ export default function PakanContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data.items);
                     setFarm(res.data.items);
                 });
         } catch (error) {
@@ -106,7 +102,6 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
                     setDataSource(dataSource.concat(res.data));
                     resetAdd();
                 });
@@ -143,7 +138,6 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res);
                     getData();
                     resetEditing();
                 });
@@ -162,7 +156,6 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res);
                     getData();
                     resetEditing();
                 });
@@ -170,7 +163,6 @@ export default function PakanContent() {
     };
 
     const deleteData = async (record) => {
-        console.log(record.id);
         const id = record.id;
         try {
             const response = await axios
@@ -209,7 +201,6 @@ export default function PakanContent() {
     };
 
     const getHistory = async (record) => {
-        console.log(record.id);
         const id = record.id;
         try {
             const response = await axios
@@ -221,7 +212,6 @@ export default function PakanContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data.feedHistory);
                     setHistorySource(res.data.feedHistory);
                 });
         } catch (error) {
@@ -245,7 +235,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
+                    getData()
                     setHistorySource(historySource.concat(res.data));
                     resetAddHistory();
                 });
@@ -253,9 +243,7 @@ export default function PakanContent() {
             console.log(error);
         }
     };
-
     const editHistory = async () => {
-        console.log(editingHistory);
         const historyId = editingHistory.id;
         const updateHistory = {
             feedQuantity: editingHistory.feedQuantity,
@@ -275,35 +263,34 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res);
+                    getData()
                     resetEditingHistory();
                     setTimeout((res) => setIsDetail(false), 500);
                 });
         } catch (error) {}
     };
 
-    const deleteHistory = async (record) => {
-        console.log(record.id);
-        const id = record.id;
-        try {
-            const response = await axios
-                .delete(
-                    `https://chikufarm-app.herokuapp.com/api/feed-history/${id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "access_token"
-                            )}`,
-                        },
-                    }
-                )
-                .then((res) => {
-                    console.log(res);
-                });
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const deleteHistory = async (record) => {
+    //     const id = record.id;
+    //     try {
+    //         const response = await axios
+    //             .delete(
+    //                 `https://chikufarm-app.herokuapp.com/api/feed-history/${id}`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${localStorage.getItem(
+    //                             "access_token"
+    //                         )}`,
+    //                     },
+    //                 }
+    //             )
+    //             .then((res) => {
+    //                 console.log(res);
+    //             });
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const addRecomendation = async () => {
         try {
@@ -321,7 +308,6 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
                     setFeedRecommend(feedRecommend.concat(res.data));
                     resetAddRecomendation();
                 });
@@ -330,7 +316,6 @@ export default function PakanContent() {
         }
     };
     const editRecomendation = async () => {
-        console.log(editingRecomendation);
         const recomendationId = editingRecomendation.id;
         const updateRecomendation = {
             week: editingRecomendation.week,
@@ -353,7 +338,6 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res);
                     getData();
                     resetEditingRecomendation();
                 });
@@ -361,7 +345,6 @@ export default function PakanContent() {
     };
 
     const deleteRecomendation = async (record) => {
-        console.log(record.id);
         const id = record.id;
         try {
             const response = await axios
@@ -402,6 +385,13 @@ export default function PakanContent() {
             render: (breed) => breed.breedType,
         },
         {
+            title: "Stock",
+            dataIndex: "feedStock",
+            render: (feedStock) => {
+                return `${feedStock.stock} Kg`;
+            },
+        },
+        {
             title: "Actions",
             render: (record) => {
                 return (
@@ -438,8 +428,11 @@ export default function PakanContent() {
             },
         },
         {
-            title: "Stock",
+            title: "Quantity",
             dataIndex: "feedQuantity",
+            render: (feedQuantity) => {
+                return `${feedQuantity} Kg`;
+            },
         },
         {
             title: "Status",
@@ -456,12 +449,12 @@ export default function PakanContent() {
                                 onEditHistory(record);
                             }}
                         />
-                        <DeleteOutlined
+                        {/* <DeleteOutlined
                             className="ml-3 text-maroon"
                             onClick={() => {
                                 onDeleteHistory(record);
                             }}
-                        />
+                        /> */}
                     </>
                 );
             },
@@ -476,7 +469,7 @@ export default function PakanContent() {
         {
             title: "Nama Ternak",
             dataIndex: "farm",
-            render: (farm) => farm,
+            render: (farm) => farm.farmName,
         },
         {
             title: "Nama Pakan",
@@ -485,17 +478,18 @@ export default function PakanContent() {
         },
         {
             title: "Jumlah Pakan",
-            dataIndex: "feedQuantity",
+            dataIndex: "feedQuantityOnGram",
+            render: (feedQuantityOnGram) => `${feedQuantityOnGram} gram`,
         },
         {
             title: "Actions",
             render: (record) => {
                 return (
                     <>
-                        <PlusCircleOutlined
+                        {/* <PlusCircleOutlined
                             className="text-maroon"
                             onClick={onAddRecomendation}
-                        />
+                        /> */}
                         <EditOutlined
                             className="ml-3"
                             onClick={() => {
@@ -537,19 +531,19 @@ export default function PakanContent() {
             },
         });
     };
-    const onDeleteHistory = (record) => {
-        Modal.confirm({
-            title: "Delete History",
-            okText: "Yes",
-            okType: "danger",
-            onOk: () => {
-                setHistorySource((pre) => {
-                    return pre.filter((history) => history.id !== record.id);
-                });
-                deleteHistory(record);
-            },
-        });
-    };
+    // const onDeleteHistory = (record) => {
+    //     Modal.confirm({
+    //         title: "Delete History",
+    //         okText: "Yes",
+    //         okType: "danger",
+    //         onOk: () => {
+    //             setHistorySource((pre) => {
+    //                 return pre.filter((history) => history.id !== record.id);
+    //             });
+    //             deleteHistory(record);
+    //         },
+    //     });
+    // };
     const onDeleteRecomendation = (record) => {
         Modal.confirm({
             title: "Delete Recomendation",
@@ -643,13 +637,13 @@ export default function PakanContent() {
                     />
                     <div className="flex items-center p-1">
                         <Button
-                            className="mx-2 w-40 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            className="w-40 mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                             onClick={onAddHistory}
                         >
                             Create History
                         </Button>
                         <Button
-                            className="flex gap-2 items-center px-4 py-3 font-semibold rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center gap-2 px-4 py-3 font-semibold transition duration-300 border-none rounded-lg text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddPakan}
                         >
                             <MdAdd className="self-center text-lg" />
@@ -665,13 +659,13 @@ export default function PakanContent() {
 
                 {/* Add Pakan */}
                 <Modal
-                    className="overflow-hidden p-0 -my-24 rounded-2xl"
+                    className="p-0 -my-24 overflow-hidden rounded-2xl"
                     title="Add Pakan"
                     visible={isAdding}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAdd();
@@ -680,7 +674,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addData}
@@ -742,7 +736,7 @@ export default function PakanContent() {
                             Kategori Ternak
                         </Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Kategori Ternak"
                             onSelect={(value) => {
                                 setAddingPakan((pre) => {
@@ -775,13 +769,13 @@ export default function PakanContent() {
 
                 {/* Edit Pakan */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-2xl"
+                    className="p-0 overflow-hidden rounded-2xl"
                     title="Edit Pakan"
                     visible={isEditing}
                     footer={[
                         <div className="flex justify-center py-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditing();
@@ -790,7 +784,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={editData}
@@ -832,7 +826,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"breed"}>Kategori Ternak</Label>
                     <Select
-                        className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                         defaultValue={editingPakan?.breed.breedType}
                         onSelect={(value) => {
                             setEditingPakan((pre) => {
@@ -864,13 +858,13 @@ export default function PakanContent() {
 
                 {/* Detail Pakan */}
                 <Modal
-                    className="overflow-hidden p-0 -my-20 rounded-2xl"
+                    className="p-0 -my-20 overflow-hidden rounded-2xl"
                     visible={isDetail}
                     title="Detail Pakan"
                     footer={[
                         <div className="flex justify-center py-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetDetail();
@@ -891,13 +885,13 @@ export default function PakanContent() {
 
                 {/* add History */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-2xl"
+                    className="p-0 overflow-hidden rounded-2xl"
                     title="Add History"
                     visible={isAddingHistory}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAddHistory();
@@ -906,7 +900,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addHistory}
@@ -932,7 +926,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"feedName"}>Nama Pakan</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
@@ -957,13 +951,13 @@ export default function PakanContent() {
 
                 {/* Edit Pakan History */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-2xl"
+                    className="p-0 overflow-hidden rounded-2xl"
                     title="Edit History Pakan"
                     visible={isEditingHistory}
                     footer={[
                         <div className="flex justify-center py-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditingHistory();
@@ -972,7 +966,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={editHistory}
@@ -1003,6 +997,12 @@ export default function PakanContent() {
                 <div className="flex justify-center pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
                         Rekomendasi Pakan
+                        <Button
+                            className="mx-4 my-2 text-xs font-bold border-none rounded-md bg-maroon text-cream hover:text-cream hover:border-none hover:bg-maroon focus:bg-maroon focus:text-cream focus:border-none"
+                            onClick={onAddRecomendation}
+                        >
+                            Create
+                        </Button>
                     </div>
                 </div>
                 <Table
@@ -1014,13 +1014,13 @@ export default function PakanContent() {
 
                 {/* Add Recomendation */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-2xl"
+                    className="p-0 overflow-hidden rounded-2xl"
                     title="Add Feed Recomendation"
                     visible={isAddingRecomendation}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetAddRecomendation();
@@ -1029,7 +1029,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={addRecomendation}
@@ -1068,7 +1068,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"farmName"}>Nama Ternak</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
                                 setAddingRecomendation((pre) => {
@@ -1090,7 +1090,7 @@ export default function PakanContent() {
                         </Select>
                         <Label forInput={"feedName"}>Nama Pakan</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
                                 setAddingRecomendation((pre) => {
@@ -1115,13 +1115,13 @@ export default function PakanContent() {
 
                 {/* Edit Recomendation */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-2xl"
+                    className="p-0 overflow-hidden rounded-2xl"
                     title="Edit Feed Recomendation"
                     visible={isEditingRecomendation}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
                                     resetEditingRecomendation();
@@ -1130,7 +1130,7 @@ export default function PakanContent() {
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
                                 onClick={editRecomendation}
@@ -1156,7 +1156,7 @@ export default function PakanContent() {
                     <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingRecomendation?.feedQuantity}
+                        value={editingRecomendation?.feedQuantityOnGram}
                         onChange={(e) => {
                             setEditingRecomendation((pre) => {
                                 return {
@@ -1168,7 +1168,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"farmName"}>Nama Ternak</Label>
                     <Select
-                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                         placeholder={editingRecomendation?.farm.farmName}
                         onSelect={(value) => {
                             setEditingRecomendation((pre) => {
@@ -1190,7 +1190,7 @@ export default function PakanContent() {
                     </Select>
                     <Label forInput={"feedName"}>Nama Pakan</Label>
                     <Select
-                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                         placeholder={editingRecomendation?.masterFeed.feedName}
                         onSelect={(value) => {
                             setEditingRecomendation((pre) => {
