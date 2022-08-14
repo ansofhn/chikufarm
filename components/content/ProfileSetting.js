@@ -4,6 +4,7 @@ import Link from "next/link";
 import Button from "../Button";
 import Label from "../Label";
 import Input from "../Input";
+import UploadImage from "../UploadImage";
 
 export default function ProfileSetting() {
     const [fullName, setFullName] = useState("");
@@ -73,7 +74,7 @@ export default function ProfileSetting() {
                         <div className="text-lg text-textColor font-bold">
                             General Info
                         </div>
-
+                        <UploadImage/>
                         <div className="mt-10 grid-cols-2 grid gap-4">
                             <div className="mb-4">
                                 <Label forInput="fullname">Fullname</Label>

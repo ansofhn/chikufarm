@@ -183,14 +183,36 @@ export default function UserContent() {
         },
         {
             title: "Role",
+            align: "center",
             dataIndex: "role",
-            render: (role) => role.roleName,
+            render: (role) => {
+                if (role.roleName == "admin") {
+                    return (
+                        <div className="rounded-md self-center text-center px-2 py-2 font-semibold text-maroon uppercase text-xs bg-cream">
+                            {role.roleName}
+                        </div>
+                    );
+                } else if (role.roleName == "farmer") {
+                    return (
+                        <div className="rounded-md self-center text-center px-2 py-2 font-semibold text-textColor uppercase text-xs bg-gray-200">
+                            {role.roleName}
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="rounded-md self-center text-center px-2 py-2 font-semibold text-textColor uppercase text-xs bg-gray-200">
+                            {role.roleName}
+                        </div>
+                    );
+                }
+            },
         },
         {
+            align: "center",
             title: "Actions",
             render: (record) => {
                 return (
-                    <>
+                    <div className="text-center">
                         <EditOutlined
                             onClick={() => {
                                 onEditUser(record);
@@ -202,7 +224,7 @@ export default function UserContent() {
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
-                    </>
+                    </div>
                 );
             },
         },
@@ -272,6 +294,7 @@ export default function UserContent() {
                     </Button>
                 </div>
                 <Table
+                    className="ant-pagination-simple"
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
@@ -279,6 +302,7 @@ export default function UserContent() {
 
                 {/* Add User */}
                 <Modal
+                    closable={false}
                     className="overflow-hidden p-0 -my-24 rounded-2xl"
                     title="Add User"
                     visible={isAdding}
@@ -309,6 +333,7 @@ export default function UserContent() {
                         <Input
                             className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.fullName}
+                            placeholder={"Fullname"}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, fullName: e.target.value };
@@ -319,6 +344,7 @@ export default function UserContent() {
                         <Input
                             className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.userName}
+                            placeholder={"Username"}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, userName: e.target.value };
@@ -329,6 +355,7 @@ export default function UserContent() {
                         <Input
                             className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.email}
+                            placeholder={"Email"}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, email: e.target.value };
@@ -339,6 +366,7 @@ export default function UserContent() {
                         <Input
                             className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.phone}
+                            placeholder={"Phone Number"}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, phone: e.target.value };
@@ -349,6 +377,7 @@ export default function UserContent() {
                         <Input
                             className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.password}
+                            placeholder={"Password"}
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, password: e.target.value };
@@ -358,31 +387,32 @@ export default function UserContent() {
                         <Label forInput={"role"}>User Role</Label>
                         <Select
                             className="mb-2 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            placeholder={"Choose Role"}
                             onSelect={(value) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, roleId: value };
                                 });
                             }}
                             style={{
-                                width: 120,
+                                width: 150,
                             }}
                             bordered={false}
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="b6727f48-e1ac-4403-932e-5de35057de73"
+                                value="edea6fe3-a631-4dde-af33-259dd17d4893"
                             >
                                 Admin
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="4d8b3231-814b-411d-9886-3c806522062d"
+                                value="443c455f-bf80-4b62-958d-9205dd6647f9"
                             >
                                 Farmer
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="84fa3508-e865-44bc-b328-070783f9ca30"
+                                value="2558f5bf-b0f4-478b-bdb9-7455aabf1cc2"
                             >
                                 Guest
                             </Option>
@@ -392,6 +422,7 @@ export default function UserContent() {
 
                 {/* Edit User */}
                 <Modal
+                    closable={false}
                     className="overflow-hidden p-0 -my-10 rounded-2xl"
                     title="Edit User"
                     visible={isEditing}
@@ -473,19 +504,19 @@ export default function UserContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="b6727f48-e1ac-4403-932e-5de35057de73"
+                            value="edea6fe3-a631-4dde-af33-259dd17d4893"
                         >
                             Admin
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="4d8b3231-814b-411d-9886-3c806522062d"
+                            value="443c455f-bf80-4b62-958d-9205dd6647f9"
                         >
                             Farmer
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="84fa3508-e865-44bc-b328-070783f9ca30"
+                            value="2558f5bf-b0f4-478b-bdb9-7455aabf1cc2"
                         >
                             Guest
                         </Option>

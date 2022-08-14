@@ -20,6 +20,9 @@ export default function SideNavbar() {
     const [role, setRole] = useState("");
     const router = useRouter();
 
+    const routeNow = router.pathname;
+    console.log(routeNow);
+
     const handleLogout = () => {
         localStorage.removeItem("access_token");
         router.push("/");
@@ -214,52 +217,52 @@ export default function SideNavbar() {
                             {/* Sidebar items */}
                             <div className="pb-4 my-4 w-full border-gray-100">
                                 <Link href={"/dashboard"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <Button className="flex w-full border-none shadow-none gap-4 justify-start items-center py-5 px-5 mb-2.5 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group focus:outline-none focus:ring-0">
                                         <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Dashboard
                                         </h3>
-                                    </div>
+                                    </Button>
                                 </Link>
                                 <Link href={"/dashboard/report"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <Button className="w-full border-none shadow-none py-5 flex gap-4 justify-start items-center px-5 mb-2.5 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Report Harian
                                         </h3>
-                                    </div>
+                                    </Button>
                                 </Link>
                                 <Link href={"/dashboard/user"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <Button className="flex gap-4 justify-start items-center w-full border-none shadow-none py-5 px-5 mb-2.5 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <FaRegUser className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             User
                                         </h3>
-                                    </div>
+                                    </Button>
                                 </Link>
                                 <Link href={"/dashboard/kandang"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <Button className="flex gap-4 justify-start items-center w-full border-none shadow-none py-5 px-5 mb-2.5 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHome2Line className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Kandang
                                         </h3>
-                                    </div>
+                                    </Button>
                                 </Link>
                                 <Link href={"/dashboard/pakan"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <Button className="flex gap-4 justify-start items-center w-full border-none shadow-none py-5 px-5 mb-2.5 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHandCoinLine className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Pakan
                                         </h3>
-                                    </div>
+                                    </Button>
                                 </Link>
                                 <Link href={"/dashboard/ternak"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <Button className="flex gap-4 justify-start items-center w-full border-none shadow-none py-5 px-5 mb-2.5 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <FiFeather className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Ternak
                                         </h3>
-                                    </div>
+                                    </Button>
                                 </Link>
                             </div>
 
@@ -267,7 +270,7 @@ export default function SideNavbar() {
                             <div className="pb-4 my-36 w-full border-gray-100">
                                 <Button
                                     onClick={handleLogout}
-                                    className="flex gap-4 justify-start items-center px-5 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group"
+                                    className="flex gap-4 justify-start items-center px-5 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group focus:border-cream focus:ring-0"
                                 >
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">

@@ -90,13 +90,13 @@ export default function KandangContent() {
 
     const editData = async () => {
         const coopId = editingKandang.id;
-        console.log(editingKandang);
+
         const updateCoop = {
             coopNumber: editingKandang.coopNum,
             populationStart: editingKandang.populationStart,
             dateIn: editingKandang.dateIn,
         };
-
+        console.log(updateCoop);
         try {
             const responseCoop = await axios
                 .put(
@@ -163,6 +163,8 @@ export default function KandangContent() {
         {
             title: "Nomor Kandang",
             dataIndex: "coopNumber",
+            width: 100,
+            align: "center",
         },
         {
             title: "Nama Ternak",
@@ -178,10 +180,14 @@ export default function KandangContent() {
         {
             title: "Populasi Awal",
             dataIndex: "populationStart",
+            width: 100,
+            align: "center",
         },
         {
             title: "Populasi Update",
             dataIndex: "populationUpdate",
+            width: 100,
+            align: "center",
         },
         {
             title: "Tanggal Masuk",
@@ -192,6 +198,7 @@ export default function KandangContent() {
             dataIndex: "harvestTime",
         },
         {
+            align: "center",
             title: "Actions",
             render: (record) => {
                 return (
@@ -276,6 +283,7 @@ export default function KandangContent() {
                     </Button>
                 </div>
                 <Table
+                    className="ant-pagination-simple"
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
@@ -283,7 +291,8 @@ export default function KandangContent() {
 
                 {/* Add Coop */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-2xl"
+                    closable={false}
+                    className="-my-14 overflow-hidden p-0 rounded-2xl"
                     title="Add Kandang"
                     visible={isAdding}
                     footer={[
@@ -313,6 +322,7 @@ export default function KandangContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingKandang?.coopNumber}
+                            placeholder={"Nomor Kandang"}
                             onChange={(e) => {
                                 setAddingKandang((pre) => {
                                     return {
@@ -328,6 +338,7 @@ export default function KandangContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingKandang?.populationStart}
+                            placeholder="Populasi Awal"
                             onChange={(e) => {
                                 setAddingKandang((pre) => {
                                     return {
@@ -399,6 +410,7 @@ export default function KandangContent() {
 
                 {/* Edit Coop */}
                 <Modal
+                    closable={false}
                     className="overflow-hidden p-0 rounded-2xl"
                     title="Edit Kandang"
                     visible={isEditing}

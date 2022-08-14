@@ -7,6 +7,8 @@ import axios from "axios";
 import Label from "../Label";
 import SearchFarm from "../SearchFarm";
 
+// import 'antd/dist/antd.less'
+
 const { Option } = Select;
 
 export default function TernakContent() {
@@ -165,6 +167,8 @@ export default function TernakContent() {
         {
             title: "Masa Pembesaran",
             dataIndex: "growthTime",
+            render: (growthTime) => `${growthTime} Hari`,
+            width: 200,
         },
         {
             title: "Harga",
@@ -176,10 +180,11 @@ export default function TernakContent() {
             render: (breed) => breed.breedType,
         },
         {
+            align: "center",
             title: "Actions",
             render: (record) => {
                 return (
-                    <>
+                    <div className="text-center">
                         <EditOutlined
                             onClick={() => {
                                 onEditTernak(record);
@@ -191,7 +196,7 @@ export default function TernakContent() {
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
-                    </>
+                    </div>
                 );
             },
         },
@@ -261,13 +266,17 @@ export default function TernakContent() {
                     </Button>
                 </div>
                 <Table
+                    className="ant-pagination-simple"
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
+                    // pagination={{style:{color:"maroon"}}}
+                    // style
                 ></Table>
 
                 {/* Add Ternak */}
                 <Modal
+                    closable={false}
                     className="overflow-hidden p-0 rounded-2xl"
                     title="Add Ternak"
                     visible={isAdding}
@@ -298,6 +307,7 @@ export default function TernakContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingTernak?.farmName}
+                            placeholder={"Nama Ternak"}
                             onChange={(e) => {
                                 setAddingTernak((pre) => {
                                     return { ...pre, farmName: e.target.value };
@@ -308,6 +318,7 @@ export default function TernakContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingTernak?.buyPrice}
+                            placeholder={"Harga"}
                             onChange={(e) => {
                                 setAddingTernak((pre) => {
                                     return { ...pre, buyPrice: e.target.value };
@@ -318,6 +329,7 @@ export default function TernakContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingTernak?.growthTime}
+                            placeholder={"Masa Pembesaran"}
                             onChange={(e) => {
                                 setAddingTernak((pre) => {
                                     return {
@@ -330,6 +342,7 @@ export default function TernakContent() {
                         <Label forInput={"breed"}>Kategori Ternak</Label>
                         <Select
                             className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            placeholder={"Pilih Kategori"}
                             onSelect={(value) => {
                                 setAddingTernak((pre) => {
                                     return { ...pre, breedId: value };
@@ -339,19 +352,19 @@ export default function TernakContent() {
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                                value="a73f9e02-7c38-46f3-8dfb-0edbd871987f"
                             >
                                 Ayam Petelur
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="d54f904b-6741-469b-842a-7012131dd093"
+                                value="e4d520d9-0a30-4119-8b1a-e10159ce116d"
                             >
                                 Ayam Pedaging
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                                value="e7b5d83b-ca2f-4bc4-8369-07d044f9afbf"
                             >
                                 Ayam Aduan
                             </Option>
@@ -361,6 +374,7 @@ export default function TernakContent() {
 
                 {/* Edit Ternak */}
                 <Modal
+                    closable={false}
                     className="overflow-hidden p-0 rounded-2xl"
                     title="Edit Ternak"
                     visible={isEditing}
@@ -428,21 +442,21 @@ export default function TernakContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                            value="a73f9e02-7c38-46f3-8dfb-0edbd871987f"
                         >
                             Ayam Petelur
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="d54f904b-6741-469b-842a-7012131dd093"
+                            value="e4d520d9-0a30-4119-8b1a-e10159ce116d"
                         >
                             Ayam Pedaging
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                            value="e7b5d83b-ca2f-4bc4-8369-07d044f9afbf"
                         >
-                            Ayam Petarunk
+                            Ayam Aduan
                         </Option>
                     </Select>
                 </Modal>

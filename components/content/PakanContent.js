@@ -1,11 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Table, Modal, Input, Select } from "antd";
-import {
-    EditOutlined,
-    DeleteOutlined,
-    EyeOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import Label from "../Label";
@@ -201,6 +197,7 @@ export default function PakanContent() {
     };
 
     const getHistory = async (record) => {
+        console.log(record);
         const id = record.id;
         try {
             const response = await axios
@@ -235,7 +232,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData()
+                    getData();
                     setHistorySource(historySource.concat(res.data));
                     resetAddHistory();
                 });
@@ -263,7 +260,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData()
+                    getData();
                     resetEditingHistory();
                     setTimeout((res) => setIsDetail(false), 500);
                 });
@@ -374,6 +371,7 @@ export default function PakanContent() {
         {
             title: "Jenis Pakan",
             dataIndex: "feedType",
+            align: "center"
         },
         {
             title: "Harga / Kg",
@@ -386,16 +384,18 @@ export default function PakanContent() {
         },
         {
             title: "Stock",
+            align: "center",
             dataIndex: "feedStock",
             render: (feedStock) => {
                 return `${feedStock.stock} Kg`;
             },
         },
         {
+            align: "center",
             title: "Actions",
             render: (record) => {
                 return (
-                    <>
+                    <div className="text-center">
                         <EditOutlined
                             onClick={() => {
                                 onEditPakan(record);
@@ -413,7 +413,7 @@ export default function PakanContent() {
                                 onDetail(record);
                             }}
                         />
-                    </>
+                    </div>
                 );
             },
         },
@@ -437,12 +437,14 @@ export default function PakanContent() {
         {
             title: "Status",
             dataIndex: "historyStatus",
+            align: "center"
         },
         {
+            align: "center",
             title: "Actions",
             render: (record) => {
                 return (
-                    <>
+                    <div className="text-center">
                         <EditOutlined
                             className="ml-3"
                             onClick={() => {
@@ -455,7 +457,7 @@ export default function PakanContent() {
                                 onDeleteHistory(record);
                             }}
                         /> */}
-                    </>
+                    </div>
                 );
             },
         },
@@ -465,6 +467,7 @@ export default function PakanContent() {
         {
             title: "Week",
             dataIndex: "week",
+            align: "center"
         },
         {
             title: "Nama Ternak",
@@ -482,10 +485,11 @@ export default function PakanContent() {
             render: (feedQuantityOnGram) => `${feedQuantityOnGram} gram`,
         },
         {
+            align: "center",
             title: "Actions",
             render: (record) => {
                 return (
-                    <>
+                    <div className="text-center">
                         {/* <PlusCircleOutlined
                             className="text-maroon"
                             onClick={onAddRecomendation}
@@ -502,7 +506,7 @@ export default function PakanContent() {
                                 onDeleteRecomendation(record);
                             }}
                         />
-                    </>
+                    </div>
                 );
             },
         },
@@ -617,6 +621,8 @@ export default function PakanContent() {
     const onChangeForm = (e) => {
         e.preventDefault();
     };
+
+    console.log(addingPakan)
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -652,6 +658,7 @@ export default function PakanContent() {
                     </div>
                 </div>
                 <Table
+                    className="ant-pagination-simple"
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
@@ -659,6 +666,7 @@ export default function PakanContent() {
 
                 {/* Add Pakan */}
                 <Modal
+                    closable={false}
                     className="p-0 -my-24 overflow-hidden rounded-2xl"
                     title="Add Pakan"
                     visible={isAdding}
@@ -689,27 +697,18 @@ export default function PakanContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.feedName}
+                            placeholder={"Nama Pakan"}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
                                     return { ...pre, feedName: e.target.value };
                                 });
                             }}
                         />
-                        <Label forInput={"feedType"}>Jenis Pakan</Label>
-                        <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingPakan?.feedType}
-                            onChange={(e) => {
-                                setAddingPakan((pre) => {
-                                    return { ...pre, feedType: e.target.value };
-                                });
-                            }}
-                        />
-
                         <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.pricePerKg}
+                            placeholder={"Harga Pakan / Kg"}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
                                     return {
@@ -723,6 +722,7 @@ export default function PakanContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingPakan?.feedQuantity}
+                            placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
                                 setAddingPakan((pre) => {
                                     return {
@@ -732,6 +732,30 @@ export default function PakanContent() {
                                 });
                             }}
                         />
+                        <Label forInput={"feedType"}>Jenis Pakan</Label>
+                        <Select
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Pilih Jenis Pakan"
+                            onSelect={(value) => {
+                                setAddingPakan((pre) => {
+                                    return { ...pre, feedType: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="starter"
+                            >
+                                Starter
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="finisher"
+                            >
+                                Finisher
+                            </Option>
+                        </Select>
                         <Label forInput={"categoryTernak"}>
                             Kategori Ternak
                         </Label>
@@ -747,19 +771,19 @@ export default function PakanContent() {
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                                value="a73f9e02-7c38-46f3-8dfb-0edbd871987f"
                             >
                                 Ayam Petelur
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="d54f904b-6741-469b-842a-7012131dd093"
+                                value="e4d520d9-0a30-4119-8b1a-e10159ce116d"
                             >
                                 Ayam Pedaging
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                                value="e7b5d83b-ca2f-4bc4-8369-07d044f9afbf"
                             >
                                 Ayam Aduan
                             </Option>
@@ -769,6 +793,7 @@ export default function PakanContent() {
 
                 {/* Edit Pakan */}
                 <Modal
+                    closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Edit Pakan"
                     visible={isEditing}
@@ -837,19 +862,19 @@ export default function PakanContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="72274e48-977e-4451-9df1-a1b5a8df59ad"
+                            value="a73f9e02-7c38-46f3-8dfb-0edbd871987f"
                         >
                             Ayam Petelur
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="d54f904b-6741-469b-842a-7012131dd093"
+                            value="e4d520d9-0a30-4119-8b1a-e10159ce116d"
                         >
                             Ayam Pedaging
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="54c2e855-49f1-4e7e-a5c6-3531377a8c4f"
+                            value="e7b5d83b-ca2f-4bc4-8369-07d044f9afbf"
                         >
                             Ayam Aduan
                         </Option>
@@ -858,7 +883,9 @@ export default function PakanContent() {
 
                 {/* Detail Pakan */}
                 <Modal
-                    className="p-0 -my-20 overflow-hidden rounded-2xl"
+                    width={700}
+                    closable={false}
+                    className="p-0 -my-20 overflow-hidden rounded-2xl "
                     visible={isDetail}
                     title="Detail Pakan"
                     footer={[
@@ -876,6 +903,7 @@ export default function PakanContent() {
                     ]}
                 >
                     <Table
+                    
                         bordered={true}
                         columns={columnHistory}
                         dataSource={historySource}
@@ -885,6 +913,7 @@ export default function PakanContent() {
 
                 {/* add History */}
                 <Modal
+                    closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Add History"
                     visible={isAddingHistory}
@@ -915,6 +944,7 @@ export default function PakanContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingHistory?.feedQuantity}
+                            placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
                                 setAddingHistory((pre) => {
                                     return {
@@ -951,6 +981,7 @@ export default function PakanContent() {
 
                 {/* Edit Pakan History */}
                 <Modal
+                    closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Edit History Pakan"
                     visible={isEditingHistory}
@@ -1014,6 +1045,7 @@ export default function PakanContent() {
 
                 {/* Add Recomendation */}
                 <Modal
+                    closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Add Feed Recomendation"
                     visible={isAddingRecomendation}
@@ -1044,6 +1076,7 @@ export default function PakanContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingRecomendation?.week}
+                            placeholder={"week"}
                             onChange={(e) => {
                                 setAddingRecomendation((pre) => {
                                     return {
@@ -1057,6 +1090,7 @@ export default function PakanContent() {
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             value={addingRecomendation?.feedQuantity}
+                            placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
                                 setAddingRecomendation((pre) => {
                                     return {
@@ -1115,6 +1149,7 @@ export default function PakanContent() {
 
                 {/* Edit Recomendation */}
                 <Modal
+                    closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Edit Feed Recomendation"
                     visible={isEditingRecomendation}
@@ -1156,7 +1191,7 @@ export default function PakanContent() {
                     <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingRecomendation?.feedQuantityOnGram}
+                        placeholder={editingRecomendation?.feedQuantityOnGram}
                         onChange={(e) => {
                             setEditingRecomendation((pre) => {
                                 return {
@@ -1169,7 +1204,7 @@ export default function PakanContent() {
                     <Label forInput={"farmName"}>Nama Ternak</Label>
                     <Select
                         className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        placeholder={editingRecomendation?.farm.farmName}
+                        defaultValue={editingRecomendation?.farm.farmName}
                         onSelect={(value) => {
                             setEditingRecomendation((pre) => {
                                 return { ...pre, farmId: value };
@@ -1191,7 +1226,7 @@ export default function PakanContent() {
                     <Label forInput={"feedName"}>Nama Pakan</Label>
                     <Select
                         className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        placeholder={editingRecomendation?.masterFeed.feedName}
+                        defaultValue={editingRecomendation?.masterFeed.feedName}
                         onSelect={(value) => {
                             setEditingRecomendation((pre) => {
                                 return { ...pre, masterFeedId: value };
