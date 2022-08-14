@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
     AreaChart,
     Area,
@@ -8,44 +9,50 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-const data = [
-    {
-        date: "01-08-22",
-        population: 20,
-    },
-    {
-        date: "07-08-22",
-        population: 25,
-    },
-    {
-        date: "14-08-22",
-        population: 19,
-    },
-    {
-        date: "21-08-22",
-        population: 30,
-    },
-    {
-        date: "28-08-22",
-        population: 50,
-    },
-    {
-        date: "04-09-22",
-        population: 45,
-    },
-    {
-        date: "11-09-22",
-        population: 52,
-    },
-];
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip bg-cream text-sm font-medium rounded-md p-2">
+          <p className="label">{`${label.substring(0,10)}`}</p>
+          <p className="intro">{`Populasi : ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
 
 export default function ProgressChartComp() {
+    const [dataSource, setDataSource] = useState([]);
+
+    const getData = async () => {
+        try {
+            const report = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/report/array", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    setDataSource(res.data.weeklyCoopPopulation);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     return (
         <div style={{ width: "100%", height: 200 }}>
             <ResponsiveContainer>
                 <AreaChart
-                    data={data}
-                    margin={{ top: 0, right: 0, left: -61, bottom: -31 }}
+                    data={dataSource}
+                    margin={{ top: 4, right: 0, left: -61, bottom: -31 }}
                 >
                     <defs>
                         <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
@@ -61,9 +68,9 @@ export default function ProgressChartComp() {
                             />
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="week" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />}  />
                     <Area
                         type="monotone"
                         dataKey="population"

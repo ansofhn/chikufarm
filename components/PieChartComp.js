@@ -2,13 +2,26 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip bg-cream text-sm font-medium p-2 rounded-md">
+          {/* <p className="label">{`${}`}</p> */}
+          <p className="intro">{`${payload[0].value} Ekor`}</p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
+
 export default function PieChartComp() {
     const [dataSource, setDataSource] = useState([]);
 
     const getData = async () => {
         try {
             const report = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/report", {
+                .get("https://chikufarm-app.herokuapp.com/api/report/array", {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "access_token"
@@ -26,7 +39,7 @@ export default function PieChartComp() {
     useEffect(() => {
         getData();
     }, []);
-    console.log(dataSource)
+
     const COLORS = ["#76323F", "gray", "#DEC9B5"];
     return (
         <PieChart width={150} height={150}>
@@ -44,6 +57,7 @@ export default function PieChartComp() {
                     />
                 ))}
             </Pie>
+            <Tooltip content={<CustomTooltip />} />
         </PieChart>
     );
 }
