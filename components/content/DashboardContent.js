@@ -9,7 +9,9 @@ export default function DashboardContent() {
     const [dataPedaging, setDataPedaging] = useState([]);
     const [dataPetelur, setDataPetelur] = useState([]);
     const [dataAduan, setDataAduan] = useState([]);
-    const [dataWeekly, setDataWeekly] = useState([])
+    // const [dataWeekly, setDataWeekly] = useState([]);
+    const [first, setFirst] = useState([]);
+    const [last, setLast] = useState([]);
 
     const getData = async () => {
         try {
@@ -24,31 +26,16 @@ export default function DashboardContent() {
                 .then((res) => {
                     console.log(res.data);
                     setDataSource(res.data);
-                    setDataWeekly(res.data.weeklyCoopPopulation)
+                    setFirst(res.data.weeklyCoopPopulation[0].population);
+                    setLast(res.data.weeklyCoopPopulation.slice(-1)[0].population)
                     setDataPedaging(res.data.populationPerBreed[0]);
                     setDataPetelur(res.data.populationPerBreed[1]);
                     setDataAduan(res.data.populationPerBreed[2]);
-                });
-
-            const reportqb = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/report/qb", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
-                .then((res) => {
-                    console.log(res.data);
                 });
         } catch (error) {
             console.log(error);
         }
     };
-
-    useEffect(() => {
-        getData();
-    }, []);
 
     const totalPakan = () => {
         if (dataSource.totalFeedStock >= 1000) {
@@ -57,6 +44,17 @@ export default function DashboardContent() {
             return `${dataSource.totalFeedStock} Kg`;
         }
     };
+
+    const progress = () => {
+        const all = dataSource.currentPopulation;
+        return(((last - first) / all) * 100)
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72" priority>
@@ -97,13 +95,8 @@ export default function DashboardContent() {
             <div className="grid grid-cols-2 gap-5 p-2">
                 <div className="w-full overflow-hidden text-sm bg-white rounded-lg text-textColor">
                     <div className="p-4">Progress Populasi</div>
-                    <div className="p-4 text-5xl font-bold text-textColor">
-                        {`${(
-                            ((dataSource.currentPopulation -
-                                dataSource.populationStart) /
-                                dataSource.currentPopulation) *
-                            100
-                        ).toFixed(0)} %`}
+                    <div className="px-5 py-2 text-5xl font-bold text-textColor">
+                        {`${progress().toFixed(0)} %`}
                     </div>
                     <div className="self-end">
                         <ProgressChartComp />
