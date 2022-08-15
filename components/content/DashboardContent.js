@@ -9,7 +9,6 @@ export default function DashboardContent() {
     const [dataPedaging, setDataPedaging] = useState([]);
     const [dataPetelur, setDataPetelur] = useState([]);
     const [dataAduan, setDataAduan] = useState([]);
-    // const [dataWeekly, setDataWeekly] = useState([]);
     const [first, setFirst] = useState([]);
     const [last, setLast] = useState([]);
 
@@ -24,10 +23,11 @@ export default function DashboardContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data);
                     setDataSource(res.data);
                     setFirst(res.data.weeklyCoopPopulation[0].population);
-                    setLast(res.data.weeklyCoopPopulation.slice(-1)[0].population)
+                    setLast(
+                        res.data.weeklyCoopPopulation.slice(-1)[0].population
+                    );
                     setDataPedaging(res.data.populationPerBreed[0]);
                     setDataPetelur(res.data.populationPerBreed[1]);
                     setDataAduan(res.data.populationPerBreed[2]);
@@ -47,14 +47,12 @@ export default function DashboardContent() {
 
     const progress = () => {
         const all = dataSource.currentPopulation;
-        return(((last - first) / all) * 100)
+        return ((last - first) / all) * 100;
     };
 
     useEffect(() => {
         getData();
     }, []);
-
-    
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72" priority>
@@ -88,9 +86,7 @@ export default function DashboardContent() {
                 </div>
             </div>
 
-            <div className="p-4 text-sm font-semibold text-textColor">
-                Statistics
-            </div>
+            <div className="p-4 font-semibold text-textColor">Statistics</div>
 
             <div className="grid grid-cols-2 gap-5 p-2">
                 <div className="w-full overflow-hidden text-sm bg-white rounded-lg text-textColor">
@@ -161,90 +157,8 @@ export default function DashboardContent() {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="grid w-full h-56 col-span-2 grid-rows-3 p-3 text-sm bg-white rounded-lg text-textColor">
-                        <div className="flex items-center justify-between">
-                            <div className="pl-2 pr-4">Populasi</div>
-                            <Population />
-                            <div className="pr-4">12</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="pl-2">Kematian</div>
-                            <Death />
-                            <div className="pr-4">2</div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <div className="pl-2 pr-8">Pakan</div>
-                            <Feed />
-                            <div className="pr-4">0.5</div>
-                        </div>
-                    </div> */}
                 </div>
             </div>
-            {/* <div>
-                <div className="px-4 pt-4 font-bold text-md text-textColor">
-                    Jenis Ternak
-                </div>
-                <div className="px-4 pb-4 text-sm text-textColor">
-                    Menunjukkan jenis ternak yang dimiliki
-                </div>
-            </div>
-            <div className="grid grid-cols-2 gap-5 p-2">
-                <div className="grid w-full grid-cols-2 p-4 text-sm font-semibold bg-white rounded-lg text-textColor">
-                    Kategori Hewan Ternak
-                    <div className="col-start-1 font-semibold">
-                        <PieChartComp />
-                    </div>
-                    <div className="self-center font-medium">
-                        <div className="mb-1 flex items-center justify-between mr-4">
-                            <MinusSquareFilled className="text-maroon" />
-                            {dataPedaging.breed}
-                            <span className="ml-2 text-base">
-                                {(
-                                    (dataPedaging.population /
-                                        dataSource.currentPopulation) *
-                                    100
-                                ).toFixed(1)}
-                                %
-                            </span>
-                        </div>
-                        <div className="mb-1 flex items-center justify-between mr-4">
-                            <MinusSquareFilled className="text-gray-500" />
-                            {dataPetelur.breed}
-                            <span className="ml-2 text-base">
-                                {(
-                                    (dataPetelur.population /
-                                        dataSource.currentPopulation) *
-                                    100
-                                ).toFixed(1)}
-                                %
-                            </span>
-                        </div>
-                        <div className="mb-1 flex items-center justify-between mr-4">
-                            <MinusSquareFilled className="text-softBrown" />
-                            {dataAduan.breed}
-                            <span className="ml-2 text-base">
-                                {(
-                                    (dataAduan.population /
-                                        dataSource.currentPopulation) *
-                                    100
-                                ).toFixed(1)}
-                                %
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div className="grid w-full grid-cols-2 p-4 text-sm font-semibold bg-white rounded-lg text-textColor">
-                    Persentase Kematian
-                    <div className="col-start-1 ml-5 font-medium">
-                        <div className="mb-6">
-                            Ayam <span className="text-lg ml-14">2.3%</span>
-                        </div>
-                        <div>
-                            Bebek <span className="text-lg ml-14">2.0%</span>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
         </div>
     );
 }

@@ -136,6 +136,7 @@ export default function KandangContent() {
         } catch (error) {}
     };
 
+    console.log(addingKandang)
     const searchData = async (search, filter) => {
         try {
             const response = await axios
@@ -173,9 +174,9 @@ export default function KandangContent() {
         },
         {
             title: "Nama Pakan",
-            dataIndex: "feedRecomendation",
-            render: (feedRecomendation) =>
-                feedRecomendation.masterFeed.feedName,
+            dataIndex: "masterFeed",
+            render: (masterFeed) =>
+                masterFeed.feedName,
         },
         {
             title: "Populasi Awal",

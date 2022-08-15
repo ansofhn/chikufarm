@@ -7,6 +7,9 @@ const nextConfig = {
     sassOptions: {
         includePaths: [path.join(__dirname, "styles")],
     },
+    images: {
+        domains: ["https://chikufarm-app.herokuapp.com/"],
+      },
 };
 
 module.exports = nextConfig;

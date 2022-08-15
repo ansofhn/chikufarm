@@ -1,6 +1,6 @@
 import { Button, Table, Modal, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import Label from "../Label";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
@@ -203,8 +203,6 @@ export default function ReportContent() {
         getData();
     }, []);
 
-    let deathCount;
-
     const columns = [
         {
             title: "Kandang",
@@ -222,14 +220,9 @@ export default function ReportContent() {
         {
             title: "Kematian",
             align: "center",
-            // dataIndex: "dailyCoop",
-            // render: (_, record) => {
-            //     (deathCount = record.dailyCoop.map((data) => {
-            //         return data.death;
-            //     })).reduce((prev, current) => {
-            //         return prev + current;
-            //     });
-            // },
+            render: (_, record) => {
+                return record.populationStart - record.populationUpdate;
+            },
         },
         {
             title: "Status Pakan",
@@ -295,6 +288,12 @@ export default function ReportContent() {
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
+                        <EyeOutlined
+                            className="ml-3 text-textColor"
+                            onClick={() => {
+                                onDetail(record);
+                            }}
+                        />
                     </>
                 );
             },
@@ -320,6 +319,7 @@ export default function ReportContent() {
                 setDataSource((pre) => {
                     return pre.filter((report) => report.id !== record.id);
                 });
+                // deleteData(record)
             },
         });
     };
@@ -331,6 +331,17 @@ export default function ReportContent() {
         setEditingReport(null);
         setIsEditing(false);
     };
+
+    // const onDetail = (record) => {
+    //     getHistory(record);
+    //     setDetailPakan({ ...record });
+    //     setIsDetail(true);
+    // };
+
+    // const resetDetail = () => {
+    //     setIsDetail(false);
+    //     setDetailPakan(null);
+    // };
 
     const onChangeForm = (e) => {
         e.preventDefault();
@@ -383,8 +394,8 @@ export default function ReportContent() {
                         className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddReport}
                     >
-                        <MdAdd className="self-center text-lg" />
-                        Add
+                        <MdAdd className="self-center text-base" />
+                        Create
                     </Button>
                 </div>
                 <Table
@@ -506,7 +517,7 @@ export default function ReportContent() {
                     </form>
                 </Modal>
 
-                {/* Edit User */}
+                {/* Edit Report */}
                 <Modal
                     closable={false}
                     className="rounded-lg overflow-hidden p-0"

@@ -267,28 +267,6 @@ export default function PakanContent() {
         } catch (error) {}
     };
 
-    // const deleteHistory = async (record) => {
-    //     const id = record.id;
-    //     try {
-    //         const response = await axios
-    //             .delete(
-    //                 `https://chikufarm-app.herokuapp.com/api/feed-history/${id}`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${localStorage.getItem(
-    //                             "access_token"
-    //                         )}`,
-    //                     },
-    //                 }
-    //             )
-    //             .then((res) => {
-    //                 console.log(res);
-    //             });
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
     const addRecomendation = async () => {
         try {
             const response = await axios
@@ -771,19 +749,19 @@ export default function PakanContent() {
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="a73f9e02-7c38-46f3-8dfb-0edbd871987f"
+                                value="f0503001-246d-412e-bba0-6167684e007b"
                             >
                                 Ayam Petelur
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="e4d520d9-0a30-4119-8b1a-e10159ce116d"
+                                value="11b40011-8ec1-4b08-8ca6-d377ee6ede13"
                             >
                                 Ayam Pedaging
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="e7b5d83b-ca2f-4bc4-8369-07d044f9afbf"
+                                value="95000005-ab6e-4782-8b26-312b484edfc6"
                             >
                                 Ayam Aduan
                             </Option>
@@ -862,19 +840,19 @@ export default function PakanContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="a73f9e02-7c38-46f3-8dfb-0edbd871987f"
+                            value="f0503001-246d-412e-bba0-6167684e007b"
                         >
                             Ayam Petelur
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="e4d520d9-0a30-4119-8b1a-e10159ce116d"
+                            value="11b40011-8ec1-4b08-8ca6-d377ee6ede13"
                         >
                             Ayam Pedaging
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="e7b5d83b-ca2f-4bc4-8369-07d044f9afbf"
+                            value="95000005-ab6e-4782-8b26-312b484edfc6"
                         >
                             Ayam Aduan
                         </Option>
@@ -1037,10 +1015,10 @@ export default function PakanContent() {
                     </div>
                 </div>
                 <Table
+                    className="ant-pagination-simple"
                     bordered={true}
                     columns={columnRecommend}
                     dataSource={feedRecommend}
-                    pagination={false}
                 ></Table>
 
                 {/* Add Recomendation */}
