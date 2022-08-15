@@ -62,8 +62,17 @@ export default function ProfileMenu() {
                 <div>
                     <Menu.Button className="inline-flex justify-center px-4 py-2 w-full text-sm font-medium bg-white rounded-lg shadow-sm text-textColor focus:outline-none">
                         <div className="flex gap-2">
-                            <div className="flex items-center mx-2">
-                                <Image src={Photo} />
+                            <div className="flex items-center mr-2">
+                                <Image
+                                    className="rounded-lg bg-cream"
+                                    loader={() => dataUser.profilePicture}
+                                    priority={true}
+                                    unoptimized={true}
+                                    src={`https://chikufarm-app.herokuapp.com/api/users/profile-picture/${dataUser.profilePicture}`}
+                                    width={40}
+                                    height={40}
+                                    alt=""
+                                />
                             </div>
                             <div className="items-start">
                                 <div className="text-xs font-light">

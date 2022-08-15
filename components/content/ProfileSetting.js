@@ -1,49 +1,107 @@
 import { IdcardOutlined, LockOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "../Button";
 import Label from "../Label";
 import Input from "../Input";
 import UploadImage from "../UploadImage";
+import Image from "next/image";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function ProfileSetting() {
-    const [fullName, setFullName] = useState("");
-    const [userName, setUserName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [dataUser, setDataUser] = useState([]);
+    const [editingUser, setEditingUser] = useState(null);
+    const [pathImage, setPathImage] = useState("")
 
-    const onFinish = async () => {
+    const CheckToken = () => {
         try {
-            const data = {
-                fullName: fullName,
-                username: userName,
-                email: email,
-                phone: phone,
-                password: password,
-                role: "guest",
-            };
-            console.log(data);
-        } catch (e) {
-            e.message;
+            if (localStorage.getItem("access_token") !== null) {
+                return jwt_decode(localStorage.getItem("access_token"));
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
-    const onChangeFullname = (e) => {
-        setFullName(e.target.value);
-        console.log(fullName);
+    const getData = async () => {
+        const decoded = CheckToken();
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/users/${decoded.sub}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setDataUser(res.data.data);
+                });
+        } catch (error) {
+            console.log(error);
+        }
     };
-    const onChangeUsername = (e) => {
-        setUserName(e.target.value);
-        console.log(userName);
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    const onFinish = async () => {
+        const id = dataUser.id;
+
+        try {
+            const response = await axios
+                .put(
+                    `https://chikufarm-app.herokuapp.com/api/users/${id}`,
+                    editingUser,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    getData();
+                    setEditingUser(null);
+                    if (res.status === 201 || 200) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Change Saved",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                    }
+                });
+        } catch (e) {
+            e.message;
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: "Please make some changes !",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
+        }
     };
-    const onChangeEmail = (e) => {
-        setEmail(e.target.value);
-        console.log(email);
-    };
-    const onChangePhone = (e) => {
-        setPhone(e.target.value);
-        console.log(phone);
-    };
+
+    const handleChangeImage = (filepath)=>{
+        console.log(filepath, "isi handleImage")
+        setPathImage(filepath)
+    }
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
@@ -56,7 +114,7 @@ export default function ProfileSetting() {
 
             <div className="p-10 bg-white rounded-lg">
                 <div className="grid grid-cols-4 gap-4">
-                    <div className="border-r border-shadowColor">
+                    <div className="grid grid-rows-2 h-48   ">
                         <Link href={"/dashboard/profile/accountSetting"}>
                             <Button className="my-4 text-textColor font-semibold">
                                 <IdcardOutlined className="text-center text-xl mr-4" />
@@ -70,28 +128,53 @@ export default function ProfileSetting() {
                             </Button>
                         </Link>
                     </div>
-                    <div className="col-span-3 p-5">
-                        <div className="text-lg text-textColor font-bold">
+                    <div className="col-span-3 p-5 border-l border-shadowColor">
+                        <div className="ml-6 text-lg text-textColor font-bold">
                             General Info
                         </div>
-                        <UploadImage/>
-                        <div className="mt-10 grid-cols-2 grid gap-4">
+                        <div className="ml-6 my-4">
+                            <Image
+                                className="rounded-full bg-cream"
+                                loader={() => dataUser.profilePicture}
+                                priority={true}
+                                unoptimized={true}
+                                src={`https://chikufarm-app.herokuapp.com/api/users/profile-picture/${dataUser.profilePicture}`}
+                                width={130}
+                                height={130}
+                                alt=""
+                            />
+                            <UploadImage onChangeImage={handleChangeImage}/>
+                        </div>
+
+                        <div className="ml-6 mt-10 grid-cols-2 grid gap-4">
                             <div className="mb-4">
                                 <Label forInput="fullname">Fullname</Label>
                                 <Input
                                     className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
-                                    name="fullname"
-                                    id="fullname"
-                                    onChange={onChangeFullname}
+                                    defaultValue={dataUser.fullName}
+                                    onChange={(e) => {
+                                        setEditingUser((pre) => {
+                                            return {
+                                                ...pre,
+                                                fullName: e.target.value,
+                                            };
+                                        });
+                                    }}
                                 />
                             </div>
                             <div className="mb-4">
                                 <Label forInput="username">Username</Label>
                                 <Input
                                     className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
-                                    name="username"
-                                    id="username"
-                                    onChange={onChangeUsername}
+                                    defaultValue={dataUser.userName}
+                                    onChange={(e) => {
+                                        setEditingUser((pre) => {
+                                            return {
+                                                ...pre,
+                                                userName: e.target.value,
+                                            };
+                                        });
+                                    }}
                                 />
                             </div>
                             <div className="mb-4">
@@ -99,25 +182,38 @@ export default function ProfileSetting() {
                                 <Input
                                     className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
                                     type="email"
-                                    name="email"
-                                    id="email"
-                                    onChange={onChangeEmail}
+                                    defaultValue={dataUser.email}
+                                    onChange={(e) => {
+                                        setEditingUser((pre) => {
+                                            return {
+                                                ...pre,
+                                                email: e.target.value,
+                                            };
+                                        });
+                                    }}
                                 />
                             </div>
                             <div className="mb-4">
                                 <Label forInput="phone">Phone</Label>
                                 <Input
                                     className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
-                                    name="phone"
-                                    id="phone"
-                                    onChange={onChangePhone}
+                                    defaultValue={dataUser.phone}
+                                    onChange={(e) => {
+                                        setEditingUser((pre) => {
+                                            return {
+                                                ...pre,
+                                                phone: e.target.value,
+                                            };
+                                        });
+                                    }}
                                 />
                             </div>
                             <div className="mt-5 col-span-2">
                                 <Button
-                                    className={
-                                        "w-full rounded-lg bg-cream text-maroon text-sm font-semibold"
-                                    }
+                                    className="w-full rounded-lg bg-cream text-maroon text-sm font-semibold"
+                                    key="submit"
+                                    type="submit"
+                                    onClick={onFinish}
                                 >
                                     Save Change
                                 </Button>

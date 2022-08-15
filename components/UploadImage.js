@@ -6,17 +6,27 @@ import axios from "axios";
 const UploadImage = ({ onChangeImage }) => {
     const uploadHandler = async (args) => {
         console.log("masuk sini");
+        console.log(args)
         try {
             const formData = new FormData();
-            formData.append("file", args.file);
-
+            formData.append("profilePicture", args.file);
+            console.log(formData)
             const processImage = await axios
-                .post("https://chikufarm-app.herokuapp.com/api/users/profile-picture", formData, {
-                    headers: { "content-type": "multipart/form-data" },
-                })
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/users/profile-picture",
+                    formData,
+                    {
+                        headers: {
+                            "content-type": "multipart/form-data",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
                 .then((res) => {
-                    message.success("berhasil Upload File");
-                    onChangeImage(res.data.data.filename);
+                    message.success("Berhasil Upload Image");
+                    onChangeImage(res.data.data.profilePicture);
                 });
         } catch (e) {
             console.log(e, "apa errornya");
@@ -26,7 +36,7 @@ const UploadImage = ({ onChangeImage }) => {
 
     return (
         <Upload customRequest={(args) => uploadHandler(args)} multiple={false}>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            <Button className="border-none rounded-lg shadow shadow-cream text-textColor hover:text-maroon focus:text-maroon ring-0" icon={<UploadOutlined />}></Button>
         </Upload>
     );
 };
