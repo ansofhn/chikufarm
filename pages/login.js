@@ -7,17 +7,18 @@ import Label from "../components/Label";
 import LoginLayout from "../layouts/LoginLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Login() {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-    
+
     const router = useRouter();
 
     const CheckToken = () => {
         try {
-            if((localStorage.getItem("access_token")) !== null){
-                localStorage.removeItem("access_token")
+            if (localStorage.getItem("access_token") !== null) {
+                localStorage.removeItem("access_token");
             }
         } catch (error) {
             console.log(error);
@@ -50,12 +51,33 @@ export default function Login() {
                     const access_token = respond.data.access_token;
                     localStorage.setItem("access_token", access_token);
                     if (respond.status === 201 || 200) {
-                        window.alert("Login Success !!");
+                        let timerInterval;
+                        Swal.fire({
+                            position: "top",
+                            html: "Login Success !",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            },
+                        });
                         router.push("/dashboard");
                     }
                 });
         } catch (e) {
             e.message;
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: "Login Failed !",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 

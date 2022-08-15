@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Label from "../components/Label";
 import RegisterLayout from "../layouts/RegisterLayout";
-
+import Swal from "sweetalert2";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -18,8 +18,8 @@ export default function Register() {
 
     const CheckToken = () => {
         try {
-            if((localStorage.getItem("access_token")) !== null){
-                localStorage.removeItem("access_token")
+            if (localStorage.getItem("access_token") !== null) {
+                localStorage.removeItem("access_token");
             }
         } catch (error) {
             console.log(error);
@@ -50,12 +50,33 @@ export default function Register() {
                 )
                 .then((respond) => {
                     if (respond.status === 201 || 200) {
-                        window.alert("Sukses Registrasi");
+                        let timerInterval;
+                        Swal.fire({
+                            position: "top",
+                            html: "Register Success !",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            },
+                        });
                         router.push("/login");
                     }
                 });
         } catch (e) {
             e.message;
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: "Register Failed !",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 
