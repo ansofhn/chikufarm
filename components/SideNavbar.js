@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { Disclosure } from "@headlessui/react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import Logo from "../public/Title.png";
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
+
 // import icons from react-icons
-import { MdOutlineDashboard } from "react-icons/md";
+import { MdOutlineDashboard, MdOutlineSell } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa";
 import { RiHome2Line, RiHandCoinLine } from "react-icons/ri";
@@ -15,6 +18,10 @@ import { Button } from "antd";
 import { useRouter } from "next/router";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+
+function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+}
 
 export default function SideNavbar() {
     const [role, setRole] = useState("");
@@ -82,7 +89,7 @@ export default function SideNavbar() {
                             {/* Sidebar items */}
                             <div className="pb-4 my-4 w-full border-gray-100">
                                 <Link href={"/dashboard"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Dashboard
@@ -95,7 +102,7 @@ export default function SideNavbar() {
                             <div className="pb-4 my-96 w-full border-gray-100">
                                 <Button
                                     onClick={handleLogout}
-                                    className="flex gap-4 justify-start items-center px-5 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group"
+                                    className="flex gap-4 justify-start items-center px-2 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group"
                                 >
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
@@ -128,23 +135,93 @@ export default function SideNavbar() {
                             {/* Sidebar items */}
                             <div className="pb-4 my-4 w-full border-gray-100">
                                 <Link href={"/dashboard"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Dashboard
                                         </h3>
                                     </div>
                                 </Link>
-                                <Link href={"/dashboard/report"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Report Harian
-                                        </h3>
+                                <Menu
+                                    as="div"
+                                    className="inline-block relative text-left"
+                                >
+                                    <div>
+                                        <Menu.Button className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                            <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
+                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                                Report Harian
+                                            </h3>
+                                        </Menu.Button>
                                     </div>
-                                </Link>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 bg-white rounded-lg shadow-lg origin-top-right focus:outline-none">
+                                            <div className="py-1">
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="/dashboard/profile/accountSetting"
+                                                            className={classNames(
+                                                                active
+                                                                    ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                    : "text-gray-700",
+                                                                "block px-4 py-2 text-sm"
+                                                            )}
+                                                        >
+                                                            Update Profile
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="dashboard/profile/passwordSetting"
+                                                            className={classNames(
+                                                                active
+                                                                    ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                    : "text-gray-700",
+                                                                "block px-4 py-2 text-sm"
+                                                            )}
+                                                        >
+                                                            Change Password
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+                                                <form method="POST" action="/">
+                                                    <Menu.Item>
+                                                        {({ active }) => (
+                                                            <button
+                                                                onClick={
+                                                                    handleLogout
+                                                                }
+                                                                type="submit"
+                                                                className={classNames(
+                                                                    active
+                                                                        ? "bg-white text-textColor hover:bg-gray-50"
+                                                                        : "text-gray-700",
+                                                                    "block px-4 py-2 w-full text-sm text-left"
+                                                                )}
+                                                            >
+                                                                Sign out
+                                                            </button>
+                                                        )}
+                                                    </Menu.Item>
+                                                </form>
+                                            </div>
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu>
                                 <Link href={"/dashboard/kandang"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHome2Line className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Kandang
@@ -152,7 +229,7 @@ export default function SideNavbar() {
                                     </div>
                                 </Link>
                                 <Link href={"/dashboard/pakan"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHandCoinLine className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Pakan
@@ -160,7 +237,7 @@ export default function SideNavbar() {
                                     </div>
                                 </Link>
                                 <Link href={"/dashboard/ternak"}>
-                                    <div className="flex gap-4 justify-start items-center p-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <FiFeather className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Ternak
@@ -173,7 +250,7 @@ export default function SideNavbar() {
                             <div className="pb-4 my-40 w-full border-gray-100">
                                 <Button
                                     onClick={handleLogout}
-                                    className="flex gap-4 justify-start items-center px-5 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group"
+                                    className="flex gap-4 justify-start items-center px-2 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group"
                                 >
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
@@ -199,38 +276,111 @@ export default function SideNavbar() {
                     <div className="fixed top-0 -left-96 z-20 p-6 w-1/2 bg-white ease-out delay-150 -h-96 lg:top-4 lg:bottom-4 lg:left-4 lg:w-60 lg:rounded-xl peer-focus:left-0 peer:transition">
                         <div className="flex flex-col justify-start items-center">
                             {/* Logo */}
-                            <div className="pb-4 w-full text-base text-center border-b border-gray-100 cursor-pointer">
-                                <Image src={Logo} />
-                            </div>
+                            <Link href={"/dashboard"}>
+                                <div className="pb-4 w-full text-base text-center border-b border-gray-100 cursor-pointer">
+                                    <Image src={Logo} />
+                                </div>
+                            </Link>
 
                             {/* Sidebar items */}
                             <div className="pb-4 my-4 w-full border-gray-100">
                                 <Link href={"/dashboard"}>
-                                    <div className="flex gap-4 justify-start items-center py-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <MdOutlineDashboard className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Dashboard
                                         </h3>
                                     </div>
                                 </Link>
-                                <Link href={"/dashboard/report"}>
-                                    <div className="flex gap-4 justify-start items-center py-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Report Harian
-                                        </h3>
+                                <Menu
+                                    as="div"
+                                    className="inline-block relative text-left"
+                                >
+                                    <div>
+                                        <Menu.Button className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group ">
+                                            <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
+                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                                Report Harian
+                                            </h3>
+                                            <svg
+                                                aria-hidden="true"
+                                                class="w-4 h-4"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    fill-rule="evenodd"
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </Menu.Button>
                                     </div>
-                                </Link>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <Menu.Items className="absolute top-0 ml-56 z-10 w-44 bg-white rounded-md shadow-md origin-top-left focus:outline-none">
+                                            <div className="py-1">
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="/dashboard/report"
+                                                            className={classNames(
+                                                                active
+                                                                    ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                    : "text-gray-700",
+                                                                "block px-4 py-2 text-sm"
+                                                            )}
+                                                        >
+                                                            Report by Coop
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="dashboard/profile/passwordSetting"
+                                                            className={classNames(
+                                                                active
+                                                                    ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                    : "text-gray-700",
+                                                                "block px-4 py-2 text-sm"
+                                                            )}
+                                                        >
+                                                            All Detail Report
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+                                            </div>
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu>
                                 <Link href={"/dashboard/user"}>
-                                    <div className="flex gap-4 justify-start items-center py-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <FaRegUser className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             User
                                         </h3>
                                     </div>
                                 </Link>
+                                <Link href={"/dashboard/harvest"}>
+                                    <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                        <MdOutlineSell className="text-2xl text-maroon group-hover:text-maroon" />
+                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                            Panen
+                                        </h3>
+                                    </div>
+                                </Link>
                                 <Link href={"/dashboard/kandang"}>
-                                    <div className="flex gap-4 justify-start items-center py-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHome2Line className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Kandang
@@ -238,7 +388,7 @@ export default function SideNavbar() {
                                     </div>
                                 </Link>
                                 <Link href={"/dashboard/pakan"}>
-                                    <div className="flex gap-4 justify-start items-center py-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHandCoinLine className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Pakan
@@ -246,7 +396,7 @@ export default function SideNavbar() {
                                     </div>
                                 </Link>
                                 <Link href={"/dashboard/ternak"}>
-                                    <div className="flex gap-4 justify-start items-center py-2 px-5 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
+                                    <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <FiFeather className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
                                             Ternak
@@ -256,10 +406,10 @@ export default function SideNavbar() {
                             </div>
 
                             {/* logout Section */}
-                            <div className="pb-4 my-36 w-full border-gray-100">
+                            <div className="pb-4 my-28 w-full border-gray-100">
                                 <Button
                                     onClick={handleLogout}
-                                    className="flex gap-4 justify-start items-center px-5 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group focus:border-cream focus:ring-0"
+                                    className="flex gap-4 justify-start items-center px-6 py-5 mb-2 w-full rounded-md border transition duration-200 cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group focus:border-cream focus:ring-0"
                                 >
                                     <HiOutlineLogout className="text-2xl text-maroon group-hover:text-maroon" />
                                     <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
