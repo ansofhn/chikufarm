@@ -11,9 +11,10 @@ const { Option } = Select;
 
 export default function PakanContent() {
     const [isAdding, setIsAdding] = useState(false);
-    const [addingPakan, setAddingPakan] = useState(null);
+    const [addingFeed, setAddingFeed] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingPakan, setEditingPakan] = useState(null);
+    const [editingFeed, setEditingFeed] = useState(null);
+    const [totalDataFeed, setTotalDataFeed] = useState([]);
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
@@ -23,33 +24,22 @@ export default function PakanContent() {
     const [addingHistory, setAddingHistory] = useState(null);
     const [isEditingHistory, setIsEditingHistory] = useState(false);
     const [editingHistory, setEditingHistory] = useState(null);
-    const [detailPakan, setDetailPakan] = useState(null);
     const [historySource, setHistorySource] = useState([]);
 
-    const [feedRecommend, setFeedRecommend] = useState([]);
     const [farm, setFarm] = useState([]);
-    const [isAddingRecomendation, setIsAddingRecomendation] = useState(false);
-    const [addingRecomendation, setAddingRecomendation] = useState(null);
-    const [isEditingRecomendation, setIsEditingRecomendation] = useState(false);
-    const [editingRecomendation, setEditingRecomendation] = useState(null);
 
-    const getData = async () => {
+    const [feedRecommend, setFeedRecommend] = useState([]);
+    const [isAddingRecommend, setIsAddingRecommend] = useState(false);
+    const [addingRecommend, setAddingRecommend] = useState(null);
+    const [isEditingRecommend, setIsEditingRecommend] = useState(false);
+    const [editingRecommend, setEditingRecommend] = useState(null);
+    const [totalDataRecommend, setTotalDataRecommend] = useState([]);
+
+    const getData = async (pageFeed) => {
         try {
-            const response = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/feed", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
-                .then((res) => {
-                    setDataSource(res.data.items);
-                });
-
-            const responseRecommend = await axios
+            const responseFeed = await axios
                 .get(
-                    "https://chikufarm-app.herokuapp.com/api/feed-recomendation",
+                    `https://chikufarm-app.herokuapp.com/api/feed?page=${pageFeed}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -59,7 +49,9 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    setFeedRecommend(res.data.items);
+                    console.log(res.data.meta);
+                    setTotalDataFeed(res.data.meta.totalItems);
+                    setDataSource(res.data.items);
                 });
 
             const responseFarm = await axios
@@ -79,15 +71,16 @@ export default function PakanContent() {
     };
 
     useEffect(() => {
-        getData();
+        getData(1);
+        getDataRecommend(1);
     }, []);
 
-    const addData = async () => {
+    const addDataFeed = async () => {
         try {
             const response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/feed",
-                    addingPakan,
+                    addingFeed,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -106,13 +99,13 @@ export default function PakanContent() {
         }
     };
 
-    const editData = async () => {
-        const feedId = editingPakan.id;
-        const breedId = editingPakan.breedId;
+    const editDataFeed = async () => {
+        const feedId = editingFeed.id;
+        const breedId = editingFeed.breedId;
         const updateFeed = {
-            feedName: editingPakan.feedName,
-            feedType: editingPakan.feedType,
-            pricePerKg: editingPakan.pricePerKg,
+            feedName: editingFeed.feedName,
+            feedType: editingFeed.feedType,
+            pricePerKg: editingFeed.pricePerKg,
         };
         const updateBreed = {
             id: feedId,
@@ -134,7 +127,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
 
@@ -152,13 +145,13 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
         } catch (error) {}
     };
 
-    const deleteData = async (record) => {
+    const deleteDataFeed = async (record) => {
         const id = record.id;
         try {
             const response = await axios
@@ -232,7 +225,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     setHistorySource(historySource.concat(res.data));
                     resetAddHistory();
                 });
@@ -260,9 +253,30 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     resetEditingHistory();
                     setTimeout((res) => setIsDetail(false), 500);
+                });
+        } catch (error) {}
+    };
+
+    const getDataRecommend = async (pageRecommend) => {
+        try {
+            const responseRecommend = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/feed-recomendation?page=${pageRecommend}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data);
+                    setTotalDataRecommend(res.data.meta.totalItems);
+                    setFeedRecommend(res.data.items);
                 });
         } catch (error) {}
     };
@@ -272,7 +286,7 @@ export default function PakanContent() {
             const response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/feed-recomendation",
-                    addingRecomendation,
+                    addingRecommend,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -291,12 +305,12 @@ export default function PakanContent() {
         }
     };
     const editRecomendation = async () => {
-        const recomendationId = editingRecomendation.id;
+        const recomendationId = editingRecommend.id;
         const updateRecomendation = {
-            week: editingRecomendation.week,
-            feedQuantity: editingRecomendation.feedQuantity,
-            farmId: editingRecomendation.farmId,
-            masterFeedId: editingRecomendation.masterFeedId,
+            week: editingRecommend.week,
+            feedQuantity: editingRecommend.feedQuantity,
+            farmId: editingRecommend.farmId,
+            masterFeedId: editingRecommend.masterFeedId,
         };
         try {
             const response = await axios
@@ -313,7 +327,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     resetEditingRecomendation();
                 });
         } catch (error) {}
@@ -349,7 +363,7 @@ export default function PakanContent() {
         {
             title: "Jenis Pakan",
             dataIndex: "feedType",
-            align: "center"
+            align: "center",
         },
         {
             title: "Harga / Kg",
@@ -376,13 +390,13 @@ export default function PakanContent() {
                     <div className="text-center">
                         <EditOutlined
                             onClick={() => {
-                                onEditPakan(record);
+                                onEditFeed(record);
                             }}
                         />
                         <DeleteOutlined
                             className="ml-3 text-maroon"
                             onClick={() => {
-                                onDeletePakan(record);
+                                onDeleteFeed(record);
                             }}
                         />
                         <EyeOutlined
@@ -415,7 +429,7 @@ export default function PakanContent() {
         {
             title: "Status",
             dataIndex: "historyStatus",
-            align: "center"
+            align: "center",
         },
         {
             align: "center",
@@ -429,12 +443,6 @@ export default function PakanContent() {
                                 onEditHistory(record);
                             }}
                         />
-                        {/* <DeleteOutlined
-                            className="ml-3 text-maroon"
-                            onClick={() => {
-                                onDeleteHistory(record);
-                            }}
-                        /> */}
                     </div>
                 );
             },
@@ -445,7 +453,7 @@ export default function PakanContent() {
         {
             title: "Week",
             dataIndex: "week",
-            align: "center"
+            align: "center",
         },
         {
             title: "Nama Ternak",
@@ -468,10 +476,6 @@ export default function PakanContent() {
             render: (record) => {
                 return (
                     <div className="text-center">
-                        {/* <PlusCircleOutlined
-                            className="text-maroon"
-                            onClick={onAddRecomendation}
-                        /> */}
                         <EditOutlined
                             className="ml-3"
                             onClick={() => {
@@ -490,42 +494,30 @@ export default function PakanContent() {
         },
     ];
 
-    const onAddPakan = () => {
+    const onAddFeed = () => {
         setIsAdding(true);
-        setAddingPakan(null);
+        setAddingFeed(null);
     };
 
     const resetAdd = () => {
         setIsAdding(false);
-        setAddingPakan(null);
+        setAddingFeed(null);
     };
 
-    const onDeletePakan = (record) => {
+    const onDeleteFeed = (record) => {
         Modal.confirm({
             title: "Delete Pakan",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
                 setDataSource((pre) => {
-                    return pre.filter((pakan) => pakan.id !== record.id);
+                    return pre.filter((feed) => feed.id !== record.id);
                 });
-                deleteData(record);
+                deleteDataFeed(record);
             },
         });
     };
-    // const onDeleteHistory = (record) => {
-    //     Modal.confirm({
-    //         title: "Delete History",
-    //         okText: "Yes",
-    //         okType: "danger",
-    //         onOk: () => {
-    //             setHistorySource((pre) => {
-    //                 return pre.filter((history) => history.id !== record.id);
-    //             });
-    //             deleteHistory(record);
-    //         },
-    //     });
-    // };
+
     const onDeleteRecomendation = (record) => {
         Modal.confirm({
             title: "Delete Recomendation",
@@ -539,13 +531,13 @@ export default function PakanContent() {
             },
         });
     };
-    const onEditPakan = (record) => {
+    const onEditFeed = (record) => {
         setIsEditing(true);
-        setEditingPakan({ ...record });
+        setEditingFeed({ ...record });
     };
     const resetEditing = () => {
         setIsEditing(false);
-        setEditingPakan(null);
+        setEditingFeed(null);
     };
 
     const onAddHistory = () => {
@@ -568,39 +560,36 @@ export default function PakanContent() {
     };
 
     const onAddRecomendation = () => {
-        setIsAddingRecomendation(true);
-        setAddingRecomendation(null);
+        setIsAddingRecommend(true);
+        setAddingRecommend(null);
     };
 
     const resetAddRecomendation = () => {
-        setIsAddingRecomendation(false);
-        setAddingRecomendation(null);
+        setIsAddingRecommend(false);
+        setAddingRecommend(null);
     };
 
     const onEditRecomendation = (record) => {
-        setIsEditingRecomendation(true);
-        setEditingRecomendation({ ...record });
+        setIsEditingRecommend(true);
+        setEditingRecommend({ ...record });
     };
     const resetEditingRecomendation = () => {
-        setIsEditingRecomendation(false);
-        setEditingRecomendation(null);
+        setIsEditingRecommend(false);
+        setEditingRecommend(null);
     };
 
     const onDetail = (record) => {
         getHistory(record);
-        setDetailPakan({ ...record });
         setIsDetail(true);
     };
     const resetDetail = () => {
         setIsDetail(false);
-        setDetailPakan(null);
     };
 
     const onChangeForm = (e) => {
         e.preventDefault();
     };
 
-    console.log(addingPakan)
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -628,7 +617,7 @@ export default function PakanContent() {
                         </Button>
                         <Button
                             className="flex items-center gap-2 px-4 py-3 font-semibold transition duration-300 border-none rounded-lg text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                            onClick={onAddPakan}
+                            onClick={onAddFeed}
                         >
                             <MdAdd className="self-center text-lg" />
                             Add
@@ -640,6 +629,13 @@ export default function PakanContent() {
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
+                    pagination={{
+                        pageSize: 10,
+                        total: totalDataFeed,
+                        onChange: (page) => {
+                            getData(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add Pakan */}
@@ -663,7 +659,7 @@ export default function PakanContent() {
                                 className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={addData}
+                                onClick={addDataFeed}
                             >
                                 Add
                             </Button>
@@ -674,10 +670,10 @@ export default function PakanContent() {
                         <Label forInput={"feedName"}>Nama Pakan</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingPakan?.feedName}
+                            value={addingFeed?.feedName}
                             placeholder={"Nama Pakan"}
                             onChange={(e) => {
-                                setAddingPakan((pre) => {
+                                setAddingFeed((pre) => {
                                     return { ...pre, feedName: e.target.value };
                                 });
                             }}
@@ -685,10 +681,10 @@ export default function PakanContent() {
                         <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingPakan?.pricePerKg}
+                            value={addingFeed?.pricePerKg}
                             placeholder={"Harga Pakan / Kg"}
                             onChange={(e) => {
-                                setAddingPakan((pre) => {
+                                setAddingFeed((pre) => {
                                     return {
                                         ...pre,
                                         pricePerKg: e.target.value,
@@ -699,10 +695,10 @@ export default function PakanContent() {
                         <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingPakan?.feedQuantity}
+                            value={addingFeed?.feedQuantity}
                             placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
-                                setAddingPakan((pre) => {
+                                setAddingFeed((pre) => {
                                     return {
                                         ...pre,
                                         feedQuantity: e.target.value,
@@ -715,7 +711,7 @@ export default function PakanContent() {
                             className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Pilih Jenis Pakan"
                             onSelect={(value) => {
-                                setAddingPakan((pre) => {
+                                setAddingFeed((pre) => {
                                     return { ...pre, feedType: value };
                                 });
                             }}
@@ -741,7 +737,7 @@ export default function PakanContent() {
                             className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Kategori Ternak"
                             onSelect={(value) => {
-                                setAddingPakan((pre) => {
+                                setAddingFeed((pre) => {
                                     return { ...pre, breedId: value };
                                 });
                             }}
@@ -790,7 +786,7 @@ export default function PakanContent() {
                                 className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={editData}
+                                onClick={editDataFeed}
                             >
                                 Save
                             </Button>
@@ -800,9 +796,9 @@ export default function PakanContent() {
                     <Label forInput={"feedName"}>Nama Pakan</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingPakan?.feedName}
+                        value={editingFeed?.feedName}
                         onChange={(e) => {
-                            setEditingPakan((pre) => {
+                            setEditingFeed((pre) => {
                                 return { ...pre, feedName: e.target.value };
                             });
                         }}
@@ -810,9 +806,9 @@ export default function PakanContent() {
                     <Label forInput={"feedType"}>Jenis Pakan</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingPakan?.feedType}
+                        value={editingFeed?.feedType}
                         onChange={(e) => {
-                            setEditingPakan((pre) => {
+                            setEditingFeed((pre) => {
                                 return { ...pre, feedType: e.target.value };
                             });
                         }}
@@ -820,9 +816,9 @@ export default function PakanContent() {
                     <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingPakan?.pricePerKg}
+                        value={editingFeed?.pricePerKg}
                         onChange={(e) => {
-                            setEditingPakan((pre) => {
+                            setEditingFeed((pre) => {
                                 return { ...pre, pricePerKg: e.target.value };
                             });
                         }}
@@ -830,9 +826,9 @@ export default function PakanContent() {
                     <Label forInput={"breed"}>Kategori Ternak</Label>
                     <Select
                         className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        defaultValue={editingPakan?.breed.breedType}
+                        defaultValue={editingFeed?.breed.breedType}
                         onSelect={(value) => {
-                            setEditingPakan((pre) => {
+                            setEditingFeed((pre) => {
                                 return { ...pre, breedId: value };
                             });
                         }}
@@ -881,7 +877,6 @@ export default function PakanContent() {
                     ]}
                 >
                     <Table
-                    
                         bordered={true}
                         columns={columnHistory}
                         dataSource={historySource}
@@ -1019,6 +1014,13 @@ export default function PakanContent() {
                     bordered={true}
                     columns={columnRecommend}
                     dataSource={feedRecommend}
+                    pagination={{
+                        pageSize: 10,
+                        total: totalDataRecommend,
+                        onChange: (page) => {
+                            getDataRecommend(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add Recomendation */}
@@ -1026,7 +1028,7 @@ export default function PakanContent() {
                     closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Add Feed Recomendation"
-                    visible={isAddingRecomendation}
+                    visible={isAddingRecommend}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
@@ -1053,10 +1055,10 @@ export default function PakanContent() {
                         <Label forInput={"week"}>Week</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingRecomendation?.week}
+                            value={addingRecommend?.week}
                             placeholder={"week"}
                             onChange={(e) => {
-                                setAddingRecomendation((pre) => {
+                                setAddingRecommend((pre) => {
                                     return {
                                         ...pre,
                                         week: e.target.value,
@@ -1067,10 +1069,10 @@ export default function PakanContent() {
                         <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingRecomendation?.feedQuantity}
+                            value={addingRecommend?.feedQuantity}
                             placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
-                                setAddingRecomendation((pre) => {
+                                setAddingRecommend((pre) => {
                                     return {
                                         ...pre,
                                         feedQuantity: e.target.value,
@@ -1083,7 +1085,7 @@ export default function PakanContent() {
                             className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
-                                setAddingRecomendation((pre) => {
+                                setAddingRecommend((pre) => {
                                     return { ...pre, farmId: value };
                                 });
                             }}
@@ -1105,7 +1107,7 @@ export default function PakanContent() {
                             className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
-                                setAddingRecomendation((pre) => {
+                                setAddingRecommend((pre) => {
                                     return { ...pre, masterFeedId: value };
                                 });
                             }}
@@ -1130,7 +1132,7 @@ export default function PakanContent() {
                     closable={false}
                     className="p-0 overflow-hidden rounded-2xl"
                     title="Edit Feed Recomendation"
-                    visible={isEditingRecomendation}
+                    visible={isEditingRecommend}
                     footer={[
                         <div className="flex justify-center my-2">
                             <Button
@@ -1156,9 +1158,9 @@ export default function PakanContent() {
                     <Label forInput={"week"}>Week</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingRecomendation?.week}
+                        value={editingRecommend?.week}
                         onChange={(e) => {
-                            setEditingRecomendation((pre) => {
+                            setEditingRecommend((pre) => {
                                 return {
                                     ...pre,
                                     week: e.target.value,
@@ -1169,9 +1171,9 @@ export default function PakanContent() {
                     <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        placeholder={editingRecomendation?.feedQuantityOnGram}
+                        placeholder={editingRecommend?.feedQuantityOnGram}
                         onChange={(e) => {
-                            setEditingRecomendation((pre) => {
+                            setEditingRecommend((pre) => {
                                 return {
                                     ...pre,
                                     feedQuantity: e.target.value,
@@ -1182,9 +1184,9 @@ export default function PakanContent() {
                     <Label forInput={"farmName"}>Nama Ternak</Label>
                     <Select
                         className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        defaultValue={editingRecomendation?.farm.farmName}
+                        defaultValue={editingRecommend?.farm.farmName}
                         onSelect={(value) => {
-                            setEditingRecomendation((pre) => {
+                            setEditingRecommend((pre) => {
                                 return { ...pre, farmId: value };
                             });
                         }}
@@ -1204,9 +1206,9 @@ export default function PakanContent() {
                     <Label forInput={"feedName"}>Nama Pakan</Label>
                     <Select
                         className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        defaultValue={editingRecomendation?.masterFeed.feedName}
+                        defaultValue={editingRecommend?.masterFeed.feedName}
                         onSelect={(value) => {
-                            setEditingRecomendation((pre) => {
+                            setEditingRecommend((pre) => {
                                 return { ...pre, masterFeedId: value };
                             });
                         }}

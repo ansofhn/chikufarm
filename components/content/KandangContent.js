@@ -11,19 +11,20 @@ const { Option } = Select;
 
 export default function KandangContent() {
     const [isAdding, setIsAdding] = useState(false);
-    const [addingKandang, setAddingKandang] = useState(null);
+    const [addingCoop, setAddingCoop] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingKandang, setEditingKandang] = useState(null);
+    const [editingCoop, setEditingCoop] = useState(null);
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
     const [farm, setFarm] = useState([]);
     const [feed, setFeed] = useState([]);
+    const [totalDataCoop, setTotalDataCoop] = useState([]);
 
-    const getData = async () => {
+    const getData = async (page) => {
         try {
             const coopdata = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/coop", {
+                .get(`https://chikufarm-app.herokuapp.com/api/coop?page=${page}&size=10`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "access_token"
@@ -32,8 +33,10 @@ export default function KandangContent() {
                 })
                 .then((res) => {
                     console.log(res.data.items);
+                    setTotalDataCoop(res.data.meta.totalItems)
                     setDataSource(res.data.items);
                 });
+
             const responseFarm = await axios
                 .get("https://chikufarm-app.herokuapp.com/api/farm", {
                     headers: {
@@ -43,7 +46,6 @@ export default function KandangContent() {
                     },
                 })
                 .then((res) => {
-                    // console.log(res.data.items);
                     setFarm(res.data.items);
                 });
             const responseFeed = await axios
@@ -55,7 +57,6 @@ export default function KandangContent() {
                     },
                 })
                 .then((res) => {
-                    // console.log(res.data.items);
                     setFeed(res.data.items);
                 });
         } catch (error) {
@@ -64,12 +65,12 @@ export default function KandangContent() {
     };
 
     const addData = async () => {
-        console.log(addingKandang);
+        console.log(addingCoop);
         try {
             const response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/coop",
-                    addingKandang,
+                    addingCoop,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -80,7 +81,7 @@ export default function KandangContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     resetAdd();
                 });
         } catch (error) {
@@ -89,12 +90,12 @@ export default function KandangContent() {
     };
 
     const editData = async () => {
-        const coopId = editingKandang.id;
+        const coopId = editingCoop.id;
 
         const updateCoop = {
-            coopNumber: editingKandang.coopNum,
-            populationStart: editingKandang.populationStart,
-            dateIn: editingKandang.dateIn,
+            coopNumber: editingCoop.coopNum,
+            populationStart: editingCoop.populationStart,
+            dateIn: editingCoop.dateIn,
         };
         console.log(updateCoop);
         try {
@@ -113,7 +114,7 @@ export default function KandangContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
         } catch (error) {}
@@ -136,7 +137,7 @@ export default function KandangContent() {
         } catch (error) {}
     };
 
-    console.log(addingKandang)
+    console.log(addingCoop)
     const searchData = async (search, filter) => {
         try {
             const response = await axios
@@ -157,7 +158,7 @@ export default function KandangContent() {
     };
 
     useEffect(() => {
-        getData();
+        getData(1);
     }, []);
 
     const columns = [
@@ -223,12 +224,12 @@ export default function KandangContent() {
 
     const onAddKandang = () => {
         setIsAdding(true);
-        setAddingKandang(null);
+        setAddingCoop(null);
     };
 
     const resetAdd = () => {
         setIsAdding(false);
-        setAddingKandang(null);
+        setAddingCoop(null);
     };
 
     const onDeleteKandang = (record) => {
@@ -246,11 +247,11 @@ export default function KandangContent() {
     };
     const onEditKandang = (record) => {
         setIsEditing(true);
-        setEditingKandang({ ...record });
+        setEditingCoop({ ...record });
     };
     const resetEditing = () => {
         setIsEditing(false);
-        setEditingKandang(null);
+        setEditingCoop(null);
     };
 
     const onChangeForm = (e) => {
@@ -288,6 +289,13 @@ export default function KandangContent() {
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
+                    pagination={{
+                        pageSize: 10,
+                        total: totalDataCoop,
+                        onChange: (page) => {
+                            getData(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add Coop */}
@@ -322,10 +330,10 @@ export default function KandangContent() {
                         <Label forInput={"coopNumber"}>Nomor Kandang</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingKandang?.coopNumber}
+                            value={addingCoop?.coopNumber}
                             placeholder={"Nomor Kandang"}
                             onChange={(e) => {
-                                setAddingKandang((pre) => {
+                                setAddingCoop((pre) => {
                                     return {
                                         ...pre,
                                         coopNumber: e.target.value,
@@ -338,10 +346,10 @@ export default function KandangContent() {
                         </Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingKandang?.populationStart}
+                            value={addingCoop?.populationStart}
                             placeholder="Populasi Awal"
                             onChange={(e) => {
-                                setAddingKandang((pre) => {
+                                setAddingCoop((pre) => {
                                     return {
                                         ...pre,
                                         populationStart: e.target.value,
@@ -354,7 +362,7 @@ export default function KandangContent() {
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
                             placeholder="Year-Month-Day"
                             onChange={(e) => {
-                                setAddingKandang((pre) => {
+                                setAddingCoop((pre) => {
                                     return {
                                         ...pre,
                                         dateIn: e.target.value,
@@ -367,7 +375,7 @@ export default function KandangContent() {
                             className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
-                                setAddingKandang((pre) => {
+                                setAddingCoop((pre) => {
                                     return { ...pre, farmId: value };
                                 });
                             }}
@@ -389,7 +397,7 @@ export default function KandangContent() {
                             className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
-                                setAddingKandang((pre) => {
+                                setAddingCoop((pre) => {
                                     return { ...pre, masterFeedId: value };
                                 });
                             }}
@@ -440,10 +448,10 @@ export default function KandangContent() {
                     <Label forInput={"coopNumber"}>Nomor Kandang</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        // value={editingKandang?.coopNumber}
-                        placeholder={editingKandang?.coopNumber}
+                        // value={editingCoop?.coopNumber}
+                        placeholder={editingCoop?.coopNumber}
                         onChange={(e) => {
-                            setEditingKandang((pre) => {
+                            setEditingCoop((pre) => {
                                 return {
                                     ...pre,
                                     coopNum: e.target.value,
@@ -454,9 +462,9 @@ export default function KandangContent() {
                     <Label forInput={"populationStart"}>Populasi Awal</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingKandang?.populationStart}
+                        value={editingCoop?.populationStart}
                         onChange={(e) => {
-                            setEditingKandang((pre) => {
+                            setEditingCoop((pre) => {
                                 return {
                                     ...pre,
                                     populationStart: e.target.value,
@@ -467,9 +475,9 @@ export default function KandangContent() {
                     <Label forInput={"dateIn"}>Tanggal Masuk</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingKandang?.dateIn}
+                        value={editingCoop?.dateIn}
                         onChange={(e) => {
-                            setEditingKandang((pre) => {
+                            setEditingCoop((pre) => {
                                 return {
                                     ...pre,
                                     dateIn: e.target.value,

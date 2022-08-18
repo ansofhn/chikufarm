@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import ProgressChartComp from "../ProgressChartComp";
 import PieChartComp from "../PieChartComp";
-import axios from "axios";
 import { MinusSquareFilled } from "@ant-design/icons";
 
 export default function DashboardContent() {
@@ -25,9 +25,7 @@ export default function DashboardContent() {
                 .then((res) => {
                     setDataSource(res.data);
                     setFirst(res.data.weeklyCoopPopulation[0].population);
-                    setLast(
-                        res.data.weeklyCoopPopulation.slice(-1)[0].population
-                    );
+                    setLast(res.data.weeklyCoopPopulation.slice(-1)[0].population);
                     setDataPedaging(res.data.populationPerBreed[0]);
                     setDataPetelur(res.data.populationPerBreed[1]);
                     setDataAduan(res.data.populationPerBreed[2]);
@@ -55,7 +53,7 @@ export default function DashboardContent() {
     }, []);
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72" priority>
+        <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
                 Dashboard / Home
             </div>

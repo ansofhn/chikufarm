@@ -7,30 +7,33 @@ import axios from "axios";
 import Label from "../Label";
 import SearchFarm from "../SearchFarm";
 
-// import 'antd/dist/antd.less'
-
 const { Option } = Select;
 
 export default function TernakContent() {
     const [isAdding, setIsAdding] = useState(false);
-    const [addingTernak, setAddingTernak] = useState(null);
+    const [addingFarm, setAddingFarm] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingTernak, setEditingTernak] = useState(null);
+    const [editingFarm, setEditingFarm] = useState(null);
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [totalDataFarm, setTotalDataFarm] = useState([]);
 
-    const getData = async () => {
+    const getData = async (page) => {
         try {
-            const farmdata = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/farm", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
+            const responseFarm = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/farm?page=${page}&size=10`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
                 .then((res) => {
+                    setTotalDataFarm(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
         } catch (error) {
@@ -39,12 +42,12 @@ export default function TernakContent() {
     };
 
     const addData = async () => {
-        console.log(addingTernak);
+        console.log(addingFarm);
         try {
             const response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/farm",
-                    addingTernak,
+                    addingFarm,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -64,16 +67,16 @@ export default function TernakContent() {
     };
 
     const editData = async () => {
-        const ternakId = editingTernak.id;
-        const breedId = editingTernak.breedId;
+        const farmId = editingFarm.id;
+        const breedId = editingFarm.breedId;
 
         const updateFarm = {
-            farmName: editingTernak.farmName,
-            buyPrice: editingTernak.buyPrice,
-            growthTime: editingTernak.growthTime,
+            farmName: editingFarm.farmName,
+            buyPrice: editingFarm.buyPrice,
+            growthTime: editingFarm.growthTime,
         };
         const updateBreed = {
-            id: ternakId,
+            id: farmId,
             breedId: breedId,
         };
         console.log(updateBreed);
@@ -81,7 +84,7 @@ export default function TernakContent() {
         try {
             const responseFarm = await axios
                 .put(
-                    `https://chikufarm-app.herokuapp.com/api/farm/${ternakId}`,
+                    `https://chikufarm-app.herokuapp.com/api/farm/${farmId}`,
                     updateFarm,
                     {
                         headers: {
@@ -94,7 +97,7 @@ export default function TernakContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
 
@@ -113,7 +116,7 @@ export default function TernakContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
         } catch (error) {}
@@ -156,7 +159,7 @@ export default function TernakContent() {
     };
 
     useEffect(() => {
-        getData();
+        getData(1);
     }, []);
 
     const columns = [
@@ -187,12 +190,12 @@ export default function TernakContent() {
                     <div className="text-center">
                         <EditOutlined
                             onClick={() => {
-                                onEditTernak(record);
+                                onEditFarm(record);
                             }}
                         />
                         <DeleteOutlined
                             onClick={() => {
-                                onDeleteTernak(record);
+                                onDeleteFarm(record);
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
@@ -202,38 +205,38 @@ export default function TernakContent() {
         },
     ];
 
-    const onAddTernak = () => {
+    const onAddFarm = () => {
         setIsAdding(true);
-        setAddingTernak(null);
+        setAddingFarm(null);
     };
 
     const resetAdd = () => {
         setIsAdding(false);
-        setAddingTernak(null);
+        setAddingFarm(null);
     };
 
-    const onDeleteTernak = (record) => {
+    const onDeleteFarm = (record) => {
         Modal.confirm({
             title: "Delete Ternak",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
                 setDataSource((pre) => {
-                    return pre.filter((ternak) => ternak.id !== record.id);
+                    return pre.filter((farm) => farm.id !== record.id);
                 });
                 deleteData(record);
             },
         });
     };
 
-    const onEditTernak = (record) => {
+    const onEditFarm = (record) => {
         setIsEditing(true);
-        setEditingTernak({ ...record });
+        setEditingFarm({ ...record });
     };
 
     const resetEditing = () => {
         setIsEditing(false);
-        setEditingTernak(null);
+        setEditingFarm(null);
     };
 
     const onChangeForm = (e) => {
@@ -259,7 +262,7 @@ export default function TernakContent() {
                     />
                     <Button
                         className="flex gap-2 items-center px-4 py-3 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                        onClick={onAddTernak}
+                        onClick={onAddFarm}
                     >
                         <MdAdd className="self-center text-lg" />
                         Add
@@ -270,8 +273,13 @@ export default function TernakContent() {
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
-                    // pagination={{style:{color:"maroon"}}}
-                    // style
+                    pagination={{
+                        pageSize: 10,
+                        total: totalDataFarm,
+                        onChange: (page) => {
+                            getData(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add Ternak */}
@@ -306,10 +314,10 @@ export default function TernakContent() {
                         <Label forInput={"farmName"}>Nama Ternak</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingTernak?.farmName}
+                            value={addingFarm?.farmName}
                             placeholder={"Nama Ternak"}
                             onChange={(e) => {
-                                setAddingTernak((pre) => {
+                                setAddingFarm((pre) => {
                                     return { ...pre, farmName: e.target.value };
                                 });
                             }}
@@ -317,10 +325,10 @@ export default function TernakContent() {
                         <Label forInput={"buyPrice"}>Harga</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingTernak?.buyPrice}
+                            value={addingFarm?.buyPrice}
                             placeholder={"Harga"}
                             onChange={(e) => {
-                                setAddingTernak((pre) => {
+                                setAddingFarm((pre) => {
                                     return { ...pre, buyPrice: e.target.value };
                                 });
                             }}
@@ -328,10 +336,10 @@ export default function TernakContent() {
                         <Label forInput={"growthTime"}>Masa Pembesaran</Label>
                         <Input
                             className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            value={addingTernak?.growthTime}
+                            value={addingFarm?.growthTime}
                             placeholder={"Masa Pembesaran"}
                             onChange={(e) => {
-                                setAddingTernak((pre) => {
+                                setAddingFarm((pre) => {
                                     return {
                                         ...pre,
                                         growthTime: e.target.value,
@@ -344,7 +352,7 @@ export default function TernakContent() {
                             className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
                             placeholder={"Pilih Kategori"}
                             onSelect={(value) => {
-                                setAddingTernak((pre) => {
+                                setAddingFarm((pre) => {
                                     return { ...pre, breedId: value };
                                 });
                             }}
@@ -402,9 +410,9 @@ export default function TernakContent() {
                     <Label forInput={"farmName"}>Nama Ternak</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingTernak?.farmName}
+                        value={editingFarm?.farmName}
                         onChange={(e) => {
-                            setEditingTernak((pre) => {
+                            setEditingFarm((pre) => {
                                 return { ...pre, farmName: e.target.value };
                             });
                         }}
@@ -412,9 +420,9 @@ export default function TernakContent() {
                     <Label forInput={"buyPrice"}>Harga</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingTernak?.buyPrice}
+                        value={editingFarm?.buyPrice}
                         onChange={(e) => {
-                            setEditingTernak((pre) => {
+                            setEditingFarm((pre) => {
                                 return { ...pre, buyPrice: e.target.value };
                             });
                         }}
@@ -422,9 +430,9 @@ export default function TernakContent() {
                     <Label forInput={"growthTime"}>Masa Pembesaran</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingTernak?.growthTime}
+                        value={editingFarm?.growthTime}
                         onChange={(e) => {
-                            setEditingTernak((pre) => {
+                            setEditingFarm((pre) => {
                                 return { ...pre, growthTime: e.target.value };
                             });
                         }}
@@ -432,9 +440,9 @@ export default function TernakContent() {
                     <Label forInput={"breed"}>Kategori Ternak</Label>
                     <Select
                         className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
-                        defaultValue={editingTernak?.breed.breedType}
+                        defaultValue={editingFarm?.breed.breedType}
                         onSelect={(value) => {
-                            setEditingTernak((pre) => {
+                            setEditingFarm((pre) => {
                                 return { ...pre, breedId: value };
                             });
                         }}

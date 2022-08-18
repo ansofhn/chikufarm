@@ -6,6 +6,7 @@ import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import Label from "../Label";
 import SearchUser from "../SearchUser";
+import Link from "next/link";
 
 const { Option } = Select;
 
@@ -17,19 +18,45 @@ export default function UserContent() {
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [totalDataUser, setTotalDataUser] = useState([]);
 
-    const getData = async () => {
+    const getData = async (page) => {
         try {
             const response = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/users", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/users?page=${page}&size=10`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
                 .then((res) => {
+                    setTotalDataUser(res.data.meta.totalItems);
                     setDataSource(res.data.items);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getExcel = async () => {
+        try {
+            const response = await axios
+                .get(
+                    "https://chikufarm-app.herokuapp.com/api/users/download/excel",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
                 });
         } catch (error) {
             console.log(error);
@@ -93,7 +120,7 @@ export default function UserContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
 
@@ -112,7 +139,7 @@ export default function UserContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    getData();
+                    getData(1);
                     resetEditing();
                 });
         } catch (error) {
@@ -161,7 +188,7 @@ export default function UserContent() {
     };
 
     useEffect(() => {
-        getData();
+        getData(1);
     }, []);
 
     const columns = [
@@ -285,19 +312,41 @@ export default function UserContent() {
                             searchData(search, value);
                         }}
                     />
-                    <Button
-                        className="flex gap-2 items-center px-4 py-4 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                        onClick={onAddUser}
-                    >
-                        <MdAdd className="self-center text-lg" />
-                        Add
-                    </Button>
+                    <div className="flex gap-2">
+                        <Link
+                            href={
+                                "https://chikufarm-app.herokuapp.com/api/users/download/excel"
+                            }
+                        >
+                            <Button
+                                className="flex gap-2 items-center px-4 py-4 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                                onClick={getExcel}
+                            >
+                                Export
+                            </Button>
+                        </Link>
+
+                        <Button
+                            className="flex gap-2 items-center px-4 py-4 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            onClick={onAddUser}
+                        >
+                            <MdAdd className="self-center text-lg" />
+                            Add
+                        </Button>
+                    </div>
                 </div>
                 <Table
                     className="ant-pagination-simple"
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
+                    pagination={{
+                        pageSize: 10,
+                        total: totalDataUser,
+                        onChange: (page) => {
+                            getData(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add User */}

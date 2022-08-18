@@ -20,12 +20,15 @@ export default function ReportContent() {
     const [coop, setCoop] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
+    const [totalDataReport, setTotalDataReport] = useState([]);
+    const [detailReport, setDetailReport] = useState([]);
+    const [isDetail, setIsDetail] = useState(false);
 
-    const getData = async () => {
+    const getData = async (page) => {
         try {
             const response = await axios
                 .get(
-                    "https://chikufarm-app.herokuapp.com/api/coop/daily/report",
+                    `https://chikufarm-app.herokuapp.com/api/coop/daily/report?page=${page}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -36,6 +39,7 @@ export default function ReportContent() {
                 )
                 .then((res) => {
                     console.log(res.data.items);
+                    setTotalDataReport(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
 
@@ -48,7 +52,6 @@ export default function ReportContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data);
                     setReport(res.data);
                 });
 
@@ -66,6 +69,11 @@ export default function ReportContent() {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const getDetail = async (record) => {
+        console.log(record.dailyCoop);
+        setDetailReport(record.dailyCoop);
     };
 
     const addData = async () => {
@@ -87,7 +95,7 @@ export default function ReportContent() {
                 .then((res) => {
                     console.log(res);
                     resetAdd();
-                    getData();
+                    getData(1);
                 });
         } catch (error) {
             console.log(error);
@@ -95,25 +103,17 @@ export default function ReportContent() {
     };
 
     const editData = async () => {
-        const reportId = editingReport.id;
-        const roleId = editingReport.roleId;
-
-        const updateReport = {
-            fullName: editingReport.fullName,
-            userName: editingReport.userName,
-            email: editingReport.email,
-            phone: editingReport.phone,
+        console.log(editingReport);
+        const id = editingReport.id;
+        const update = {
+            death: editingReport.death,
+            feedQuantity: editingReport.feedQuantity,
         };
-        const updateRole = {
-            id: reportId,
-            roleId: roleId,
-        };
-
         try {
-            const responseUser = await axios
+            const response = await axios
                 .put(
-                    `https://chikufarm-app.herokuapp.com/api/daily-coop/${reportId}`,
-                    updateReport,
+                    `https://chikufarm-app.herokuapp.com/api/daily-coop/${id}`,
+                    update,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -125,8 +125,8 @@ export default function ReportContent() {
                 )
                 .then((res) => {
                     console.log(res);
-                    getData();
                     resetEditing();
+                    getData(1);
                 });
         } catch (error) {
             console.log(error);
@@ -149,17 +149,18 @@ export default function ReportContent() {
                 )
                 .then((res) => {
                     console.log(res);
+                    getData(1);
                 });
         } catch (error) {
             console.log(error);
         }
     };
 
-    const searchData = async (search, filter) => {
+    const searchData = async (search) => {
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/daily-coop?search=${search}&role=${filter}`,
+                    `https://chikufarm-app.herokuapp.com/api/coop/daily/report?search=${search}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -177,7 +178,6 @@ export default function ReportContent() {
     };
 
     const getOneCoop = async (id) => {
-        // const id = addingReport.coopId;
         try {
             const response = await axios
                 .get(`https://chikufarm-app.herokuapp.com/api/coop/${id}`, {
@@ -188,7 +188,6 @@ export default function ReportContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data);
                     setfeedRecomend(
                         res.data.feedRecomendation.feedQuantityOnGram
                     );
@@ -200,7 +199,7 @@ export default function ReportContent() {
     };
 
     useEffect(() => {
-        getData();
+        getData(1);
     }, []);
 
     const columns = [
@@ -277,6 +276,52 @@ export default function ReportContent() {
             render: (record) => {
                 return (
                     <>
+                        <EyeOutlined
+                            className="ml-3 text-textColor"
+                            onClick={() => {
+                                onDetail(record);
+                            }}
+                        />
+                    </>
+                );
+            },
+        },
+    ];
+
+    const columnDetail = [
+        {
+            title: "Tanggal",
+            width: 150,
+            dataIndex: "createdAt",
+            render: (createdAt) => {
+                return `${createdAt.substring(0, 10)}`;
+            },
+        },
+        {
+            title: "Waktu Penggunaan",
+            dataIndex: "usageTime",
+            align: "center",
+        },
+        {
+            title: "Jumlah Pakan yang diberikan",
+            align: "center",
+            dataIndex: "feedQuantity",
+            render: (feedQuantity) => {
+                return `${feedQuantity} Kg`;
+            },
+        },
+        {
+            title: "Kematian",
+            dataIndex: "death",
+            align: "center",
+        },
+
+        {
+            align: "center",
+            title: "Actions",
+            render: (record) => {
+                return (
+                    <div className="text-center">
                         <EditOutlined
                             onClick={() => {
                                 onEditReport(record);
@@ -288,13 +333,7 @@ export default function ReportContent() {
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
-                        <EyeOutlined
-                            className="ml-3 text-textColor"
-                            onClick={() => {
-                                onDetail(record);
-                            }}
-                        />
-                    </>
+                    </div>
                 );
             },
         },
@@ -316,10 +355,10 @@ export default function ReportContent() {
             okText: "Yes",
             okType: "danger",
             onOk: () => {
-                setDataSource((pre) => {
+                setDetailReport((pre) => {
                     return pre.filter((report) => report.id !== record.id);
                 });
-                // deleteData(record)
+                deleteData(record);
             },
         });
     };
@@ -332,20 +371,27 @@ export default function ReportContent() {
         setIsEditing(false);
     };
 
-    // const onDetail = (record) => {
-    //     getHistory(record);
-    //     setDetailPakan({ ...record });
-    //     setIsDetail(true);
-    // };
-
-    // const resetDetail = () => {
-    //     setIsDetail(false);
-    //     setDetailPakan(null);
-    // };
+    const onDetail = (record) => {
+        getDetail(record);
+        setIsDetail(true);
+    };
+    const resetDetail = () => {
+        setIsDetail(false);
+    };
 
     const onChangeForm = (e) => {
         e.preventDefault();
     };
+
+    const totalPakan = () => {
+        if (report.totalFeedStock >= 1000) {
+            return `${(report.totalFeedStock / 1000).toFixed(1)} Ton`;
+        } else {
+            return `${report.totalFeedStock} Kg`;
+        }
+    };
+
+    console.log(editingReport);
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
@@ -366,16 +412,16 @@ export default function ReportContent() {
                     </div>
                 </div>
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">
-                        Total Pakan / Hari
+                    <div className="text-sm text-textColor">Total Pakan</div>
+                    <div className="text-lg font-bold text-textColor">
+                        {totalPakan()}
                     </div>
-                    <div className="text-lg font-bold text-textColor">{}</div>
                 </div>
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">
-                        Kematian / Hari
+                    <div className="text-sm text-textColor">Kematian</div>
+                    <div className="text-lg font-bold text-textColor">
+                        {report.death}
                     </div>
-                    <div className="text-lg font-bold text-textColor">{}</div>
                 </div>
             </div>
             <div className="p-10 bg-white rounded-lg">
@@ -403,6 +449,13 @@ export default function ReportContent() {
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
+                    pagination={{
+                        pageSize: 10,
+                        total: totalDataReport,
+                        onChange: (page) => {
+                            getData(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add Report */}
@@ -517,6 +570,34 @@ export default function ReportContent() {
                     </form>
                 </Modal>
 
+                <Modal
+                    width={700}
+                    closable={false}
+                    className="p-0 -my-20 overflow-hidden rounded-2xl "
+                    visible={isDetail}
+                    title="Detail Report"
+                    footer={[
+                        <div className="flex justify-center py-2">
+                            <Button
+                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetDetail();
+                                }}
+                            >
+                                Back
+                            </Button>
+                        </div>,
+                    ]}
+                >
+                    <Table
+                        bordered={true}
+                        columns={columnDetail}
+                        dataSource={detailReport}
+                        pagination={false}
+                    ></Table>
+                </Modal>
+
                 {/* Edit Report */}
                 <Modal
                     closable={false}
@@ -544,36 +625,13 @@ export default function ReportContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"coopNumber"}>Kandang</Label>
-                    <Select
-                        className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        placeholder="Pilih Kandang"
-                        onSelect={(value) => {
-                            setAddingReport((pre) => {
-                                return { ...pre, coopId: value };
-                            });
-                            getOneCoop(value);
-                        }}
-                        bordered={false}
-                    >
-                        {coop.map((dataId) => {
-                            return (
-                                <Option
-                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                    value={dataId.id}
-                                >
-                                    {`Kandang ${dataId.coopNumber}`}
-                                </Option>
-                            );
-                        })}
-                    </Select>
                     <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingReport?.feedQuantity}
+                        value={editingReport?.feedQuantity}
                         placeholder={"Jumlah Pakan"}
                         onChange={(e) => {
-                            setAddingReport((pre) => {
+                            setEditingReport((pre) => {
                                 return {
                                     ...pre,
                                     feedQuantity: e.target.value,
@@ -583,47 +641,22 @@ export default function ReportContent() {
                     />
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={`Rekomendasi Jumlah Pakan : ${(
-                            (feedRecomend / 1000) *
-                            totalPopulation
-                        ).toFixed(1)} Kg`}
+                        value={`Rekomendasi Jumlah Pakan : ${editingReport?.feedQuantityRecomendation.toFixed(
+                            1
+                        )} Kg`}
                         disabled={true}
                     />
                     <Label forInput={"death"}>Kematian</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={addingReport?.death}
+                        value={editingReport?.death}
                         placeholder={"Jumlah Kematian"}
                         onChange={(e) => {
-                            setAddingReport((pre) => {
+                            setEditingReport((pre) => {
                                 return { ...pre, death: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"usageTime"}>Waktu Penggunaan</Label>
-                    <Select
-                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
-                        placeholder={"Waktu Penggunaan"}
-                        onSelect={(value) => {
-                            setAddingReport((pre) => {
-                                return { ...pre, usageTime: value };
-                            });
-                        }}
-                        bordered={false}
-                    >
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="pagi"
-                        >
-                            Pagi
-                        </Option>
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="sore"
-                        >
-                            Sore
-                        </Option>
-                    </Select>
                 </Modal>
             </div>
         </div>
