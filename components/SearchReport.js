@@ -2,7 +2,7 @@ import { Select } from "antd";
 import { useRef } from "react";
 const { Option } = Select;
 
-const SearchReport = ({ onChangeSearch, onChangeSelect }) => {
+const SearchReport = ({ onChangeSearch }) => {
     const clickPoint = useRef();
     const handleFocus = () => {
         clickPoint.current.style.display = "none";
