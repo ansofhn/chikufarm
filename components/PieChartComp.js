@@ -4,16 +4,15 @@ import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
-      return (
-        <div className="custom-tooltip bg-cream text-sm font-medium p-2 rounded-md">
-          {/* <p className="label">{`${}`}</p> */}
-          <p className="intro">{`${payload[0].value} Ekor`}</p>
-        </div>
-      );
+        return (
+            <div className="custom-tooltip bg-cream text-sm font-medium p-2 rounded-md">
+                <p className="intro">{`${payload[0].value} Ekor`}</p>
+            </div>
+        );
     }
-  
+
     return null;
-  };
+};
 
 export default function PieChartComp() {
     const [dataSource, setDataSource] = useState([]);
