@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import Photo from "../public/pp.png";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { useRouter } from "next/router";
