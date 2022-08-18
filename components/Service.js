@@ -20,9 +20,9 @@ export default function Service() {
                             Mobile Application
                         </div>
                         <p className="mb-10 text-sm text-left text-textColor">
-                            Proident tempor laboris adipisicing occaecat
-                            cupidatat dolor officia.Aliquip Lorem minim veniam
-                            culpa dolore enim aliquip.
+                            Application software run on a mobile phone. Mobile
+                            applications often serve to furnish clients with
+                            comparable administrations.
                         </p>
                         <Link href={"#"}>
                             <a className="flex items-center gap-2 text-sm hover:text-maroon font-medium text-maroon">
@@ -37,9 +37,9 @@ export default function Service() {
                             Web Application
                         </div>
                         <p className="mb-10 text-sm font-normal text-left text-textColor">
-                            Proident tempor laboris adipisicing occaecat
-                            cupidatat dolor officia.Aliquip Lorem minim veniam
-                            culpa dolore enim aliquip.
+                            Software applications that carry on correspondingly
+                            to native mobile applications and work on mobile
+                            devices.
                         </p>
                         <Link href={"#"}>
                             <a className="flex items-center gap-2 font-medium hover:text-maroon text-sm text-maroon">
@@ -54,9 +54,8 @@ export default function Service() {
                             E-Commerce
                         </div>
                         <p className="mb-10 text-sm font-normal text-left text-textColor">
-                            Proident tempor laboris adipisicing occaecat
-                            cupidatat dolor officia.Aliquip Lorem minim veniam
-                            culpa dolore enim aliquip.
+                            This involves the transaction of goods and services,
+                            the transfer of funds and the exchange of data.
                         </p>
                         <Link href={"#"}>
                             <a className="flex items-center gap-2 text-sm font-medium hover:text-maroon text-maroon">

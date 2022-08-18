@@ -11,9 +11,12 @@ export default function Navbar() {
             <div className="fixed top-0 z-10 w-full bg-white border-b border-gray-100">
                 <div className="container">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center py-2 gap-x-2">
-                            <Image src={Logo} />
-                        </div>
+                        <Link href={"/"}>
+                            <div className="flex items-center py-2 gap-x-2 cursor-pointer">
+                                <Image src={Logo} />
+                            </div>
+                        </Link>
+
                         <div className="flex items-center gap-x-2">
                             <NavLink url={"/"}>Home</NavLink>
                             <NavLink url={"/about"}>About</NavLink>

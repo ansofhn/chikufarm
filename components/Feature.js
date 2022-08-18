@@ -16,12 +16,12 @@ export default function Feature() {
                 <div className="my-2 text-sm">
                     Specially developed to manage
                 </div>
-                <div className="mt-10 text-base font-bold">Manage Kandang</div>
-                <div className="mt-2 text-sm">One line description</div>
-                <div className="mt-4 text-base font-bold">Manage Pakan</div>
-                <div className="mt-2 text-sm">One line description</div>
-                <div className="mt-4 text-base font-bold">Manage Ternak</div>
-                <div className="mt-2 text-sm mb-10">One line description</div>
+                <div className="mt-10 text-base font-bold">Manage Your Farm</div>
+                <div className="mt-2 text-sm">managing livestock, feed, coop</div>
+                <div className="mt-4 text-base font-bold">Make Your Daily Report</div>
+                <div className="mt-2 text-sm">manage your daily data and report</div>
+                <div className="mt-4 text-base font-bold">Summary Data by Report</div>
+                <div className="mt-2 text-sm mb-10">see summary and start analyzing</div>
 
                 <Link href={"/register"}>
                     <Button

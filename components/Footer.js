@@ -39,14 +39,28 @@ export default function Footer() {
                                 <h3 className="mb-4 font-sans text-base font-medium text-gray-100">
                                     Company
                                 </h3>
-                                <p className="mb-2 font-sans text-sm">About Us</p>
-                                <p className="mb-2 font-sans text-sm">Contact Us</p>
+                                <div className="mb-2">
+                                    <Link href={"/about"}>
+                                        <a className="font-sans text-sm hover:text-white">
+                                            About Us
+                                        </a>
+                                    </Link>
+                                </div>
+                                <div className="mb-2">
+                                    <Link href={"/contact"}>
+                                        <a className="font-sans text-sm hover:text-white">
+                                            Contact Us
+                                        </a>
+                                    </Link>
+                                </div>
                             </div>
                             <div>
                                 <h3 className="mb-4 font-sans text-base font-medium text-gray-100">
                                     Support
                                 </h3>
-                                <p className="mb-2 font-sans text-sm">Privacy police</p>
+                                <p className="mb-2 font-sans text-sm">
+                                    Privacy police
+                                </p>
                                 <p className="mb-2 font-sans text-sm">Status</p>
                             </div>
                             <div>
