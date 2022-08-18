@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 export default function ProfileSetting() {
     const [dataUser, setDataUser] = useState([]);
     const [editingUser, setEditingUser] = useState(null);
-    const [pathImage, setPathImage] = useState("")
+    const [pathImage, setPathImage] = useState("");
 
     const CheckToken = () => {
         try {
@@ -98,31 +98,60 @@ export default function ProfileSetting() {
         }
     };
 
-    const handleChangeImage = (filepath)=>{
-        console.log(filepath, "isi handleImage")
-        setPathImage(filepath)
-    }
+    const handleChangeImage = (filepath) => {
+        setPathImage(filepath);
+    };
+
+    const checkImage = () => {
+        if (pathImage.length !== 0) {
+            return (
+                <Image
+                    className="rounded-full bg-cream"
+                    loader={() => pathImage}
+                    priority={true}
+                    unoptimized={true}
+                    src={`https://chikufarm-app.herokuapp.com/api/users/profile-picture/${pathImage}`}
+                    width={120}
+                    height={120}
+                    alt=""
+                />
+            );
+        } else {
+            return (
+                <Image
+                    className="rounded-full bg-cream"
+                    loader={() => dataUser.profilePicture}
+                    priority={true}
+                    unoptimized={true}
+                    src={`https://chikufarm-app.herokuapp.com/api/users/profile-picture/${dataUser.profilePicture}`}
+                    width={120}
+                    height={120}
+                    alt=""
+                />
+            );
+        }
+    };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
-            <div className="p-4 text-lg font-bold text-textColor">
+        <div className="lg:w-3/4 lg:ml-72">
+            <div className="p-4 mb-4 text-lg font-bold text-textColor">
                 Account Setting
                 <p className="text-sm font-normal text-textColor">
                     Change your profile and account settings
                 </p>
             </div>
 
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="grid grid-cols-4 gap-4">
-                    <div className="grid grid-rows-2 h-48   ">
+                    <div className="grid grid-rows-2 h-48">
                         <Link href={"/dashboard/profile/accountSetting"}>
-                            <Button className="my-4 text-textColor font-semibold">
+                            <Button className="mr-4 text-textColor font-semibold">
                                 <IdcardOutlined className="text-center text-xl mr-4" />
                                 Account
                             </Button>
                         </Link>
                         <Link href={"/dashboard/profile/passwordSetting"}>
-                            <Button className="my-4 text-textColor font-semibold">
+                            <Button className="mr-4 text-textColor font-semibold">
                                 <LockOutlined className="text-center text-xl mr-4" />
                                 Password
                             </Button>
@@ -133,17 +162,8 @@ export default function ProfileSetting() {
                             General Info
                         </div>
                         <div className="ml-6 my-4">
-                            <Image
-                                className="rounded-full bg-cream"
-                                loader={() => dataUser.profilePicture}
-                                priority={true}
-                                unoptimized={true}
-                                src={`https://chikufarm-app.herokuapp.com/api/users/profile-picture/${dataUser.profilePicture}`}
-                                width={130}
-                                height={130}
-                                alt=""
-                            />
-                            <UploadImage onChangeImage={handleChangeImage}/>
+                            {checkImage()}
+                            <UploadImage onChangeImage={handleChangeImage} />
                         </div>
 
                         <div className="ml-6 mt-10 grid-cols-2 grid gap-4">
