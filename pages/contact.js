@@ -1,10 +1,13 @@
 import React from "react";
 import { MdOutlineWavingHand } from "react-icons/md";
+import { Select } from "antd";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import Input from "../components/Input";
 import Label from "../components/Label";
 import Navbar from "../components/Navbar";
+
+const { Option } = Select;
 
 export default function contact() {
     return (
@@ -13,40 +16,71 @@ export default function contact() {
             <div className="w-full bg-white">
                 <div className="container">
                     <form className="grid grid-cols-2 p-2 gap-8 mx-40 my-32 bg-white">
-                        <div className="mb-5 text-4xl text-textColor font-semibold">
+                        <div className="mb-6 text-4xl text-textColor font-semibold">
                             Love to hear from you, Get in touch
-                            
                         </div>
                         <div className="col-start-1">
-                            <Label forInput="name">Your name</Label>
-                            <Input className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon" name="name" id="name" />
+                            <Label forInput="name">Your Username</Label>
+                            <Input
+                                className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-0"
+                                name="name"
+                                id="name"
+                                placeholder="Username"
+                            />
                         </div>
                         <div className="">
                             <Label forInput="email">Your email</Label>
-                            <Input className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon" type="email" name="email" id="email" />
-                        </div>
-                        <div className="">
-                            
-                            <Label forInput="email">Phone</Label>
-                            <Input className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon" type="email" name="email" id="email" />
-                        </div>
-                        <div>
-                            <Label forInput="email">What your role</Label>
                             <Input
-                                className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-maroon"
+                                className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-0"
                                 type="email"
                                 name="email"
                                 id="email"
+                                placeholder="Email"
                             />
+                        </div>
+                        <div className="">
+                            <Label forInput="email">Phone</Label>
+                            <Input
+                                className="text-sm p-2.5 rounded-md w-full bg-gray-100 border-none focus:ring-0"
+                                placeholder="Phone"
+                            />
+                        </div>
+                        <div>
+                            <Label forInput="email">What your role</Label>
+                            <Select
+                                className="text-sm p-1 rounded-md w-full bg-gray-100 border-none focus:ring-0"
+                                placeholder="Choose Your Role"
+                                onSelect={""}
+                                bordered={false}
+                            >
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value="admin"
+                                >
+                                    Admin
+                                </Option>
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value="farmer"
+                                >
+                                    Farmer
+                                </Option>
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value="guest"
+                                >
+                                    Guest
+                                </Option>
+                            </Select>
                         </div>
                         <div className="col-span-2">
                             <Label forInput="message">Message</Label>
-                            <Input
-                                className="rounded-md w-full h-40 p-4 bg-gray-100 border-none focus:ring-maroon"
-                                name="message"
+                            <textarea
                                 id="message"
-                                type="textarea"
-                            />
+                                rows="8"
+                                className="block p-2.5 w-full text-sm text-textColor bg-gray-100 rounded-md focus:ring-0 focus:border-none border-none "
+                                placeholder="Your message..."
+                            ></textarea>
                         </div>
                         <div>
                             <Button
@@ -56,7 +90,6 @@ export default function contact() {
                                 Send Message
                             </Button>
                         </div>
-                        
                     </form>
                 </div>
             </div>

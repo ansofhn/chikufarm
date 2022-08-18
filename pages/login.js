@@ -8,6 +8,7 @@ import LoginLayout from "../layouts/LoginLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 export default function Login() {
     const [userName, setUserName] = useState("");
@@ -125,9 +126,11 @@ export default function Login() {
                 >
                     Login
                 </Button>
-                <a href="#" className="mr-2 hover:text-maroon text-textColor">
-                    Forgot password?
-                </a>
+                <Link href={"/forgot"}>
+                    <a className="mr-2 hover:text-maroon text-textColor">
+                        Forgot password?
+                    </a>
+                </Link>
             </div>
         </form>
     );
