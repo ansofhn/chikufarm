@@ -41,40 +41,6 @@ const SearchReport = ({ onChangeSearch }) => {
                     onBlur={handleBlur}
                 />
             </div>
-            {/* <Select
-                className="my-1 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
-                onSelect={onChangeSelect}
-                placeholder="Role"
-                style={{
-                    width: 100,
-                }}
-                bordered={false}
-            >
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="admin"
-                >
-                    Admin
-                </Option>
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="farmer"
-                >
-                    Farmer
-                </Option>
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value="guest"
-                >
-                    Guest
-                </Option>
-                <Option
-                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                    value=""
-                >
-                    All Data
-                </Option>
-            </Select> */}
         </div>
     );
 };
