@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiSend } from "react-icons/bi";
 import Input from "./Input";
@@ -14,13 +14,30 @@ export default function Chat() {
         socket.on("newMessage", (message) => {
             displayMessage(message);
         });
+
+        // socket.emit("findAllChat", (message) => {
+        //     message.forEach(element => {
+        //         displayMessage(element)
+        //     });
+        // });
     }, []);
 
     const displayMessage = (message) => {
         const div = document.createElement("div");
-        div.innerHTML = `<div class="font-semibold text-maroon"> ${message.sender.userName}</div>${message.message}`
-        div.className = "py-2 px-4 rounded-lg bg-gray-100 w-fit mb-2";
-
+        if (
+            message.sender.id ===
+            jwt_decode(localStorage.getItem("access_token")).sub
+        ) {
+            div.innerHTML = `
+            <div class="py-2 px-4 text-right rounded-lg bg-gray-100 w-fit mb-2">
+                <div class="font-semibold text-maroon"> ${message.sender.userName} - ${message.sender.role.roleName}</div>
+                <div>${message.message}</div>
+            </div>`;
+            div.className = "flex justify-end";
+        } else {
+            div.innerHTML = `<div class="font-semibold text-maroon"> ${message.sender.userName} - ${message.sender.role.roleName}</div>${message.message}`;
+            div.className = "py-2 px-4 rounded-lg bg-gray-100 w-fit mb-2";
+        }
         document.getElementById("message-container").append(div);
     };
 
@@ -29,6 +46,9 @@ export default function Chat() {
             userId: jwt_decode(localStorage.getItem("access_token")).sub,
             message: messageInput.message,
         };
+
+        if (message.message == "") return;
+
         socket.emit("createChat", message);
         const Input = document.getElementById("message");
         messageInput.message = "";
