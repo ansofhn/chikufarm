@@ -220,6 +220,8 @@ export default function KandangContent() {
         getData(1);
     }, []);
 
+    console.log(dataSource)
+
     const columns = [
         {
             title: "Nomor Kandang",

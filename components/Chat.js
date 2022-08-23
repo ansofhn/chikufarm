@@ -12,14 +12,15 @@ export default function Chat() {
 
     useEffect(() => {
         socket.on("newMessage", (message) => {
-            displayMessage(message.message);
+            displayMessage(message);
         });
     }, []);
 
     const displayMessage = (message) => {
         const div = document.createElement("div");
-        div.textContent = message;
+        div.innerHTML = `<div class="font-semibold text-maroon"> ${message.sender.userName}</div>${message.message}`
         div.className = "py-2 px-4 rounded-lg bg-gray-100 w-fit mb-2";
+
         document.getElementById("message-container").append(div);
     };
 

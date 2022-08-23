@@ -500,7 +500,7 @@ export default function UserContent() {
                 >
                     <Label forInput={"fullName"}>Fullname</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.fullName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -510,7 +510,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"userName"}>Username</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.userName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -520,7 +520,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"email"}>Email</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.email}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -530,7 +530,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"phone"}>Phone</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.phone}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -540,7 +540,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"role"}>User Role</Label>
                     <Select
-                        className="my-1 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingUser?.role.roleName}
                         onChange={(value) => {
                             setEditingUser((pre) => {

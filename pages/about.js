@@ -14,8 +14,7 @@ export default function about() {
                                 Chikufarm Platform
                             </h3>
                             <p className="mb-14">
-                                Was Built for a generation that's weary of
-                                credit
+                                Your daily management for best investment
                             </p>
                         </div>
                         <div className="bg-gray-100 pb-96 rounded-lg col-start-1 p-8">

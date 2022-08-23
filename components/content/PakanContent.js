@@ -804,15 +804,29 @@ export default function PakanContent() {
                         }}
                     />
                     <Label forInput={"feedType"}>Jenis Pakan</Label>
-                    <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        value={editingFeed?.feedType}
-                        onChange={(e) => {
-                            setEditingFeed((pre) => {
-                                return { ...pre, feedType: e.target.value };
-                            });
-                        }}
-                    />
+                    <Select
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            placeholder={editingFeed?.feedType}
+                            onSelect={(value) => {
+                                setEditingFeed((pre) => {
+                                    return { ...pre, feedType: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="starter"
+                            >
+                                Starter
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="finisher"
+                            >
+                                Finisher
+                            </Option>
+                        </Select>
                     <Label forInput={"pricePerKg"}>Harga / Kg</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"

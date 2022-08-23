@@ -413,11 +413,11 @@ export default function ReportContent() {
                 {/* Add Report */}
                 <Modal
                     closable={false}
-                    className="rounded-lg overflow-hidden p-0"
-                    title="Add Report"
+                    className="rounded-xl overflow-hidden p-0"
+                    title="Create Report"
                     visible={isAdding}
                     footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center my-2">
                             <Button
                                 className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
@@ -464,7 +464,7 @@ export default function ReportContent() {
                         </Select>
                         <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingReport?.feedQuantity}
                             placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
@@ -486,7 +486,7 @@ export default function ReportContent() {
                         />
                         <Label forInput={"death"}>Kematian</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingReport?.death}
                             placeholder={"Jumlah Kematian"}
                             onChange={(e) => {
@@ -579,7 +579,7 @@ export default function ReportContent() {
                 >
                     <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingReport?.feedQuantity}
                         placeholder={"Jumlah Pakan"}
                         onChange={(e) => {
@@ -600,7 +600,7 @@ export default function ReportContent() {
                     />
                     <Label forInput={"death"}>Kematian</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingReport?.death}
                         placeholder={"Jumlah Kematian"}
                         onChange={(e) => {

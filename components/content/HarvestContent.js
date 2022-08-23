@@ -352,7 +352,7 @@ export default function HarvestContent() {
                         Total Berat Ternak
                     </Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingHarvest?.totalFarmWeight}
                         onChange={(e) => {
                             setEditingHarvest((pre) => {
@@ -365,7 +365,7 @@ export default function HarvestContent() {
                     />
                     <Label forInput={"death"}>Kematian</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingHarvest?.totalDeath}
                         onChange={(e) => {
                             setEditingHarvest((pre) => {
@@ -378,7 +378,7 @@ export default function HarvestContent() {
                     />
                     <Label forInput={"harvestTime"}>Tanggal Panen</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingHarvest?.harvestTime}
                         onChange={(e) => {
                             setEditingHarvest((pre) => {
