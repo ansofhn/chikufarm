@@ -59,7 +59,7 @@ export default function ProfileMenu() {
         <div className="flex justify-end my-4 ml-72 md:mx-10 text-textColor">
             <Menu as="div" className="inline-block relative text-left">
                 <div>
-                    <Menu.Button className="inline-flex justify-center px-4 py-2 w-full text-sm font-medium bg-white rounded-lg shadow-sm text-textColor focus:outline-none">
+                    <Menu.Button className="inline-flex justify-center px-2.5 py-2.5 mr-2 w-full text-sm font-medium bg-white rounded-lg shadow-sm text-textColor focus:outline-none">
                         <div className="flex gap-2">
                             <div className="flex items-center mr-2">
                                 <Image
@@ -70,7 +70,6 @@ export default function ProfileMenu() {
                                     src={`https://chikufarm-app.herokuapp.com/api/users/profile-picture/${dataUser.profilePicture}`}
                                     width={40}
                                     height={40}
-                                    alt=""
                                 />
                             </div>
                             <div className="items-start">
