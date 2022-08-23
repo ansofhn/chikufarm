@@ -7,7 +7,7 @@ export default function accountSetting() {
     return (
         <>
             <SideNavbar />
-            <ProfileSetting/>
+            <ProfileSetting />
         </>
     );
 }

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import ReportContent from "../../components/content/ReportContent";
-import ProfileMenu from "../../components/ProfileMenu";
-import SideNavbar from "../../components/SideNavbar";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import ProfileMenu from "../../../components/ProfileMenu";
+import SideNavbar from "../../../components/SideNavbar";
+import DashboardLayout from "../../../layouts/DashboardLayout";
 import { useRouter } from "next/router";
+import DetailReportContent from "../../../components/content/DetailReportContent";
 
-export default function report() {
+export default function detailReport() {
     const router = useRouter();
     const CheckToken = () => {
         try {
@@ -24,9 +24,9 @@ export default function report() {
         <div>
             <ProfileMenu />
             <SideNavbar />
-            <ReportContent />
+            <DetailReportContent />
         </div>
     );
 }
 
-report.getLayout = (page) => <DashboardLayout title="Report" children={page} />;
+detailReport.getLayout = (page) => <DashboardLayout title="Report" children={page} />;
