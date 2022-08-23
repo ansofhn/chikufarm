@@ -99,11 +99,12 @@ export default function UserContent() {
             email: editingUser.email,
             phone: editingUser.phone,
         };
+
         const updateRole = {
             id: userId,
             roleId: roleId,
         };
-
+        console.log(updateRole)
         try {
             const responseUser = await axios
                 .put(
@@ -143,7 +144,7 @@ export default function UserContent() {
                     resetEditing();
                 });
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data.message);
         }
     };
 
@@ -449,19 +450,19 @@ export default function UserContent() {
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="1c8fcc7d-54fb-440b-8f20-2a0d3860531e"
+                                value="a15743f2-6dc5-4a45-be7d-1e74b1310375"
                             >
                                 Admin
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="77114cf2-090d-4f45-9616-f93307d8f06d"
+                                value="f26d05af-85fd-49f7-bfcf-850ea0e41c1c"
                             >
                                 Farmer
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="759077e1-5752-41b7-9fb3-4a4efd27d8d7"
+                                value="4da2e875-baa7-43b4-824f-ba934fa94511"
                             >
                                 Guest
                             </Option>
@@ -553,19 +554,19 @@ export default function UserContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="1c8fcc7d-54fb-440b-8f20-2a0d3860531e"
+                            value="a15743f2-6dc5-4a45-be7d-1e74b1310375"
                         >
                             Admin
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="77114cf2-090d-4f45-9616-f93307d8f06d"
+                            value="f26d05af-85fd-49f7-bfcf-850ea0e41c1c"
                         >
                             Farmer
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="759077e1-5752-41b7-9fb3-4a4efd27d8d7"
+                            value="4da2e875-baa7-43b4-824f-ba934fa94511"
                         >
                             Guest
                         </Option>

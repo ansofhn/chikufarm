@@ -23,9 +23,12 @@ export default function DashboardContent() {
                     },
                 })
                 .then((res) => {
+                    console.log(res.data);
                     setDataSource(res.data);
                     setFirst(res.data.weeklyCoopPopulation[0].population);
-                    setLast(res.data.weeklyCoopPopulation.slice(-1)[0].population);
+                    setLast(
+                        res.data.weeklyCoopPopulation.slice(-1)[0].population
+                    );
                     setDataPedaging(res.data.populationPerBreed[0]);
                     setDataPetelur(res.data.populationPerBreed[1]);
                     setDataAduan(res.data.populationPerBreed[2]);
@@ -35,11 +38,16 @@ export default function DashboardContent() {
         }
     };
 
+    useEffect(() => {
+        getData();
+    }, []);
+
     const totalPakan = () => {
-        if (dataSource.totalFeedStock >= 1000) {
-            return `${(dataSource.totalFeedStock / 1000).toFixed(1)} Ton`;
+        const total = dataSource.totalFeedStock
+        if (total >= 1000) {
+            return `${(total / 1000).toFixed(1)} Ton`
         } else {
-            return `${dataSource.totalFeedStock} Kg`;
+            return `${(total / 1).toFixed(1)} Kg`
         }
     };
 
@@ -47,10 +55,6 @@ export default function DashboardContent() {
         const all = dataSource.currentPopulation;
         return ((last - first) / all) * 100;
     };
-
-    useEffect(() => {
-        getData();
-    }, []);
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">

@@ -4,26 +4,78 @@ import Link from "next/link";
 import Button from "../Button";
 import Label from "../Label";
 import Input from "../Input";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function PasswordSetting() {
-    const [fullName, setFullName] = useState("");
-    const [userName, setUserName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState([]);
 
-    const onFinish = async () => {
+    const changePassword = async () => {
+        const change = {
+            password: password.passwordFirst,
+        };
         try {
-            const data = {
-                fullName: fullName,
-                username: userName,
-                email: email,
-                phone: phone,
-                password: password,
-                role: "guest",
-            };
-            console.log(data);
-        } catch (e) {
-            e.message;
+            const response = await axios
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/users/change-password",
+                    change,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data);
+                    if (res.data.message === "Password changed") {
+                        let timerInterval;
+                        Swal.fire({
+                            position: "top",
+                            html: "Password Changed !",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            },
+                        });
+                    } else {
+                        let timerInterval;
+                        Swal.fire({
+                            position: "top",
+                            html: "Failed to Changed Password",
+                            timer: 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            },
+                        });
+                    }
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const checkPassword = () => {
+        if (password.passwordFirst === password.passwordLast) {
+            changePassword();
+        } else {
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: "Password Doesn't Match, Input Again !",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 
@@ -62,25 +114,33 @@ export default function PasswordSetting() {
                         </div>
 
                         <div className="mt-10 ml-6">
-                            <div class="mb-6">
+                            <div className="my-6">
                                 <Label
                                     for="password"
-                                    class="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Password
                                 </Label>
                                 <Input
                                     type="password"
                                     id="password"
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
-                                    placeholder="•••••••••"
+                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-2 focus:border-cream focus:ring-0"
+                                    placeholder="••••••••"
+                                    onChange={(e) => {
+                                        setPassword((pre) => {
+                                            return {
+                                                ...pre,
+                                                passwordFirst: e.target.value,
+                                            };
+                                        });
+                                    }}
                                     required
                                 />
                             </div>
-                            <div class="mb-6">
+                            <div className="mt-2">
                                 <Label
                                     for="confirm_password"
-                                    class="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Confirm password
                                 </Label>
@@ -88,7 +148,15 @@ export default function PasswordSetting() {
                                     type="password"
                                     id="confirm_password"
                                     className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
-                                    placeholder="•••••••••"
+                                    placeholder="••••••••"
+                                    onChange={(e) => {
+                                        setPassword((pre) => {
+                                            return {
+                                                ...pre,
+                                                passwordLast: e.target.value,
+                                            };
+                                        });
+                                    }}
                                     required
                                 />
                             </div>
@@ -97,7 +165,7 @@ export default function PasswordSetting() {
                                     className="w-full rounded-lg bg-cream text-maroon text-sm font-semibold"
                                     key="submit"
                                     type="submit"
-                                    onClick={onFinish}
+                                    onClick={checkPassword}
                                 >
                                     Change my password
                                 </Button>

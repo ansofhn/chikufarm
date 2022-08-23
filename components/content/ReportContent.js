@@ -16,7 +16,7 @@ export default function ReportContent() {
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
-    const [report, setReport] = useState([]);
+
     const [coop, setCoop] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
@@ -41,18 +41,6 @@ export default function ReportContent() {
                     console.log(res.data.items);
                     setTotalDataReport(res.data.meta.totalItems);
                     setDataSource(res.data.items);
-                });
-
-            const report = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/report/array", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
-                .then((res) => {
-                    setReport(res.data);
                 });
 
             const coop = await axios
@@ -383,46 +371,10 @@ export default function ReportContent() {
         e.preventDefault();
     };
 
-    const totalPakan = () => {
-        if (report.totalFeedStock >= 1000) {
-            return `${(report.totalFeedStock / 1000).toFixed(1)} Ton`;
-        } else {
-            return `${report.totalFeedStock} Kg`;
-        }
-    };
-
-    console.log(editingReport);
-
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold mb-3 text-textColor">
                 Report Harian
-            </div>
-            <div className="grid grid-cols-4 gap-5 mb-10">
-                <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Populasi</div>
-                    <div className="text-lg font-bold text-textColor">
-                        {report.currentPopulation}
-                    </div>
-                </div>
-                <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Kandang</div>
-                    <div className="text-lg font-bold text-textColor">
-                        {report.totalCoop}
-                    </div>
-                </div>
-                <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Pakan</div>
-                    <div className="text-lg font-bold text-textColor">
-                        {totalPakan()}
-                    </div>
-                </div>
-                <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Kematian</div>
-                    <div className="text-lg font-bold text-textColor">
-                        {report.death}
-                    </div>
-                </div>
             </div>
             <div className="p-10 bg-white rounded-lg">
                 <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">

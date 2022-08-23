@@ -17,23 +17,31 @@ export default function KandangContent() {
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [coop, setCoop] = useState([]);
     const [farm, setFarm] = useState([]);
     const [feed, setFeed] = useState([]);
+    const [user, setUser] = useState([]);
     const [totalDataCoop, setTotalDataCoop] = useState([]);
+
+    const [isCreate, setIsCreate] = useState(false);
+    const [creatingHarvest, setCreatingHarvest] = useState(null);
 
     const getData = async (page) => {
         try {
             const coopdata = await axios
-                .get(`https://chikufarm-app.herokuapp.com/api/coop?page=${page}&size=10`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/coop?page=${page}&size=10`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
                 .then((res) => {
                     console.log(res.data.items);
-                    setTotalDataCoop(res.data.meta.totalItems)
+                    setTotalDataCoop(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
 
@@ -58,6 +66,32 @@ export default function KandangContent() {
                 })
                 .then((res) => {
                     setFeed(res.data.items);
+                });
+            const responseUser = await axios
+                .get(
+                    "https://chikufarm-app.herokuapp.com/api/users?role=farmer",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setUser(res.data.items);
+                });
+
+            const responseCoop = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/coop", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    setCoop(res.data.items);
                 });
         } catch (error) {
             console.log(error);
@@ -89,6 +123,30 @@ export default function KandangContent() {
         }
     };
 
+    const createPanen = async () => {
+        try {
+            const response = await axios
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/harvest/create",
+                    creatingHarvest,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    getData(1);
+                    resetCreate();
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const editData = async () => {
         const coopId = editingCoop.id;
 
@@ -96,6 +154,7 @@ export default function KandangContent() {
             coopNumber: editingCoop.coopNum,
             populationStart: editingCoop.populationStart,
             dateIn: editingCoop.dateIn,
+            userId: editingCoop.userId,
         };
         console.log(updateCoop);
         try {
@@ -137,7 +196,7 @@ export default function KandangContent() {
         } catch (error) {}
     };
 
-    console.log(addingCoop)
+    console.log(editingCoop);
     const searchData = async (search, filter) => {
         try {
             const response = await axios
@@ -175,9 +234,9 @@ export default function KandangContent() {
         },
         {
             title: "Nama Pakan",
+            width: 150,
             dataIndex: "masterFeed",
-            render: (masterFeed) =>
-                masterFeed.feedName,
+            render: (masterFeed) => masterFeed.feedName,
         },
         {
             title: "Populasi Awal",
@@ -230,6 +289,16 @@ export default function KandangContent() {
     const resetAdd = () => {
         setIsAdding(false);
         setAddingCoop(null);
+    };
+
+    const onCreatePanen = () => {
+        setIsCreate(true);
+        setCreatingHarvest(null);
+    };
+
+    const resetCreate = () => {
+        setIsCreate(false);
+        setCreatingHarvest(null);
     };
 
     const onDeleteKandang = (record) => {
@@ -298,10 +367,17 @@ export default function KandangContent() {
                     }}
                 ></Table>
 
+                <Button
+                    className="w-full my-2 uppercase rounded-lg border-none transition duration-300 font-semibold bg-cream text-maroon hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                    onClick={onCreatePanen}
+                >
+                    panen
+                </Button>
+
                 {/* Add Coop */}
                 <Modal
                     closable={false}
-                    className="-my-14 overflow-hidden p-0 rounded-2xl"
+                    className=" -my-24 overflow-hidden p-0 rounded-2xl"
                     title="Add Kandang"
                     visible={isAdding}
                     footer={[
@@ -414,6 +490,28 @@ export default function KandangContent() {
                                 );
                             })}
                         </Select>
+                        <Label forInput={"farmer"}>Farmer</Label>
+                        <Select
+                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            placeholder="Choose Farmer"
+                            onSelect={(value) => {
+                                setAddingCoop((pre) => {
+                                    return { ...pre, userId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            {user.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {dataId.fullName}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
                     </form>
                 </Modal>
 
@@ -485,6 +583,123 @@ export default function KandangContent() {
                             });
                         }}
                     />
+                    <Label forInput={"farmer"}>Responsible Person</Label>
+                    <Select
+                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        placeholder={editingCoop?.user.fullName}
+                        onSelect={(value) => {
+                            setEditingCoop((pre) => {
+                                return { ...pre, userId: value };
+                            });
+                        }}
+                        bordered={false}
+                    >
+                        {user.map((dataId) => {
+                            return (
+                                <Option
+                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                    value={dataId.id}
+                                >
+                                    {dataId.fullName}
+                                </Option>
+                            );
+                        })}
+                    </Select>
+                </Modal>
+
+                {/* Create Harvest */}
+                <Modal
+                    closable={false}
+                    className=" -my-24 overflow-hidden p-0 rounded-2xl"
+                    title="Create Harvest"
+                    visible={isCreate}
+                    footer={[
+                        <div className="flex justify-center my-2">
+                            <Button
+                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetCreate();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                type="submit"
+                                onClick={createPanen}
+                            >
+                                Create
+                            </Button>
+                        </div>,
+                    ]}
+                >
+                    <form onSubmit={onChangeForm} method="POST">
+                        <Label forInput={"coopNumber"}>Kandang</Label>
+                        <Select
+                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Pilih Kandang"
+                            onSelect={(value) => {
+                                setCreatingHarvest((pre) => {
+                                    return { ...pre, coopId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            {coop.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {`Kandang ${dataId.coopNumber}`}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"totalFarmWeight"}>
+                            Total Berat Ternak
+                        </Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Enter Total Weight"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        totalFarmWeight: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"death"}>Kematian</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Jumlah Kematian"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        death: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"harvestTime"}>Tanggal Panen</Label>
+                        <Input
+                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            placeholder="Year-Month-Day"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        harvestTime: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                    </form>
                 </Modal>
             </div>
         </div>

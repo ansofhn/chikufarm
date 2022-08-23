@@ -360,19 +360,19 @@ export default function TernakContent() {
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="f0503001-246d-412e-bba0-6167684e007b"
+                                value="62db6618-43ab-4fc6-b2ef-189c0a5a033f"
                             >
                                 Ayam Petelur
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="11b40011-8ec1-4b08-8ca6-d377ee6ede13"
+                                value="84beb255-4ce4-476e-b42a-d79c935e780f"
                             >
                                 Ayam Pedaging
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="95000005-ab6e-4782-8b26-312b484edfc6"
+                                value="40625ead-1a06-41cf-b35e-dceb97fb4487"
                             >
                                 Ayam Aduan
                             </Option>
@@ -450,19 +450,19 @@ export default function TernakContent() {
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="f0503001-246d-412e-bba0-6167684e007b"
+                            value="62db6618-43ab-4fc6-b2ef-189c0a5a033f"
                         >
                             Ayam Petelur
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="11b40011-8ec1-4b08-8ca6-d377ee6ede13"
+                            value="84beb255-4ce4-476e-b42a-d79c935e780f"
                         >
                             Ayam Pedaging
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="95000005-ab6e-4782-8b26-312b484edfc6"
+                            value="40625ead-1a06-41cf-b35e-dceb97fb4487"
                         >
                             Ayam Aduan
                         </Option>
