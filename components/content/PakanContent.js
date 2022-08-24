@@ -379,7 +379,7 @@ export default function PakanContent() {
             align: "center",
             dataIndex: "feedStock",
             render: (feedStock) => {
-                return `${(feedStock.stock).toFixed(1)} Kg`;
+                return `${(feedStock.stock/1).toFixed(1)} Kg`;
             },
         },
         {

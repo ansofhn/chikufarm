@@ -19,7 +19,6 @@ export default function KandangContent() {
     const [dataSource, setDataSource] = useState([]);
     const [coop, setCoop] = useState([]);
     const [farm, setFarm] = useState([]);
-    const [feed, setFeed] = useState([]);
     const [user, setUser] = useState([]);
     const [totalDataCoop, setTotalDataCoop] = useState([]);
 
@@ -40,7 +39,6 @@ export default function KandangContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data.items);
                     setTotalDataCoop(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
@@ -55,17 +53,6 @@ export default function KandangContent() {
                 })
                 .then((res) => {
                     setFarm(res.data.items);
-                });
-            const responseFeed = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/feed", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
-                .then((res) => {
-                    setFeed(res.data.items);
                 });
             const responseUser = await axios
                 .get(
@@ -99,7 +86,6 @@ export default function KandangContent() {
     };
 
     const addData = async () => {
-        console.log(addingCoop);
         try {
             const response = await axios
                 .post(
@@ -156,7 +142,6 @@ export default function KandangContent() {
             dateIn: editingCoop.dateIn,
             userId: editingCoop.userId,
         };
-        console.log(updateCoop);
         try {
             const responseCoop = await axios
                 .put(
@@ -172,7 +157,6 @@ export default function KandangContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res);
                     getData(1);
                     resetEditing();
                 });
@@ -196,7 +180,6 @@ export default function KandangContent() {
         } catch (error) {}
     };
 
-    console.log(editingCoop);
     const searchData = async (search, filter) => {
         try {
             const response = await axios
@@ -220,7 +203,6 @@ export default function KandangContent() {
         getData(1);
     }, []);
 
-    console.log(dataSource)
 
     const columns = [
         {
@@ -470,28 +452,6 @@ export default function KandangContent() {
                                 );
                             })}
                         </Select>
-                        <Label forInput={"feedName"}>Nama Pakan</Label>
-                        <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
-                            placeholder="Choose Feed Name"
-                            onSelect={(value) => {
-                                setAddingCoop((pre) => {
-                                    return { ...pre, masterFeedId: value };
-                                });
-                            }}
-                            bordered={false}
-                        >
-                            {feed.map((dataId) => {
-                                return (
-                                    <Option
-                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                        value={dataId.id}
-                                    >
-                                        {dataId.feedName}
-                                    </Option>
-                                );
-                            })}
-                        </Select>
                         <Label forInput={"farmer"}>Farmer</Label>
                         <Select
                             className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
@@ -585,7 +545,7 @@ export default function KandangContent() {
                             });
                         }}
                     />
-                    <Label forInput={"farmer"}>Responsible Person</Label>
+                    <Label forInput={"farmer"}>Penanggung Jawab</Label>
                     <Select
                         className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
                         placeholder={editingCoop?.user.fullName}

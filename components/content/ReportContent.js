@@ -18,6 +18,7 @@ export default function ReportContent() {
     const [dataSource, setDataSource] = useState([]);
 
     const [coop, setCoop] = useState([]);
+    const [feedName, setFeedName] = useState ([])
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
     const [totalDataReport, setTotalDataReport] = useState([]);
@@ -176,9 +177,8 @@ export default function ReportContent() {
                     },
                 })
                 .then((res) => {
-                    setfeedRecomend(
-                        res.data.feedRecomendation.feedQuantityOnGram
-                    );
+                    setFeedName(res.data.masterFeed.feedName)
+                    setfeedRecomend(res.data.feedRecomendation.feedQuantityOnGram);
                     setTotalPopulation(res.data.populationUpdate);
                 });
         } catch (error) {
@@ -478,10 +478,12 @@ export default function ReportContent() {
                         />
                         <Input
                             className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={`Rekomendasi Jumlah Pakan : ${(
-                                (feedRecomend / 1000) *
-                                totalPopulation
-                            ).toFixed(1)} Kg`}
+                            value={`Rekomendasi Jumlah Pakan : ${(((feedRecomend / 1000) * totalPopulation) / 2 ).toFixed(1)} Kg`}
+                            disabled={true}
+                        />
+                        <Input
+                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                            value={`Nama Pakan : ${feedName}`}
                             disabled={true}
                         />
                         <Label forInput={"death"}>Kematian</Label>
@@ -593,9 +595,7 @@ export default function ReportContent() {
                     />
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={`Rekomendasi Jumlah Pakan : ${editingReport?.feedQuantityRecomendation.toFixed(
-                            1
-                        )} Kg`}
+                        value={`Rekomendasi Jumlah Pakan : ${((editingReport?.feedQuantityRecomendation)/2).toFixed(1)} Kg`}
                         disabled={true}
                     />
                     <Label forInput={"death"}>Kematian</Label>

@@ -12,6 +12,7 @@ function classNames(...classes) {
 
 export default function ProfileMenu() {
     const [dataUser, setDataUser] = useState([]);
+    const [role, setRole] = useState([])
     const router = useRouter();
 
     const handleLogout = () => {
@@ -45,6 +46,7 @@ export default function ProfileMenu() {
                 )
                 .then((res) => {
                     setDataUser(res.data.data);
+                    setRole(res.data.data.role.roleName)
                 });
         } catch (error) {
             console.log(error);
@@ -73,11 +75,11 @@ export default function ProfileMenu() {
                                 />
                             </div>
                             <div className="items-start">
-                                <div className="text-xs font-light">
-                                    Welcome back,
-                                </div>
                                 <div className="font-medium text-start">
                                     {dataUser.userName}
+                                </div>
+                                <div className="text-xs text-left font-light">
+                                    {role}
                                 </div>
                             </div>
                         </div>
