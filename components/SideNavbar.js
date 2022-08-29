@@ -181,7 +181,7 @@ export default function SideNavbar() {
                                             <div className="py-1">
                                                 <Menu.Item>
                                                     {({ active }) => (
-                                                        <a
+                                                        <Link
                                                             href="/dashboard/report/dailyReport"
                                                             className={classNames(
                                                                 active
@@ -191,13 +191,13 @@ export default function SideNavbar() {
                                                             )}
                                                         >
                                                             Report by Coop
-                                                        </a>
+                                                        </Link>
                                                     )}
                                                 </Menu.Item>
 
                                                 <Menu.Item>
                                                     {({ active }) => (
-                                                        <a
+                                                        <Link
                                                             href="/dashboard/report/detailReport"
                                                             className={classNames(
                                                                 active
@@ -207,7 +207,7 @@ export default function SideNavbar() {
                                                             )}
                                                         >
                                                             All Detail Report
-                                                        </a>
+                                                        </Link>
                                                     )}
                                                 </Menu.Item>
                                             </div>
@@ -310,7 +310,7 @@ export default function SideNavbar() {
                                         <Menu.Button className="flex gap-4 justify-start items-center p-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group ">
                                             <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
                                             <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                                Report Harian
+                                                Daily Report
                                             </h3>
                                             <svg
                                                 aria-hidden="true"
@@ -385,7 +385,7 @@ export default function SideNavbar() {
                                     <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <BiChat className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Chat
+                                            Forum
                                         </h3>
                                     </div>
                                 </Link>
@@ -393,7 +393,7 @@ export default function SideNavbar() {
                                     <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <MdOutlineSell className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Panen
+                                            Harvest
                                         </h3>
                                     </div>
                                 </Link>
@@ -401,7 +401,7 @@ export default function SideNavbar() {
                                     <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHome2Line className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Kandang
+                                            Coop
                                         </h3>
                                     </div>
                                 </Link>
@@ -409,7 +409,7 @@ export default function SideNavbar() {
                                     <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <RiHandCoinLine className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Pakan
+                                            Feed
                                         </h3>
                                     </div>
                                 </Link>
@@ -417,7 +417,7 @@ export default function SideNavbar() {
                                     <div className="flex gap-4 justify-start items-center py-2 px-2 mb-2 rounded-md transition duration-200 cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <FiFeather className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Ternak
+                                            Farm
                                         </h3>
                                     </div>
                                 </Link>

@@ -203,44 +203,48 @@ export default function KandangContent() {
         getData(1);
     }, []);
 
-
     const columns = [
         {
-            title: "Nomor Kandang",
+            title: "Coop Number",
             dataIndex: "coopNumber",
             width: 100,
             align: "center",
         },
         {
-            title: "Nama Ternak",
+            title: "Farm Name",
+            width: 150,
             dataIndex: "farm",
             render: (farm) => farm.farmName,
         },
         {
-            title: "Nama Pakan",
+            title: "Feed Name",
             width: 150,
             dataIndex: "masterFeed",
             render: (masterFeed) => masterFeed.feedName,
         },
         {
-            title: "Populasi Awal",
+            title: "Population Start",
             dataIndex: "populationStart",
             width: 100,
             align: "center",
         },
         {
-            title: "Populasi Update",
+            title: "Population Update",
             dataIndex: "populationUpdate",
             width: 100,
             align: "center",
         },
         {
-            title: "Tanggal Masuk",
+            title: "Date In",
             dataIndex: "dateIn",
+            width: 200,
+            align: "center",
         },
         {
-            title: "Tanggal Panen",
+            title: "Harvest Time",
             dataIndex: "harvestTime",
+            width: 200,
+            align: "center",
         },
         {
             align: "center",
@@ -287,7 +291,8 @@ export default function KandangContent() {
 
     const onDeleteKandang = (record) => {
         Modal.confirm({
-            title: "Delete Pakan",
+            title: "Are you sure?",
+            content: "Delete this Coop",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -314,10 +319,10 @@ export default function KandangContent() {
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
-                Data Kandang / All
+                Coop Data / All
             </div>
 
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchCoop
                         onChangeSearch={(e) => {
@@ -329,13 +334,21 @@ export default function KandangContent() {
                             searchData(search, value);
                         }}
                     />
-                    <Button
-                        className="flex gap-2 items-center px-4 py-3 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                        onClick={onAddKandang}
-                    >
-                        <MdAdd className="self-center text-lg" />
-                        Add
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button
+                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            onClick={onCreatePanen}
+                        >
+                            Coop Harvest
+                        </Button>
+
+                        <Button
+                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            onClick={onAddKandang}
+                        >
+                            Add Coop
+                        </Button>
+                    </div>
                 </div>
                 <Table
                     className="ant-pagination-simple"
@@ -344,6 +357,7 @@ export default function KandangContent() {
                     dataSource={dataSource}
                     pagination={{
                         pageSize: 10,
+                        className: "pt-2",
                         total: totalDataCoop,
                         onChange: (page) => {
                             getData(page);
@@ -351,47 +365,26 @@ export default function KandangContent() {
                     }}
                 ></Table>
 
-                <Button
-                    className="w-full my-2 uppercase rounded-lg border-none transition duration-300 font-semibold bg-cream text-maroon hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                    onClick={onCreatePanen}
-                >
-                    panen
-                </Button>
-
                 {/* Add Coop */}
                 <Modal
-                    closable={false}
-                    className=" -my-24 overflow-hidden p-0 rounded-2xl"
-                    title="Add Kandang"
-                    visible={isAdding}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAdd();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addData}
-                            >
-                                Add
-                            </Button>
+                    className="-my-16 overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Add New Coop
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAdd();
+                    }}
+                    visible={isAdding}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"coopNumber"}>Nomor Kandang</Label>
+                        <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingCoop?.coopNumber}
-                            placeholder={"Nomor Kandang"}
+                            placeholder={"Coop Number"}
                             onChange={(e) => {
                                 setAddingCoop((pre) => {
                                     return {
@@ -402,12 +395,12 @@ export default function KandangContent() {
                             }}
                         />
                         <Label forInput={"populationStart"}>
-                            Populasi Awal
+                            Population Start
                         </Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingCoop?.populationStart}
-                            placeholder="Populasi Awal"
+                            placeholder="Population Start"
                             onChange={(e) => {
                                 setAddingCoop((pre) => {
                                     return {
@@ -417,9 +410,9 @@ export default function KandangContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"dateIn"}>Tanggal Masuk</Label>
+                        <Label forInput={"dateIn"}>Date In</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Year-Month-Day"
                             onChange={(e) => {
                                 setAddingCoop((pre) => {
@@ -430,9 +423,9 @@ export default function KandangContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"farmName"}>Nama Ternak</Label>
+                        <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
                                 setAddingCoop((pre) => {
@@ -454,7 +447,7 @@ export default function KandangContent() {
                         </Select>
                         <Label forInput={"farmer"}>Farmer</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farmer"
                             onSelect={(value) => {
                                 setAddingCoop((pre) => {
@@ -474,41 +467,45 @@ export default function KandangContent() {
                                 );
                             })}
                         </Select>
-                    </form>
-                </Modal>
-
-                {/* Edit Coop */}
-                <Modal
-                    closable={false}
-                    className="overflow-hidden p-0 rounded-2xl"
-                    title="Edit Kandang"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center my-2">
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditing();
+                                    resetAdd();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={editData}
+                                onClick={addData}
                             >
-                                Save
+                                Add
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit Coop */}
+                <Modal
+                    className="overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit Coop
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
-                    <Label forInput={"coopNumber"}>Nomor Kandang</Label>
+                    <Label forInput={"coopNumber"}>Coop Number</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                        // value={editingCoop?.coopNumber}
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingCoop?.coopNumber}
                         onChange={(e) => {
                             setEditingCoop((pre) => {
@@ -519,9 +516,9 @@ export default function KandangContent() {
                             });
                         }}
                     />
-                    <Label forInput={"populationStart"}>Populasi Awal</Label>
+                    <Label forInput={"populationStart"}>Population Start</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingCoop?.populationStart}
                         onChange={(e) => {
                             setEditingCoop((pre) => {
@@ -532,9 +529,9 @@ export default function KandangContent() {
                             });
                         }}
                     />
-                    <Label forInput={"dateIn"}>Tanggal Masuk</Label>
+                    <Label forInput={"dateIn"}>Date In</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingCoop?.dateIn}
                         onChange={(e) => {
                             setEditingCoop((pre) => {
@@ -545,9 +542,9 @@ export default function KandangContent() {
                             });
                         }}
                     />
-                    <Label forInput={"farmer"}>Penanggung Jawab</Label>
+                    <Label forInput={"farmer"}>Responsible Farmer</Label>
                     <Select
-                        className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingCoop?.user.fullName}
                         onSelect={(value) => {
                             setEditingCoop((pre) => {
@@ -567,41 +564,46 @@ export default function KandangContent() {
                             );
                         })}
                     </Select>
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editData}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
 
                 {/* Create Harvest */}
                 <Modal
-                    closable={false}
-                    className=" -my-24 overflow-hidden p-0 rounded-2xl"
-                    title="Create Harvest"
-                    visible={isCreate}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetCreate();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={createPanen}
-                            >
-                                Create
-                            </Button>
+                    className=" -my-16 overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Create Harvest
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetCreate();
+                    }}
+                    visible={isCreate}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"coopNumber"}>Kandang</Label>
+                        <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Pilih Kandang"
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Choose coop"
                             onSelect={(value) => {
                                 setCreatingHarvest((pre) => {
                                     return { ...pre, coopId: value };
@@ -615,17 +617,17 @@ export default function KandangContent() {
                                         className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                         value={dataId.id}
                                     >
-                                        {`Kandang ${dataId.coopNumber}`}
+                                        {`Coop ${dataId.coopNumber}`}
                                     </Option>
                                 );
                             })}
                         </Select>
                         <Label forInput={"totalFarmWeight"}>
-                            Total Berat Ternak
+                            Total Farm Weight
                         </Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Enter Total Weight"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Enter total weight"
                             onChange={(e) => {
                                 setCreatingHarvest((pre) => {
                                     return {
@@ -635,10 +637,10 @@ export default function KandangContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"death"}>Kematian</Label>
+                        <Label forInput={"death"}>Death</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Jumlah Kematian"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Death"
                             onChange={(e) => {
                                 setCreatingHarvest((pre) => {
                                     return {
@@ -648,9 +650,9 @@ export default function KandangContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"harvestTime"}>Tanggal Panen</Label>
+                        <Label forInput={"harvestTime"}>Harvest Time</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Year-Month-Day"
                             onChange={(e) => {
                                 setCreatingHarvest((pre) => {
@@ -661,6 +663,25 @@ export default function KandangContent() {
                                 });
                             }}
                         />
+                        <div className="flex justify-center gap-2 mt-6">
+                            <Button
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetCreate();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                type="submit"
+                                onClick={createPanen}
+                            >
+                                Create
+                            </Button>
+                        </div>
                     </form>
                 </Modal>
             </div>

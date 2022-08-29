@@ -37,7 +37,7 @@ const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
         clickPoint.current.style.display = "block";
     };
     return (
-        <div className="items-center px-4 flex justify-center">
+        <div className="items-center flex justify-center">
             <div className="relative mr-3">
                 <div
                     className="absolute top-3 left-3 items-center"
@@ -66,7 +66,7 @@ const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
                 />
             </div>
             <Select
-                className=" w-36 my-1 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
+                className=" w-36 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
                 onSelect={onChangeSelect}
                 placeholder="Category"
                 bordered={false}

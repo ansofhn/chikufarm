@@ -164,21 +164,21 @@ export default function TernakContent() {
 
     const columns = [
         {
-            title: "Nama Ternak",
+            title: "Farm Name",
             dataIndex: "farmName",
         },
         {
-            title: "Masa Pembesaran",
+            title: "Growth Time",
             dataIndex: "growthTime",
-            render: (growthTime) => `${growthTime} Hari`,
+            render: (growthTime) => `${growthTime} Day`,
             width: 200,
         },
         {
-            title: "Harga",
+            title: "Price",
             dataIndex: "buyPrice",
         },
         {
-            title: "Kategori Ternak",
+            title: "Farm Category",
             dataIndex: "breed",
             render: (breed) => breed.breedType,
         },
@@ -217,7 +217,8 @@ export default function TernakContent() {
 
     const onDeleteFarm = (record) => {
         Modal.confirm({
-            title: "Delete Ternak",
+            title: "Are you sure?",
+            content: "Delete this farm",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -246,9 +247,9 @@ export default function TernakContent() {
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
-                Data Ternak / All
+                Farm Data / All
             </div>
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchFarm
                         onChangeSearch={(e) => {
@@ -261,11 +262,10 @@ export default function TernakContent() {
                         }}
                     />
                     <Button
-                        className="flex gap-2 items-center px-4 py-3 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex gap-2 items-center px-4 py-3 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddFarm}
                     >
-                        <MdAdd className="self-center text-lg" />
-                        Add
+                        Add Farm
                     </Button>
                 </div>
                 <Table
@@ -275,6 +275,7 @@ export default function TernakContent() {
                     dataSource={dataSource}
                     pagination={{
                         pageSize: 10,
+                        className: "pt-2",
                         total: totalDataFarm,
                         onChange: (page) => {
                             getData(page);
@@ -284,60 +285,46 @@ export default function TernakContent() {
 
                 {/* Add Ternak */}
                 <Modal
-                    closable={false}
-                    className="overflow-hidden p-0 rounded-2xl"
-                    title="Add Ternak"
-                    visible={isAdding}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAdd();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addData}
-                            >
-                                Add
-                            </Button>
+                    className="overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Add New Farm
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAdd();
+                    }}
+                    visible={isAdding}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"farmName"}>Nama Ternak</Label>
+                        <Label forInput={"farmName"}>Farm Name</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingFarm?.farmName}
-                            placeholder={"Nama Ternak"}
+                            placeholder={"Farm name"}
                             onChange={(e) => {
                                 setAddingFarm((pre) => {
                                     return { ...pre, farmName: e.target.value };
                                 });
                             }}
                         />
-                        <Label forInput={"buyPrice"}>Harga</Label>
+                        <Label forInput={"buyPrice"}>Price</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingFarm?.buyPrice}
-                            placeholder={"Harga"}
+                            placeholder={"Price"}
                             onChange={(e) => {
                                 setAddingFarm((pre) => {
                                     return { ...pre, buyPrice: e.target.value };
                                 });
                             }}
                         />
-                        <Label forInput={"growthTime"}>Masa Pembesaran</Label>
+                        <Label forInput={"growthTime"}>Growth Period</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingFarm?.growthTime}
-                            placeholder={"Masa Pembesaran"}
+                            placeholder={"Growth period"}
                             onChange={(e) => {
                                 setAddingFarm((pre) => {
                                     return {
@@ -347,10 +334,10 @@ export default function TernakContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"breed"}>Kategori Ternak</Label>
+                        <Label forInput={"breed"}>Farm Category</Label>
                         <Select
-                            className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
-                            placeholder={"Pilih Kategori"}
+                            className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder={"Choose category"}
                             onSelect={(value) => {
                                 setAddingFarm((pre) => {
                                     return { ...pre, breedId: value };
@@ -377,39 +364,45 @@ export default function TernakContent() {
                                 Ayam Aduan
                             </Option>
                         </Select>
-                    </form>
-                </Modal>
-
-                {/* Edit Ternak */}
-                <Modal
-                    closable={false}
-                    className="overflow-hidden p-0 rounded-2xl"
-                    title="Edit Ternak"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center my-2">
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditing();
+                                    resetAdd();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={editData}
+                                type="submit"
+                                onClick={addData}
                             >
-                                Save
+                                Add
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit Ternak */}
+                <Modal
+                    className="overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit Farm
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
-                    <Label forInput={"farmName"}>Nama Ternak</Label>
+                    <Label forInput={"farmName"}>Farm Name</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingFarm?.farmName}
                         onChange={(e) => {
                             setEditingFarm((pre) => {
@@ -417,9 +410,9 @@ export default function TernakContent() {
                             });
                         }}
                     />
-                    <Label forInput={"buyPrice"}>Harga</Label>
+                    <Label forInput={"buyPrice"}>Price</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingFarm?.buyPrice}
                         onChange={(e) => {
                             setEditingFarm((pre) => {
@@ -427,9 +420,9 @@ export default function TernakContent() {
                             });
                         }}
                     />
-                    <Label forInput={"growthTime"}>Masa Pembesaran</Label>
+                    <Label forInput={"growthTime"}>Growth Period</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingFarm?.growthTime}
                         onChange={(e) => {
                             setEditingFarm((pre) => {
@@ -437,9 +430,9 @@ export default function TernakContent() {
                             });
                         }}
                     />
-                    <Label forInput={"breed"}>Kategori Ternak</Label>
+                    <Label forInput={"breed"}>Farm Category</Label>
                     <Select
-                        className="my-1 w-1/3 text-sm rounded-lg border border-textColor hover:border-textColor"
+                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingFarm?.breed.breedType}
                         onSelect={(value) => {
                             setEditingFarm((pre) => {
@@ -467,6 +460,25 @@ export default function TernakContent() {
                             Ayam Aduan
                         </Option>
                     </Select>
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editData}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </div>

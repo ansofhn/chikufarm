@@ -357,20 +357,20 @@ export default function PakanContent() {
 
     const columns = [
         {
-            title: "Nama Pakan",
+            title: "Feed Name",
             dataIndex: "feedName",
         },
         {
-            title: "Jenis Pakan",
+            title: "Feed Type",
             dataIndex: "feedType",
             align: "center",
         },
         {
-            title: "Harga / Kg",
+            title: "Price / Kg",
             dataIndex: "pricePerKg",
         },
         {
-            title: "Kategori Ternak",
+            title: "Farm Category",
             dataIndex: "breed",
             render: (breed) => breed.breedType,
         },
@@ -379,7 +379,7 @@ export default function PakanContent() {
             align: "center",
             dataIndex: "feedStock",
             render: (feedStock) => {
-                return `${(feedStock.stock/1).toFixed(1)} Kg`;
+                return `${(feedStock.stock / 1).toFixed(1)} Kg`;
             },
         },
         {
@@ -438,7 +438,6 @@ export default function PakanContent() {
                 return (
                     <div className="text-center">
                         <EditOutlined
-                            className="ml-3"
                             onClick={() => {
                                 onEditHistory(record);
                             }}
@@ -456,17 +455,17 @@ export default function PakanContent() {
             align: "center",
         },
         {
-            title: "Nama Ternak",
+            title: "Farm Name",
             dataIndex: "farm",
             render: (farm) => farm.farmName,
         },
         {
-            title: "Nama Pakan",
+            title: "Feed Name",
             dataIndex: "masterFeed",
             render: (masterFeed) => masterFeed.feedName,
         },
         {
-            title: "Jumlah Pakan",
+            title: "Feed Quantity",
             dataIndex: "feedQuantityOnGram",
             render: (feedQuantityOnGram) => `${feedQuantityOnGram} gram`,
         },
@@ -506,7 +505,8 @@ export default function PakanContent() {
 
     const onDeleteFeed = (record) => {
         Modal.confirm({
-            title: "Delete Pakan",
+            title: "Are you sure?",
+            content: "Delete this feed",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -520,7 +520,8 @@ export default function PakanContent() {
 
     const onDeleteRecomendation = (record) => {
         Modal.confirm({
-            title: "Delete Recomendation",
+            title: "Are you sure?",
+            content: "Delete this recommendation",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -593,7 +594,7 @@ export default function PakanContent() {
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
-                Data Pakan / All
+                Feed Data / All
             </div>
 
             <div className="p-10 bg-white rounded-xl">
@@ -608,19 +609,18 @@ export default function PakanContent() {
                             searchData(search, value);
                         }}
                     />
-                    <div className="flex items-center p-1">
+                    <div className="flex items-center">
                         <Button
-                            className="w-40 mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            className="mx-2 font-medium rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                             onClick={onAddHistory}
                         >
-                            Create History
+                            Add Feed Stock
                         </Button>
                         <Button
-                            className="flex items-center gap-2 px-4 py-3 font-semibold transition duration-300 border-none rounded-lg text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center gap-2 px-6 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddFeed}
                         >
-                            <MdAdd className="self-center text-lg" />
-                            Add
+                            Add Feed
                         </Button>
                     </div>
                 </div>
@@ -631,6 +631,7 @@ export default function PakanContent() {
                     dataSource={dataSource}
                     pagination={{
                         pageSize: 10,
+                        className: "pt-2",
                         total: totalDataFeed,
                         onChange: (page) => {
                             getData(page);
@@ -638,51 +639,37 @@ export default function PakanContent() {
                     }}
                 ></Table>
 
-                {/* Add Pakan */}
+                {/* Add Feed */}
                 <Modal
-                    closable={false}
-                    className="p-0 -my-24 overflow-hidden rounded-2xl"
-                    title="Add Pakan"
-                    visible={isAdding}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAdd();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addDataFeed}
-                            >
-                                Add
-                            </Button>
+                    className="p-0 -my-20 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Add New Feed
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAdd();
+                    }}
+                    visible={isAdding}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"feedName"}>Nama Pakan</Label>
+                        <Label forInput={"feedName"}>Feed Name</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingFeed?.feedName}
-                            placeholder={"Nama Pakan"}
+                            placeholder={"Feed Name"}
                             onChange={(e) => {
                                 setAddingFeed((pre) => {
                                     return { ...pre, feedName: e.target.value };
                                 });
                             }}
                         />
-                        <Label forInput={"pricePerKg"}>Harga / Kg</Label>
+                        <Label forInput={"pricePerKg"}>Price / Kg</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingFeed?.pricePerKg}
-                            placeholder={"Harga Pakan / Kg"}
+                            placeholder={"Feed Price / Kg"}
                             onChange={(e) => {
                                 setAddingFeed((pre) => {
                                     return {
@@ -692,11 +679,11 @@ export default function PakanContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingFeed?.feedQuantity}
-                            placeholder={"Jumlah Pakan"}
+                            placeholder={"Feed quantity"}
                             onChange={(e) => {
                                 setAddingFeed((pre) => {
                                     return {
@@ -706,10 +693,10 @@ export default function PakanContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"feedType"}>Jenis Pakan</Label>
+                        <Label forInput={"feedType"}>Feed Type</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Pilih Jenis Pakan"
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Choose feed type"
                             onSelect={(value) => {
                                 setAddingFeed((pre) => {
                                     return { ...pre, feedType: value };
@@ -730,12 +717,10 @@ export default function PakanContent() {
                                 Finisher
                             </Option>
                         </Select>
-                        <Label forInput={"categoryTernak"}>
-                            Kategori Ternak
-                        </Label>
+                        <Label forInput={"categoryTernak"}>Farm Category</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Kategori Ternak"
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Farm Category"
                             onSelect={(value) => {
                                 setAddingFeed((pre) => {
                                     return { ...pre, breedId: value };
@@ -762,40 +747,45 @@ export default function PakanContent() {
                                 Ayam Aduan
                             </Option>
                         </Select>
-                    </form>
-                </Modal>
-
-                {/* Edit Pakan */}
-                <Modal
-                    closable={false}
-                    className="p-0 overflow-hidden rounded-2xl"
-                    title="Edit Pakan"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center py-2">
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditing();
+                                    resetAdd();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={editDataFeed}
+                                onClick={addDataFeed}
                             >
-                                Save
+                                Add
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit Feed */}
+                <Modal
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit Feed
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
-                    <Label forInput={"feedName"}>Nama Pakan</Label>
+                    <Label forInput={"feedName"}>Feed Name</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingFeed?.feedName}
                         onChange={(e) => {
                             setEditingFeed((pre) => {
@@ -803,33 +793,33 @@ export default function PakanContent() {
                             });
                         }}
                     />
-                    <Label forInput={"feedType"}>Jenis Pakan</Label>
+                    <Label forInput={"feedType"}>Feed Type</Label>
                     <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder={editingFeed?.feedType}
-                            onSelect={(value) => {
-                                setEditingFeed((pre) => {
-                                    return { ...pre, feedType: value };
-                                });
-                            }}
-                            bordered={false}
+                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        placeholder={editingFeed?.feedType}
+                        onSelect={(value) => {
+                            setEditingFeed((pre) => {
+                                return { ...pre, feedType: value };
+                            });
+                        }}
+                        bordered={false}
+                    >
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="starter"
                         >
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="starter"
-                            >
-                                Starter
-                            </Option>
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="finisher"
-                            >
-                                Finisher
-                            </Option>
-                        </Select>
-                    <Label forInput={"pricePerKg"}>Harga / Kg</Label>
+                            Starter
+                        </Option>
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value="finisher"
+                        >
+                            Finisher
+                        </Option>
+                    </Select>
+                    <Label forInput={"pricePerKg"}>Price / Kg</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingFeed?.pricePerKg}
                         onChange={(e) => {
                             setEditingFeed((pre) => {
@@ -837,9 +827,9 @@ export default function PakanContent() {
                             });
                         }}
                     />
-                    <Label forInput={"breed"}>Kategori Ternak</Label>
+                    <Label forInput={"breed"}>Farm Category</Label>
                     <Select
-                        className="w-1/3 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                        className="w-1/3 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingFeed?.breed.breedType}
                         onSelect={(value) => {
                             setEditingFeed((pre) => {
@@ -867,78 +857,72 @@ export default function PakanContent() {
                             Ayam Aduan
                         </Option>
                     </Select>
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editDataFeed}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
 
-                {/* Detail Pakan */}
+                {/* Detail Feed */}
                 <Modal
-                    width={700}
-                    closable={false}
-                    className="p-0 -my-20 overflow-hidden rounded-2xl "
+                    className="p-0 -my-20 overflow-hidden rounded-xl "
                     visible={isDetail}
-                    title="Detail Pakan"
-                    footer={[
-                        <div className="flex justify-center py-2">
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetDetail();
-                                }}
-                            >
-                                Cancel
-                            </Button>
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Detail Feed
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetDetail();
+                    }}
+                    footer={null}
                 >
                     <Table
                         className="ant-pagination-simple"
                         bordered={true}
                         columns={columnHistory}
                         dataSource={historySource}
-                        // pagination={{
-                        //     pageSize: 10,
-                        //     total: totalDataCoop,
-                        //     onChange: (page) => {
-                        //         getHistory(page);
-                        //     },
-                        // }}
+                        pagination={{
+                            pageSize: 5,
+                        }}
                     ></Table>
                 </Modal>
 
                 {/* add History */}
                 <Modal
-                    closable={false}
-                    className="p-0 overflow-hidden rounded-2xl"
-                    title="Add History"
-                    visible={isAddingHistory}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAddHistory();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addHistory}
-                            >
-                                Add
-                            </Button>
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Add Feed Stock
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAddHistory();
+                    }}
+                    visible={isAddingHistory}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingHistory?.feedQuantity}
-                            placeholder={"Jumlah Pakan"}
+                            placeholder={"Feed Quantity"}
                             onChange={(e) => {
                                 setAddingHistory((pre) => {
                                     return {
@@ -948,9 +932,9 @@ export default function PakanContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"feedName"}>Nama Pakan</Label>
+                        <Label forInput={"feedName"}>Feed Name</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
@@ -970,14 +954,40 @@ export default function PakanContent() {
                                 );
                             })}
                         </Select>
+                        <div className="flex justify-center gap-2 mt-6">
+                            <Button
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetAddHistory();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                type="submit"
+                                onClick={addHistory}
+                            >
+                                Add
+                            </Button>
+                        </div>
                     </form>
                 </Modal>
 
-                {/* Edit Pakan History */}
+                {/* Edit Feed History */}
                 <Modal
-                    closable={false}
-                    className="p-0 overflow-hidden rounded-2xl"
-                    title="Edit History Pakan"
+                    width={400}
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit Feed Quantity
+                        </div>,
+                    ]}
+                    onCancel={() => {
+                        resetEditingHistory();
+                    }}
                     visible={isEditingHistory}
                     footer={[
                         <div className="flex justify-center py-2">
@@ -1001,9 +1011,9 @@ export default function PakanContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="my-1 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingHistory?.feedQuantity}
                         onChange={(e) => {
                             setEditingHistory((pre) => {
@@ -1017,18 +1027,18 @@ export default function PakanContent() {
                 </Modal>
             </div>
 
-            {/* Rekomendasi Pakan */}
+            {/* Rekomendasi Feed */}
             <div className="p-10 mt-10 bg-white rounded-xl">
-                <div className="flex justify-center pb-5 mb-5 border-b border-gray-200">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
-                        Rekomendasi Pakan
-                        <Button
-                            className="mx-4 my-2 text-xs font-bold border-none rounded-md bg-maroon text-cream hover:text-cream hover:border-none hover:bg-maroon focus:bg-maroon focus:text-cream focus:border-none"
-                            onClick={onAddRecomendation}
-                        >
-                            Create
-                        </Button>
+                        Feed Recommendation
                     </div>
+                    <Button
+                        className="flex items-center gap-2 px-9 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        onClick={onAddRecomendation}
+                    >
+                        Create
+                    </Button>
                 </div>
                 <Table
                     className="ant-pagination-simple"
@@ -1037,6 +1047,7 @@ export default function PakanContent() {
                     dataSource={feedRecommend}
                     pagination={{
                         pageSize: 10,
+                        className: "pt-2",
                         total: totalDataRecommend,
                         onChange: (page) => {
                             getDataRecommend(page);
@@ -1046,36 +1057,22 @@ export default function PakanContent() {
 
                 {/* Add Recomendation */}
                 <Modal
-                    closable={false}
-                    className="p-0 overflow-hidden rounded-2xl"
-                    title="Add Feed Recomendation"
-                    visible={isAddingRecommend}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAddRecomendation();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addRecomendation}
-                            >
-                                Add
-                            </Button>
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Add Feed Recommendation
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAddRecomendation();
+                    }}
+                    visible={isAddingRecommend}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"week"}>Week</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingRecommend?.week}
                             placeholder={"week"}
                             onChange={(e) => {
@@ -1087,11 +1084,11 @@ export default function PakanContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
-                            className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingRecommend?.feedQuantity}
-                            placeholder={"Jumlah Pakan"}
+                            placeholder={"Feed Quantity"}
                             onChange={(e) => {
                                 setAddingRecommend((pre) => {
                                     return {
@@ -1101,9 +1098,9 @@ export default function PakanContent() {
                                 });
                             }}
                         />
-                        <Label forInput={"farmName"}>Nama Ternak</Label>
+                        <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
@@ -1123,9 +1120,9 @@ export default function PakanContent() {
                                 );
                             })}
                         </Select>
-                        <Label forInput={"feedName"}>Nama Pakan</Label>
+                        <Label forInput={"feedName"}>Feed Name</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
@@ -1145,40 +1142,45 @@ export default function PakanContent() {
                                 );
                             })}
                         </Select>
-                    </form>
-                </Modal>
-
-                {/* Edit Recomendation */}
-                <Modal
-                    closable={false}
-                    className="p-0 overflow-hidden rounded-2xl"
-                    title="Edit Feed Recomendation"
-                    visible={isEditingRecommend}
-                    footer={[
-                        <div className="flex justify-center my-2">
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditingRecomendation();
+                                    resetAddRecomendation();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={editRecomendation}
+                                onClick={addRecomendation}
                             >
-                                Save
+                                Add
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit Recomendation */}
+                <Modal
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit Feed Recommendation
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditingRecomendation();
+                    }}
+                    visible={isEditingRecommend}
+                    footer={null}
                 >
                     <Label forInput={"week"}>Week</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingRecommend?.week}
                         onChange={(e) => {
                             setEditingRecommend((pre) => {
@@ -1189,9 +1191,9 @@ export default function PakanContent() {
                             });
                         }}
                     />
-                    <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingRecommend?.feedQuantityOnGram}
                         onChange={(e) => {
                             setEditingRecommend((pre) => {
@@ -1202,9 +1204,9 @@ export default function PakanContent() {
                             });
                         }}
                     />
-                    <Label forInput={"farmName"}>Nama Ternak</Label>
+                    <Label forInput={"farmName"}>Farm Name</Label>
                     <Select
-                        className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingRecommend?.farm.farmName}
                         onSelect={(value) => {
                             setEditingRecommend((pre) => {
@@ -1224,9 +1226,9 @@ export default function PakanContent() {
                             );
                         })}
                     </Select>
-                    <Label forInput={"feedName"}>Nama Pakan</Label>
+                    <Label forInput={"feedName"}>Feed Name</Label>
                     <Select
-                        className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
+                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingRecommend?.masterFeed.feedName}
                         onSelect={(value) => {
                             setEditingRecommend((pre) => {
@@ -1246,6 +1248,25 @@ export default function PakanContent() {
                             );
                         })}
                     </Select>
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditingRecomendation();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editRecomendation}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </div>

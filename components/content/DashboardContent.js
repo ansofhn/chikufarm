@@ -63,25 +63,25 @@ export default function DashboardContent() {
             </div>
             <div className="grid grid-cols-4 gap-5 p-2">
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Populasi</div>
+                    <div className="text-sm text-textColor">Total Population</div>
                     <div className="text-lg font-bold text-textColor">
                         {dataSource.currentPopulation}
                     </div>
                 </div>
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Kandang</div>
+                    <div className="text-sm text-textColor">Total Coop</div>
                     <div className="text-lg font-bold text-textColor">
                         {dataSource.totalCoop}
                     </div>
                 </div>
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Pakan</div>
+                    <div className="text-sm text-textColor">Total Feed</div>
                     <div className="text-lg font-bold text-textColor">
                         {totalPakan()}
                     </div>
                 </div>
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Kematian</div>
+                    <div className="text-sm text-textColor">Death</div>
                     <div className="text-lg font-bold text-textColor">
                         {dataSource.death}
                     </div>
@@ -92,7 +92,7 @@ export default function DashboardContent() {
 
             <div className="grid grid-cols-2 gap-5 p-2">
                 <div className="w-full overflow-hidden text-sm bg-white rounded-lg text-textColor">
-                    <div className="p-4">Progress Populasi</div>
+                    <div className="p-4">Population Progress</div>
                     <div className="px-5 py-2 text-5xl font-bold text-textColor">
                         {`${progress().toFixed(0)} %`}
                     </div>
@@ -102,20 +102,20 @@ export default function DashboardContent() {
                 </div>
                 <div className="grid grid-cols-2 gap-5">
                     <div className="w-full p-4 text-sm bg-white rounded-lg text-textColor">
-                        Populasi Terbaru
+                        Latest Population
                         <div className="mt-2 text-2xl font-bold text-textColor">
                             {dataSource.currentPopulation}
                         </div>
                     </div>
                     <div className="w-full p-4 text-sm bg-white rounded-lg text-textColor">
-                        Populasi Awal
+                        Population Start
                         <div className="mt-2 text-2xl font-bold text-textColor">
                             {dataSource.populationStart}
                         </div>
                     </div>
                     <div className="grid w-full h-56 col-span-2 p-2 text-sm bg-white rounded-lg text-textColor">
                         <div className="grid w-full grid-cols-2 p-4 text-sm font-semibold bg-white rounded-lg text-textColor">
-                            Kategori Hewan Ternak
+                            LiveStock Category
                             <div className="col-start-1 font-semibold">
                                 <PieChartComp />
                             </div>

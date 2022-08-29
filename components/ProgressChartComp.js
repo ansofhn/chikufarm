@@ -14,7 +14,7 @@ const CustomTooltip = ({ active, payload, label }) => {
       return (
         <div className="custom-tooltip bg-cream text-sm font-medium rounded-md p-2">
           <p className="label">{`${label.substring(0,10)}`}</p>
-          <p className="intro">{`Populasi : ${payload[0].value}`}</p>
+          <p className="intro">{`Population : ${payload[0].value}`}</p>
         </div>
       );
     }

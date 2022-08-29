@@ -7,6 +7,7 @@ import axios from "axios";
 import Label from "../Label";
 import SearchUser from "../SearchUser";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 const { Option } = Select;
 
@@ -104,7 +105,6 @@ export default function UserContent() {
             id: userId,
             roleId: roleId,
         };
-        console.log(updateRole)
         try {
             const responseUser = await axios
                 .put(
@@ -270,7 +270,8 @@ export default function UserContent() {
 
     const onDeleteUser = (record) => {
         Modal.confirm({
-            title: "Delete User",
+            title: "Are you sure?",
+            content: "Delete this user",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -299,9 +300,9 @@ export default function UserContent() {
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
-                Data User / All
+                User Data / All
             </div>
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchUser
                         onChangeSearch={(e) => {
@@ -320,7 +321,7 @@ export default function UserContent() {
                             }
                         >
                             <Button
-                                className="flex gap-2 items-center px-4 py-4 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                                className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                                 onClick={getExcel}
                             >
                                 Export
@@ -328,11 +329,10 @@ export default function UserContent() {
                         </Link>
 
                         <Button
-                            className="flex gap-2 items-center px-4 py-4 rounded-lg border-none transition duration-300 text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddUser}
                         >
-                            <MdAdd className="self-center text-lg" />
-                            Add
+                            Add User
                         </Button>
                     </div>
                 </div>
@@ -343,6 +343,7 @@ export default function UserContent() {
                     dataSource={dataSource}
                     pagination={{
                         pageSize: 10,
+                        className: "pt-2",
                         total: totalDataUser,
                         onChange: (page) => {
                             getData(page);
@@ -352,36 +353,22 @@ export default function UserContent() {
 
                 {/* Add User */}
                 <Modal
-                    closable={false}
-                    className="overflow-hidden p-0 -my-24 rounded-2xl"
-                    title="Add User"
-                    visible={isAdding}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAdd();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addData}
-                            >
-                                Add
-                            </Button>
+                    className="overflow-hidden p-0 -my-24 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Add New User
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAdd();
+                    }}
+                    visible={isAdding}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"fullName"}>Fullname</Label>
                         <Input
-                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.fullName}
                             placeholder={"Fullname"}
                             onChange={(e) => {
@@ -392,7 +379,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"userName"}>Username</Label>
                         <Input
-                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.userName}
                             placeholder={"Username"}
                             onChange={(e) => {
@@ -403,9 +390,10 @@ export default function UserContent() {
                         />
                         <Label forInput={"email"}>Email</Label>
                         <Input
-                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.email}
                             placeholder={"Email"}
+                            type="email"
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, email: e.target.value };
@@ -414,7 +402,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"phone"}>Phone</Label>
                         <Input
-                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.phone}
                             placeholder={"Phone Number"}
                             onChange={(e) => {
@@ -425,9 +413,10 @@ export default function UserContent() {
                         />
                         <Label forInput={"password"}>Password</Label>
                         <Input
-                            className="mb-2 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingUser?.password}
                             placeholder={"Password"}
+                            type="password"
                             onChange={(e) => {
                                 setAddingUser((pre) => {
                                     return { ...pre, password: e.target.value };
@@ -436,7 +425,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"role"}>User Role</Label>
                         <Select
-                            className="mb-2 text-sm rounded-lg border border-textColor hover:border-textColor"
+                            className="mb-2 text-sm rounded-md border border-textColor hover:border-textColor"
                             placeholder={"Choose Role"}
                             onSelect={(value) => {
                                 setAddingUser((pre) => {
@@ -467,40 +456,45 @@ export default function UserContent() {
                                 Guest
                             </Option>
                         </Select>
-                    </form>
-                </Modal>
-
-                {/* Edit User */}
-                <Modal
-                    closable={false}
-                    className="overflow-hidden p-0 -my-10 rounded-2xl"
-                    title="Edit User"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center my-2">
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditing();
+                                    resetAdd();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={editData}
+                                onClick={addData}
                             >
-                                Save
+                                Add
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit User */}
+                <Modal
+                    className="overflow-hidden p-0 -my-10 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit User
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
                     <Label forInput={"fullName"}>Fullname</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.fullName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -510,7 +504,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"userName"}>Username</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.userName}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -520,7 +514,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"email"}>Email</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.email}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -530,7 +524,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"phone"}>Phone</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingUser?.phone}
                         onChange={(e) => {
                             setEditingUser((pre) => {
@@ -540,7 +534,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"role"}>User Role</Label>
                     <Select
-                        className="my-1 text-sm rounded-lg border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingUser?.role.roleName}
                         onChange={(value) => {
                             setEditingUser((pre) => {
@@ -571,6 +565,26 @@ export default function UserContent() {
                             Guest
                         </Option>
                     </Select>
+
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editData}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </div>

@@ -17,6 +17,9 @@ export default function HarvestContent() {
     const [detailHarvest, setDetailHarvest] = useState([]);
     const [totalDataHarvest, setTotalDataHarvest] = useState([]);
 
+    const [isCreate, setIsCreate] = useState(false);
+    const [creatingHarvest, setCreatingHarvest] = useState(null);
+
     const getData = async (page) => {
         try {
             const response = await axios
@@ -145,42 +148,67 @@ export default function HarvestContent() {
         }
     };
 
+    const createPanen = async () => {
+        try {
+            const response = await axios
+                .post(
+                    "https://chikufarm-app.herokuapp.com/api/harvest/create",
+                    creatingHarvest,
+                    {
+                        headers: {
+                            "content-type": "application/json",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    getData(1);
+                    resetCreate();
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const columns = [
         {
-            title: "Tanggal Panen",
+            title: "Harvest Date",
             dataIndex: "harvestTime",
             width: 150,
             align: "center",
         },
         {
             align: "center",
-            title: "Kandang",
+            title: "Coop Number",
+            width: 100,
             dataIndex: "coop",
             render: (coop) => coop.coopNumber,
         },
         {
-            title: "Total Penggunaan Pakan",
+            title: "Total Feed Used",
             align: "center",
-            width: 200,
+            width: 150,
             dataIndex: "totalFeedUsed",
-            render: (totalFeedUsed) => `${totalFeedUsed} Kg`
+            render: (totalFeedUsed) => `${totalFeedUsed} Kg`,
         },
         {
-            title: "Populasi",
+            title: "Population",
             dataIndex: "population",
-            width: 100,
             align: "center",
         },
         {
-            title: "Kematian",
+            title: "Death",
             dataIndex: "totalDeath",
             align: "center",
         },
         {
             align: "center",
-            title: "Total Berat Ternak",
+            width: 150,
+            title: "Total Farm Weight",
             dataIndex: "totalFarmWeight",
-            render: (totalFarmWeight)=> `${totalFarmWeight} Kg`
+            render: (totalFarmWeight) => `${totalFarmWeight} Kg`,
         },
         {
             align: "center",
@@ -219,19 +247,19 @@ export default function HarvestContent() {
             align: "center",
         },
         {
-            title: "Harga Jual / Kg",
+            title: " Sell Price / Kg",
             dataIndex: "sellPricePerKg",
             render: (sellPricePerKg) => `Rp. ${sellPricePerKg}`,
             align: "center",
         },
         {
-            title: "Total Pengeluaran Pakan",
+            title: "Total Feed Cost",
             dataIndex: "totalFeedCost",
             render: (totalFeedCost) => `Rp. ${totalFeedCost}`,
             align: "center",
         },
         {
-            title: "Total Harga Penjualan",
+            title: "Total Sell Price",
             dataIndex: "totalSellingPrice",
             render: (totalSellingPrice) =>
                 `Rp. ${(totalSellingPrice / 1).toFixed(0)}`,
@@ -269,25 +297,48 @@ export default function HarvestContent() {
     const resetDetail = () => {
         setIsDetail(false);
     };
-    
+
+    const onCreatePanen = () => {
+        setIsCreate(true);
+        setCreatingHarvest(null);
+    };
+
+    const resetCreate = () => {
+        setIsCreate(false);
+        setCreatingHarvest(null);
+    };
+
+    const onChangeForm = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
-            <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-center pb-5 mb-5 border-b border-gray-200">
+            <div className="p-10 bg-white rounded-xl">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
-                        Data Panen
+                        Harvest Data
+                    </div>
+                    <div className="flex gap-2">
                         <Link
                             href={
                                 "https://chikufarm-app.herokuapp.com/api/harvest/download/excel"
                             }
                         >
                             <Button
-                                className="mx-4 my-2 text-xs font-bold border-none rounded-md bg-maroon text-cream hover:text-cream hover:border-none hover:bg-maroon focus:bg-maroon focus:text-cream focus:border-none"
+                                className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                                 onClick={getExcel}
                             >
                                 Export
                             </Button>
                         </Link>
+
+                        <Button
+                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            onClick={onCreatePanen}
+                        >
+                            Coop Harvest
+                        </Button>
                     </div>
                 </div>
                 <Table
@@ -298,38 +349,124 @@ export default function HarvestContent() {
                     pagination={false}
                 ></Table>
 
-                {/* Edit Harvest */}
+                {/* Create Harvest */}
                 <Modal
-                    closable={false}
-                    className=" -my-24 overflow-hidden p-0 rounded-2xl"
-                    title="Edit Panen"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center my-2">
+                    className=" -my-16 overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Create Harvest
+                        </div>,
+                    ]}
+                    onCancel={() => {
+                        resetCreate();
+                    }}
+                    visible={isCreate}
+                    footer={null}
+                >
+                    <form onSubmit={onChangeForm} method="POST">
+                        <Label forInput={"coopNumber"}>Coop Number</Label>
+                        <Select
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Choose coop"
+                            onSelect={(value) => {
+                                setCreatingHarvest((pre) => {
+                                    return { ...pre, coopId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            {coop.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {`Coop ${dataId.coopNumber}`}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"totalFarmWeight"}>
+                            Total Farm Weight
+                        </Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Enter total weight"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        totalFarmWeight: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"death"}>Death</Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Death"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        death: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"harvestTime"}>Harvest Time</Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Year-Month-Day"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        harvestTime: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditing();
+                                    resetCreate();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="mx-2 w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={editData}
+                                onClick={createPanen}
                             >
-                                Save
+                                Create
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit Harvest */}
+                <Modal
+                    className=" -my-16 overflow-hidden p-0 rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Edit Harvest Data
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
-                    <Label forInput={"coopNumber"}>Kandang</Label>
+                    <Label forInput={"coopNumber"}>Coop Number</Label>
                     <Select
-                        className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                        placeholder={`Kandang ${editingHarvest?.coop.coopNumber}`}
+                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        placeholder={`Coop ${editingHarvest?.coop.coopNumber}`}
                         onSelect={(value) => {
                             setEditingHarvest((pre) => {
                                 return { ...pre, coopId: value };
@@ -343,16 +480,16 @@ export default function HarvestContent() {
                                     className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                     value={dataId.id}
                                 >
-                                    {`Kandang ${dataId.coopNumber}`}
+                                    {`Coop ${dataId.coopNumber}`}
                                 </Option>
                             );
                         })}
                     </Select>
                     <Label forInput={"totalFarmWeight"}>
-                        Total Berat Ternak
+                        Total Farm Weight
                     </Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingHarvest?.totalFarmWeight}
                         onChange={(e) => {
                             setEditingHarvest((pre) => {
@@ -363,9 +500,9 @@ export default function HarvestContent() {
                             });
                         }}
                     />
-                    <Label forInput={"death"}>Kematian</Label>
+                    <Label forInput={"death"}>Death</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingHarvest?.totalDeath}
                         onChange={(e) => {
                             setEditingHarvest((pre) => {
@@ -376,9 +513,9 @@ export default function HarvestContent() {
                             });
                         }}
                     />
-                    <Label forInput={"harvestTime"}>Tanggal Panen</Label>
+                    <Label forInput={"harvestTime"}>Harvest Time</Label>
                     <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingHarvest?.harvestTime}
                         onChange={(e) => {
                             setEditingHarvest((pre) => {
@@ -389,28 +526,41 @@ export default function HarvestContent() {
                             });
                         }}
                     />
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editData}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
 
                 {/* Detail Harvest */}
                 <Modal
-                    width={800}
-                    closable={false}
-                    className="p-0 -my-20 overflow-hidden rounded-2xl "
-                    visible={isDetail}
-                    title="Detail Panen"
-                    footer={[
-                        <div className="flex justify-center py-2">
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetDetail();
-                                }}
-                            >
-                                Back
-                            </Button>
+                    width={700}
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                            Harvest Detail
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetDetail();
+                    }}
+                    visible={isDetail}
+                    footer={null}
                 >
                     <Table
                         className="ant-pagination-simple"

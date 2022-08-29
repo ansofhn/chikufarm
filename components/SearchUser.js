@@ -13,7 +13,7 @@ const SearchUser = ({ onChangeSearch, onChangeSelect }) => {
     };
 
     return (
-        <div className="items-center px-4 flex justify-center">
+        <div className="items-center flex justify-center">
             <div className="relative mr-3">
                 <div
                     className="absolute top-3 left-3 items-center"
@@ -42,7 +42,7 @@ const SearchUser = ({ onChangeSearch, onChangeSelect }) => {
                 />
             </div>
             <Select
-                className="my-1 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
+                className="text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
                 onSelect={onChangeSelect}
                 placeholder="Role"
                 style={{

@@ -6,7 +6,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
             <div className="custom-tooltip bg-cream text-sm font-medium p-2 rounded-md">
-                <p className="intro">{`${payload[0].value} Ekor`}</p>
+                <p className="intro">{`${payload[0].value}`}</p>
             </div>
         );
     }
