@@ -84,6 +84,17 @@ export default function verify() {
                 });
         } catch (error) {
             console.log(error);
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: "Invalid Code",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 
@@ -133,21 +144,21 @@ export default function verify() {
     return (
         <form onSubmit={onChangeForm} method="POST">
             <div className="flex flex-col items-center justify-center w-full antialiased tracking-tighter text-center md:bg-gray-100 md:min-h-screen">
-                <div className="flex items-center w-2/6 max-w-4xl shadow-md shadow-shadowColor bg-white rounded-xl">
+                <div className="flex items-center w-2/6 max-w-4xl bg-white shadow-md shadow-shadowColor rounded-xl">
                     <Head>
                         <title>Email Verification</title>
                     </Head>
-                    <div className="py-4 px-4 rounded-2xl">
-                        <div className="p-8 items-center text-center">
-                            <h3 className="text-3xl py-2 font-bold text-textColor">
+                    <div className="px-4 py-4 rounded-2xl">
+                        <div className="items-center p-8 text-center">
+                            <h3 className="py-2 text-3xl font-bold text-textColor">
                                 Get Your Code
                             </h3>
-                            <p className="text-sm mx-8 font-medium text-textColor">
+                            <p className="mx-8 text-sm font-medium text-textColor">
                                 Please enter the 4 digit code that send to your
                                 email address.
                             </p>
                             <Input
-                                className="rounded-lg placeholder:text-center text-center text-textColor w-3/5 py-2 mt-10 text-sm border-cream border-2 focus:border-cream focus:ring-0"
+                                className="w-3/5 py-2 mt-10 text-sm text-center border-2 rounded-lg placeholder:text-center text-textColor border-cream focus:border-cream focus:ring-0"
                                 placeholder="Enter Verification Code"
                                 onChange={(e) => {
                                     setCode((pre) => {
@@ -158,11 +169,11 @@ export default function verify() {
                                     });
                                 }}
                             />
-                            <p className="text-sm py-2 font-medium text-textColor">
+                            <p className="py-2 text-sm font-medium text-textColor">
                                 If you don't receive code?{" "}
                                 <a
                                     onClick={resendCode}
-                                    className="text-maroon font-semibold hover:text-maroon"
+                                    className="font-semibold text-maroon hover:text-maroon"
                                 >
                                     Resend
                                 </a>

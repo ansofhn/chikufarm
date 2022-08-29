@@ -5,6 +5,7 @@ import Image from "next/image";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -12,10 +13,11 @@ function classNames(...classes) {
 
 export default function ProfileMenu() {
     const [dataUser, setDataUser] = useState([]);
-    const [role, setRole] = useState([])
+    const [role, setRole] = useState([]);
     const router = useRouter();
 
-    const handleLogout = () => {
+    const handleLogout = (e) => {
+        e.preventDefault();
         localStorage.removeItem("access_token");
         router.push("/");
     };
@@ -46,7 +48,7 @@ export default function ProfileMenu() {
                 )
                 .then((res) => {
                     setDataUser(res.data.data);
-                    setRole(res.data.data.role.roleName)
+                    setRole(res.data.data.role.roleName);
                 });
         } catch (error) {
             console.log(error);
@@ -59,7 +61,7 @@ export default function ProfileMenu() {
 
     return (
         <div className="flex justify-end my-4 ml-72 md:mx-10 text-textColor">
-            <Menu as="div" className="inline-block relative text-left">
+            <Menu as="div" className="relative inline-block text-left">
                 <div>
                     <Menu.Button className="inline-flex justify-center px-2.5 py-2.5 mr-2 w-full text-sm font-medium bg-white rounded-lg shadow-sm text-textColor focus:outline-none">
                         <div className="flex gap-2">
@@ -78,13 +80,13 @@ export default function ProfileMenu() {
                                 <div className="font-medium text-start">
                                     {dataUser.userName}
                                 </div>
-                                <div className="text-xs text-left font-light">
+                                <div className="text-xs font-light text-left">
                                     {role}
                                 </div>
                             </div>
                         </div>
                         <ChevronDownIcon
-                            className="self-center -mr-1 ml-20 w-5 h-5"
+                            className="self-center w-5 h-5 ml-20 -mr-1"
                             aria-hidden="true"
                         />
                     </Menu.Button>
@@ -99,37 +101,47 @@ export default function ProfileMenu() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 bg-white rounded-lg shadow-lg origin-top-right focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-lg shadow-lg focus:outline-none">
                         <div className="py-1">
                             <Menu.Item>
                                 {({ active }) => (
-                                    <a
-                                        href="/dashboard/profile/accountSetting"
-                                        className={classNames(
-                                            active
-                                                ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
-                                                : "text-gray-700",
-                                            "block px-4 py-2 text-sm"
-                                        )}
+                                    <Link
+                                        href={
+                                            "/dashboard/profile/accountSetting"
+                                        }
                                     >
-                                        Update Profile
-                                    </a>
+                                        <div
+                                            className={classNames(
+                                                active
+                                                    ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                    : "text-gray-700",
+                                                "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
+                                            )}
+                                        >
+                                            Update Profile
+                                        </div>
+                                    </Link>
                                 )}
                             </Menu.Item>
 
                             <Menu.Item>
                                 {({ active }) => (
-                                    <a
-                                        href="dashboard/profile/passwordSetting"
-                                        className={classNames(
-                                            active
-                                                ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
-                                                : "text-gray-700",
-                                            "block px-4 py-2 text-sm"
-                                        )}
+                                    <Link
+                                        href={
+                                            "/dashboard/profile/passwordSetting"
+                                        }
                                     >
-                                        Change Password
-                                    </a>
+                                        <div
+                                            className={classNames(
+                                                active
+                                                    ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                    : "text-gray-700",
+                                                "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
+                                            )}
+                                        >
+                                            Change Password
+                                        </div>
+                                    </Link>
                                 )}
                             </Menu.Item>
                             <form method="POST" action="/">
