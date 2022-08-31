@@ -36,7 +36,7 @@ export default function Chat() {
             div.className = "flex justify-end";
         } else {
             div.innerHTML = `<div class="font-semibold text-maroon"> ${message.sender.userName} - ${message.sender.role.roleName}</div>${message.message}`;
-            div.className = "py-2 px-4 rounded-t-lg rounded-bl-lg bg-gray-100 w-fit mb-2";
+            div.className = "py-2 px-4 rounded-t-lg rounded-br-lg bg-gray-100 w-fit mb-2";
         }
         document.getElementById("message-container").append(div);
     };
@@ -63,7 +63,7 @@ export default function Chat() {
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div
                 id="message-container"
-                className="rounded-xl bg-white container h-96 overflow-auto p-5 rounde"
+                className="rounded-xl bg-white container h-[69vh] overflow-auto p-5"
             ></div>
             <form
                 onSubmit={onChangeForm}

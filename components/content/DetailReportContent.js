@@ -14,6 +14,7 @@ export default function DetailReportContent() {
     const [editingDailyReport, setEditingDailyReport] = useState(null);
     const [dataSource, setDataSource] = useState([]);
     const [coop, setCoop] = useState([]);
+    const [feedName, setFeedName] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
 
@@ -138,6 +139,7 @@ export default function DetailReportContent() {
                     },
                 })
                 .then((res) => {
+                    setFeedName(res.data.masterFeed.feedName);
                     setfeedRecomend(
                         res.data.feedRecomendation.feedQuantityOnGram
                     );
@@ -154,14 +156,14 @@ export default function DetailReportContent() {
 
     const columns = [
         {
-            title: "Tanggal",
+            title: "Date",
             dataIndex: "createdAt",
             render: (createdAt) => createdAt.substring(0, 10),
             width: 150,
             align: "center",
         },
         {
-            title: "Kandang",
+            title: "Coop Number",
             align: "center",
             width: 100,
             dataIndex: "coop",
@@ -174,28 +176,43 @@ export default function DetailReportContent() {
             },
         },
         {
-            title: "Pakan",
+            title: "Feed Name",
             width: 150,
             dataIndex: "masterFeed",
             render: (masterFeed) => masterFeed.feedName,
         },
         {
-            title: "Jumlah Pakan",
+            title: "Feed Quantity",
             dataIndex: "feedQuantity",
             width: 100,
             align: "center",
         },
         {
-            title: "Kematian",
+            title: "Death",
             dataIndex: "death",
             align: "center",
             width: 100,
         },
         {
-            title: "Waktu Penggunaan",
+            title: "Usage Time",
             dataIndex: "usageTime",
             align: "center",
-            width: 100,
+            width: 130,
+            render: (usageTime) => {
+                if (usageTime == "pagi") {
+                    return (
+                        <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
+                            Morning
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
+                            Afternoon
+                        </div>
+                    );
+                }
+            },
         },
         {
             align: "center",
@@ -205,12 +222,12 @@ export default function DetailReportContent() {
                     <>
                         <EditOutlined
                             onClick={() => {
-                                onEditHarvest(record);
+                                onEditDaily(record);
                             }}
                         />
                         <DeleteOutlined
                             onClick={() => {
-                                onDeleteHarvest(record);
+                                onDeleteDaily(record);
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
@@ -220,7 +237,7 @@ export default function DetailReportContent() {
         },
     ];
 
-    const onAddHarvest = () => {
+    const onAddDaily = () => {
         setIsAdding(true);
         setAddingDailyReport(null);
     };
@@ -230,9 +247,10 @@ export default function DetailReportContent() {
         setAddingDailyReport(null);
     };
 
-    const onDeleteHarvest = (record) => {
+    const onDeleteDaily = (record) => {
         Modal.confirm({
-            title: "Delete Pakan",
+            title: "Are you sure?",
+            content: "Delete this report",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -243,7 +261,7 @@ export default function DetailReportContent() {
             },
         });
     };
-    const onEditHarvest = (record) => {
+    const onEditDaily = (record) => {
         setIsEditing(true);
         setEditingDailyReport({ ...record });
     };
@@ -259,16 +277,16 @@ export default function DetailReportContent() {
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-10 bg-white rounded-lg">
-                <div className="flex justify-center pb-5 mb-5 border-b border-gray-200">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
                         All Detail Report
-                        <Button
-                            className="mx-4 my-2 text-xs font-bold border-none rounded-md bg-maroon text-cream hover:text-cream hover:border-none hover:bg-maroon focus:bg-maroon focus:text-cream focus:border-none"
-                            onClick={onAddHarvest}
-                        >
-                            Create
-                        </Button>
                     </div>
+                    <Button
+                        className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        onClick={onAddDaily}
+                    >
+                        Create Report
+                    </Button>
                 </div>
                 <Table
                     className="ant-pagination-simple"
@@ -280,42 +298,28 @@ export default function DetailReportContent() {
 
                 {/* Add Report */}
                 <Modal
-                    closable={false}
-                    className="rounded-lg overflow-hidden p-0"
-                    title="Create Report"
-                    visible={isAdding}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAdd();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addData}
-                            >
-                                Add
-                            </Button>
+                    className="rounded-xl overflow-hidden p-0 -my-20"
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Create Report
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAdd();
+                    }}
+                    visible={isAdding}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"coopNumber"}>Kandang</Label>
+                        <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Pilih Kandang"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
+                            placeholder="Choose coop"
                             onSelect={(value) => {
                                 setAddingDailyReport((pre) => {
                                     return { ...pre, coopId: value };
                                 });
-                                getOneCoop(value)
+                                getOneCoop(value);
                             }}
                             bordered={false}
                         >
@@ -325,14 +329,14 @@ export default function DetailReportContent() {
                                         className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                         value={dataId.id}
                                     >
-                                        {`Kandang ${dataId.coopNumber}`}
+                                        {`Coop ${dataId.coopNumber}`}
                                     </Option>
                                 );
                             })}
                         </Select>
-                        <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingDailyReport?.feedQuantity}
                             placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
@@ -345,28 +349,33 @@ export default function DetailReportContent() {
                             }}
                         />
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={`Rekomendasi Jumlah Pakan : ${(
-                                (feedRecomend / 1000) *
-                                totalPopulation
+                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            value={`Feed Quantity Recommendation : ${(
+                                ((feedRecomend / 1000) * totalPopulation) /
+                                2
                             ).toFixed(1)} Kg`}
                             disabled={true}
                         />
-                        <Label forInput={"death"}>Kematian</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream "
+                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            value={`Feed Name : ${feedName}`}
+                            disabled={true}
+                        />
+                        <Label forInput={"death"}>Death</Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingDailyReport?.death}
-                            placeholder={"Jumlah Kematian"}
+                            placeholder={"Death"}
                             onChange={(e) => {
                                 setAddingDailyReport((pre) => {
                                     return { ...pre, death: e.target.value };
                                 });
                             }}
                         />
-                        <Label forInput={"usageTime"}>Waktu Penggunaan</Label>
+                        <Label forInput={"usageTime"}>Usage Time</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
-                            placeholder={"Waktu Penggunaan"}
+                            className=" w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor"
+                            placeholder={"Usage Time"}
                             onSelect={(value) => {
                                 setAddingDailyReport((pre) => {
                                     return { ...pre, usageTime: value };
@@ -387,41 +396,46 @@ export default function DetailReportContent() {
                                 Sore
                             </Option>
                         </Select>
-                    </form>
-                </Modal>
-
-                {/* Edit Report */}
-                <Modal
-                    closable={false}
-                    className="rounded-lg overflow-hidden p-0"
-                    title="Edit Report"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center">
+                        <div className="flex justify-center gap-2 mt-6">
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
                                 key="back"
                                 onClick={() => {
-                                    resetEditing();
+                                    resetAdd();
                                 }}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
-                                onClick={editData}
+                                type="submit"
+                                onClick={addData}
                             >
-                                Save
+                                Create
                             </Button>
+                        </div>
+                    </form>
+                </Modal>
+
+                {/* Edit Report */}
+                <Modal
+                    className="rounded-xl overflow-hidden p-0"
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Edit Report
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
-                    <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingDailyReport?.feedQuantity}
-                        placeholder={"Jumlah Pakan"}
                         onChange={(e) => {
                             setEditingDailyReport((pre) => {
                                 return {
@@ -433,22 +447,40 @@ export default function DetailReportContent() {
                     />
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={`Rekomendasi Jumlah Pakan : ${editingDailyReport?.feedQuantityRecomendation.toFixed(
-                            1
-                        )} Kg`}
+                        value={`Feed Quantity Recommendation : ${(
+                            editingDailyReport?.feedQuantityRecomendation / 2
+                        ).toFixed(1)} Kg`}
                         disabled={true}
                     />
-                    <Label forInput={"death"}>Kematian</Label>
+                    <Label forInput={"death"}>Death</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingDailyReport?.death}
-                        placeholder={"Jumlah Kematian"}
                         onChange={(e) => {
                             setEditingDailyReport((pre) => {
                                 return { ...pre, death: e.target.value };
                             });
                         }}
                     />
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editData}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </div>

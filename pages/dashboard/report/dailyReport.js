@@ -22,8 +22,7 @@ export default function dailyReport() {
     }, []);
     return (
         <div>
-            <ProfileMenu />
-            <SideNavbar />
+            <ProfileMenu/>
             <ReportContent />
         </div>
     );

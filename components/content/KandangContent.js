@@ -1,11 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Button, Table, Modal, Input, Select } from "antd";
+import { Button, Table, Modal, Input, Select, DatePicker } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import Label from "../Label";
 import SearchCoop from "../SearchCoop";
+import Swal from "sweetalert2";
 
 const { Option } = Select;
 
@@ -105,7 +106,18 @@ export default function KandangContent() {
                     resetAdd();
                 });
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data.message);
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: `${error.response.data.message}`,
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 
@@ -411,18 +423,16 @@ export default function KandangContent() {
                             }}
                         />
                         <Label forInput={"dateIn"}>Date In</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Year-Month-Day"
-                            onChange={(e) => {
+                        <DatePicker
+                            className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
+                            format={"YYYY-MM-DD"}
+                            onSelect={(e) => {
                                 setAddingCoop((pre) => {
-                                    return {
-                                        ...pre,
-                                        dateIn: e.target.value,
-                                    };
+                                    return { ...pre, dateIn: e._d };
                                 });
                             }}
                         />
+
                         <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
                             className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
@@ -530,18 +540,16 @@ export default function KandangContent() {
                         }}
                     />
                     <Label forInput={"dateIn"}>Date In</Label>
-                    <Input
-                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingCoop?.dateIn}
-                        onChange={(e) => {
-                            setEditingCoop((pre) => {
-                                return {
-                                    ...pre,
-                                    dateIn: e.target.value,
-                                };
-                            });
-                        }}
-                    />
+                    <DatePicker
+                            className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
+                            format={"YYYY-MM-DD"}
+                            placeholder={editingCoop?.dateIn}
+                            onSelect={(e) => {
+                                setEditingCoop((pre) => {
+                                    return { ...pre, dateIn: e._d };
+                                });
+                            }}
+                        />
                     <Label forInput={"farmer"}>Responsible Farmer</Label>
                     <Select
                         className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
@@ -651,15 +659,12 @@ export default function KandangContent() {
                             }}
                         />
                         <Label forInput={"harvestTime"}>Harvest Time</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Year-Month-Day"
-                            onChange={(e) => {
+                        <DatePicker
+                            className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
+                            format={"YYYY-MM-DD"}
+                            onSelect={(e) => {
                                 setCreatingHarvest((pre) => {
-                                    return {
-                                        ...pre,
-                                        harvestTime: e.target.value,
-                                    };
+                                    return { ...pre, harvestTime: e._d };
                                 });
                             }}
                         />

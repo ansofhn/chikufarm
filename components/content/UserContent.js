@@ -216,19 +216,19 @@ export default function UserContent() {
             render: (role) => {
                 if (role.roleName == "admin") {
                     return (
-                        <div className="rounded-md self-center text-center px-2 py-2 font-semibold text-maroon uppercase text-xs bg-cream">
+                        <div className="self-center px-2 py-2 text-xs font-semibold text-center uppercase rounded-md text-maroon bg-cream">
                             {role.roleName}
                         </div>
                     );
                 } else if (role.roleName == "farmer") {
                     return (
-                        <div className="rounded-md self-center text-center px-2 py-2 font-semibold text-textColor uppercase text-xs bg-gray-200">
+                        <div className="self-center px-2 py-2 text-xs font-semibold text-center uppercase bg-gray-200 rounded-md text-textColor">
                             {role.roleName}
                         </div>
                     );
                 } else {
                     return (
-                        <div className="rounded-md self-center text-center px-2 py-2 font-semibold text-textColor uppercase text-xs bg-gray-200">
+                        <div className="self-center px-2 py-2 text-xs font-semibold text-center uppercase bg-gray-200 rounded-md text-textColor">
                             {role.roleName}
                         </div>
                     );
@@ -321,7 +321,7 @@ export default function UserContent() {
                             }
                         >
                             <Button
-                                className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                                className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                                 onClick={getExcel}
                             >
                                 Export
@@ -329,7 +329,7 @@ export default function UserContent() {
                         </Link>
 
                         <Button
-                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddUser}
                         >
                             Add User
@@ -353,9 +353,9 @@ export default function UserContent() {
 
                 {/* Add User */}
                 <Modal
-                    className="overflow-hidden p-0 -my-24 rounded-xl"
+                    className="p-0 -my-24 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add New User
                         </div>,
                     ]}
@@ -425,7 +425,7 @@ export default function UserContent() {
                         />
                         <Label forInput={"role"}>User Role</Label>
                         <Select
-                            className="mb-2 text-sm rounded-md border border-textColor hover:border-textColor"
+                            className="mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
                             placeholder={"Choose Role"}
                             onSelect={(value) => {
                                 setAddingUser((pre) => {
@@ -480,9 +480,9 @@ export default function UserContent() {
 
                 {/* Edit User */}
                 <Modal
-                    className="overflow-hidden p-0 -my-10 rounded-xl"
+                    className="p-0 -my-10 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit User
                         </div>,
                     ]}
@@ -534,7 +534,7 @@ export default function UserContent() {
                     />
                     <Label forInput={"role"}>User Role</Label>
                     <Select
-                        className="mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingUser?.role.roleName}
                         onChange={(value) => {
                             setEditingUser((pre) => {

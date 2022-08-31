@@ -6,7 +6,6 @@ import DashboardLayout from "../../../layouts/DashboardLayout";
 export default function passwordSetting() {
     return (
         <>
-            <SideNavbar />
             <PasswordSetting/>
         </>
     );

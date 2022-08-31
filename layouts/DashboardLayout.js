@@ -1,5 +1,7 @@
 import React from "react";
 import Head from "next/head";
+import ProfileMenu from "../components/ProfileMenu";
+import SideNavbar from "../components/SideNavbar";
 
 export default function DashboardLayout({ title, children }) {
     return (
@@ -8,7 +10,10 @@ export default function DashboardLayout({ title, children }) {
                 <Head>
                     <title>{title}</title>
                 </Head>
-                <div>{children}</div>
+                <div>
+                    <SideNavbar />
+                    {children}
+                </div>
             </div>
         </div>
     );

@@ -18,7 +18,7 @@ export default function ReportContent() {
     const [dataSource, setDataSource] = useState([]);
 
     const [coop, setCoop] = useState([]);
-    const [feedName, setFeedName] = useState ([])
+    const [feedName, setFeedName] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
     const [totalDataReport, setTotalDataReport] = useState([]);
@@ -177,8 +177,10 @@ export default function ReportContent() {
                     },
                 })
                 .then((res) => {
-                    setFeedName(res.data.masterFeed.feedName)
-                    setfeedRecomend(res.data.feedRecomendation.feedQuantityOnGram);
+                    setFeedName(res.data.masterFeed.feedName);
+                    setfeedRecomend(
+                        res.data.feedRecomendation.feedQuantityOnGram
+                    );
                     setTotalPopulation(res.data.populationUpdate);
                 });
         } catch (error) {
@@ -192,65 +194,65 @@ export default function ReportContent() {
 
     const columns = [
         {
-            title: "Kandang",
+            title: "Coop Number",
             align: "center",
             dataIndex: "coopNumber",
             render: (coopNumber) => {
-                return `Kandang ${coopNumber}`;
+                return `Coop ${coopNumber}`;
             },
         },
         {
-            title: "Populasi",
+            title: "Population",
             dataIndex: "populationUpdate",
             align: "center",
         },
         {
-            title: "Kematian",
+            title: "Death",
             align: "center",
             render: (_, record) => {
                 return record.populationStart - record.populationUpdate;
             },
         },
         {
-            title: "Status Pakan",
+            title: "Feed Status",
             children: [
                 {
-                    title: "Pagi",
+                    title: "Morning",
                     dataIndex: "dailyCoop",
                     align: "center",
-                    width: 100,
+                    width: 125,
                     render: (dailyCoop) => {
                         if (dailyCoop.length >= 1) {
                             return (
                                 <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
-                                    Sudah
+                                    given
                                 </div>
                             );
                         } else {
                             return (
                                 <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
-                                    Belum
+                                    Not given
                                 </div>
                             );
                         }
                     },
                 },
                 {
-                    title: "Sore",
+                    title: "Afternoon",
                     dataIndex: "dailyCoop",
                     align: "center",
-                    width: 100,
+                    width: 125,
                     render: (dailyCoop) => {
                         if (dailyCoop.length >= 2) {
                             return (
                                 <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
-                                    Sudah
+                                    given
                                 </div>
                             );
                         } else {
                             return (
                                 <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
-                                    Belum
+                                    Not given
                                 </div>
                             );
                         }
@@ -265,7 +267,7 @@ export default function ReportContent() {
                 return (
                     <>
                         <EyeOutlined
-                            className="ml-3 text-textColor"
+                            className="text-textColor"
                             onClick={() => {
                                 onDetail(record);
                             }}
@@ -278,7 +280,7 @@ export default function ReportContent() {
 
     const columnDetail = [
         {
-            title: "Tanggal",
+            title: "Date",
             width: 150,
             dataIndex: "createdAt",
             render: (createdAt) => {
@@ -286,12 +288,27 @@ export default function ReportContent() {
             },
         },
         {
-            title: "Waktu Penggunaan",
+            title: "Usage Time",
             dataIndex: "usageTime",
             align: "center",
+            render: (usageTime) => {
+                if (usageTime == "pagi") {
+                    return (
+                        <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
+                            Morning
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
+                            Afternoon
+                        </div>
+                    );
+                }
+            },
         },
         {
-            title: "Jumlah Pakan yang diberikan",
+            title: "Feed Quantity",
             align: "center",
             dataIndex: "feedQuantity",
             render: (feedQuantity) => {
@@ -299,7 +316,7 @@ export default function ReportContent() {
             },
         },
         {
-            title: "Kematian",
+            title: "Death",
             dataIndex: "death",
             align: "center",
         },
@@ -339,7 +356,8 @@ export default function ReportContent() {
 
     const onDeleteReport = (record) => {
         Modal.confirm({
-            title: "Delete Report",
+            title: "Are you sure?",
+            content: "Delete this report",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
@@ -373,10 +391,10 @@ export default function ReportContent() {
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
-            <div className="p-4 text-lg font-bold mb-3 text-textColor">
-                Report Harian
+            <div className="p-4 text-lg font-bold text-textColor">
+                Daily Report / All
             </div>
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">
                     <SearchReport
                         onChangeSearch={(e) => {
@@ -389,11 +407,10 @@ export default function ReportContent() {
                         }}
                     />
                     <Button
-                        className="transition duration-300 text-semibold rounded-lg items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="transition duration-300 text-semibold rounded-md items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddReport}
                     >
-                        <MdAdd className="self-center text-base" />
-                        Create
+                        Create Report
                     </Button>
                 </div>
                 <Table
@@ -403,6 +420,7 @@ export default function ReportContent() {
                     dataSource={dataSource}
                     pagination={{
                         pageSize: 10,
+                        className: "pt-2",
                         total: totalDataReport,
                         onChange: (page) => {
                             getData(page);
@@ -412,37 +430,23 @@ export default function ReportContent() {
 
                 {/* Add Report */}
                 <Modal
-                    closable={false}
-                    className="rounded-xl overflow-hidden p-0"
-                    title="Create Report"
-                    visible={isAdding}
-                    footer={[
-                        <div className="flex justify-center my-2">
-                            <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetAdd();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                type="submit"
-                                onClick={addData}
-                            >
-                                Add
-                            </Button>
+                    className="rounded-xl overflow-hidden p-0 -my-20"
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Create Report
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetAdd();
+                    }}
+                    visible={isAdding}
+                    footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"coopNumber"}>Kandang</Label>
+                        <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Select
-                            className="w-2/5 my-1 text-sm border rounded-lg border-textColor hover:border-textColor"
-                            placeholder="Pilih Kandang"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
+                            placeholder="Choose coop"
                             onSelect={(value) => {
                                 setAddingReport((pre) => {
                                     return { ...pre, coopId: value };
@@ -457,14 +461,14 @@ export default function ReportContent() {
                                         className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                         value={dataId.id}
                                     >
-                                        {`Kandang ${dataId.coopNumber}`}
+                                        {`Coop ${dataId.coopNumber}`}
                                     </Option>
                                 );
                             })}
                         </Select>
-                        <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingReport?.feedQuantity}
                             placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
@@ -477,30 +481,33 @@ export default function ReportContent() {
                             }}
                         />
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={`Rekomendasi Jumlah Pakan : ${(((feedRecomend / 1000) * totalPopulation) / 2 ).toFixed(1)} Kg`}
+                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            value={`Feed Quantity Recommendation : ${(
+                                ((feedRecomend / 1000) * totalPopulation) /
+                                2
+                            ).toFixed(1)} Kg`}
                             disabled={true}
                         />
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                            value={`Nama Pakan : ${feedName}`}
+                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            value={`Feed Name : ${feedName}`}
                             disabled={true}
                         />
-                        <Label forInput={"death"}>Kematian</Label>
+                        <Label forInput={"death"}>Death</Label>
                         <Input
-                            className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingReport?.death}
-                            placeholder={"Jumlah Kematian"}
+                            placeholder={"Death"}
                             onChange={(e) => {
                                 setAddingReport((pre) => {
                                     return { ...pre, death: e.target.value };
                                 });
                             }}
                         />
-                        <Label forInput={"usageTime"}>Waktu Penggunaan</Label>
+                        <Label forInput={"usageTime"}>Usage Time</Label>
                         <Select
-                            className="my-1 w-2/5 text-sm rounded-lg border border-textColor hover:border-textColor"
-                            placeholder={"Waktu Penggunaan"}
+                            className=" w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor"
+                            placeholder={"Usage Time"}
                             onSelect={(value) => {
                                 setAddingReport((pre) => {
                                     return { ...pre, usageTime: value };
@@ -512,37 +519,50 @@ export default function ReportContent() {
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                 value="pagi"
                             >
-                                Pagi
+                                Morning
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                 value="sore"
                             >
-                                Sore
+                                Afternoon
                             </Option>
                         </Select>
+                        <div className="flex justify-center gap-2 mt-6">
+                            <Button
+                                className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                                key="back"
+                                onClick={() => {
+                                    resetAdd();
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                                key="submit"
+                                type="submit"
+                                onClick={addData}
+                            >
+                                Create
+                            </Button>
+                        </div>
                     </form>
                 </Modal>
 
                 <Modal
                     width={700}
-                    closable={false}
-                    className="p-0 -my-20 overflow-hidden rounded-2xl "
+                    className="p-0 -my-10 overflow-hidden rounded-xl "
                     visible={isDetail}
-                    title="Detail Report"
-                    footer={[
-                        <div className="flex justify-center py-2">
-                            <Button
-                                className="w-full mx-2 font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetDetail();
-                                }}
-                            >
-                                Back
-                            </Button>
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Detail Report
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetDetail();
+                    }}
+                    footer={null}
                 >
                     <Table
                         bordered={true}
@@ -554,36 +574,22 @@ export default function ReportContent() {
 
                 {/* Edit Report */}
                 <Modal
-                    closable={false}
-                    className="rounded-lg overflow-hidden p-0"
-                    title="Edit Report"
-                    visible={isEditing}
-                    footer={[
-                        <div className="flex justify-center">
-                            <Button
-                                className="w-full mx-2 rounded-md border-maroon text-maroon font-semibold hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
-                                key="back"
-                                onClick={() => {
-                                    resetEditing();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                className="w-full mx-2 rounded-md border-maroon bg-maroon text-cream font-semibold hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
-                                key="submit"
-                                onClick={editData}
-                            >
-                                Save
-                            </Button>
+                    className="rounded-xl overflow-hidden p-0"
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Edit Report
                         </div>,
                     ]}
+                    onCancel={() => {
+                        resetEditing();
+                    }}
+                    visible={isEditing}
+                    footer={null}
                 >
-                    <Label forInput={"feedQuantity"}>Jumlah Pakan</Label>
+                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingReport?.feedQuantity}
-                        placeholder={"Jumlah Pakan"}
                         onChange={(e) => {
                             setEditingReport((pre) => {
                                 return {
@@ -595,20 +601,40 @@ export default function ReportContent() {
                     />
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
-                        value={`Rekomendasi Jumlah Pakan : ${((editingReport?.feedQuantityRecomendation)/2).toFixed(1)} Kg`}
+                        value={`Feed Quantity Recommendation : ${(
+                            editingReport?.feedQuantityRecomendation / 2
+                        ).toFixed(1)} Kg`}
                         disabled={true}
                     />
-                    <Label forInput={"death"}>Kematian</Label>
+                    <Label forInput={"death"}>Death</Label>
                     <Input
                         className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingReport?.death}
-                        placeholder={"Jumlah Kematian"}
                         onChange={(e) => {
                             setEditingReport((pre) => {
                                 return { ...pre, death: e.target.value };
                             });
                         }}
                     />
+                    <div className="flex justify-center gap-2 mt-6">
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
+                            key="back"
+                            onClick={() => {
+                                resetEditing();
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            key="submit"
+                            type="submit"
+                            onClick={editData}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </Modal>
             </div>
         </div>

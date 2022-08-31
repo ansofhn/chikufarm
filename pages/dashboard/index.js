@@ -24,8 +24,7 @@ export default function dashboard() {
 
     return (
         <>
-            <ProfileMenu />
-            <SideNavbar />
+            <ProfileMenu/>
             <DashboardContent />
         </>
     );

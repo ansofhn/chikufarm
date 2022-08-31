@@ -22,8 +22,7 @@ export default function panen() {
     }, []);
     return (
         <div>
-            <ProfileMenu />
-            <SideNavbar />
+            <ProfileMenu/>
             <HarvestContent />
         </div>
     );

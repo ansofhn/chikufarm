@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Table, Modal, Input, Select } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import Label from "../Label";
 import SearchFeed from "../SearchFeed";
@@ -10,19 +9,18 @@ import FilterFeedRecommend from "../FilterFeedRecommend";
 
 const { Option } = Select;
 
-export default function PakanContent() {
+export default function VaccineContent() {
     const [isAdding, setIsAdding] = useState(false);
-    const [addingFeed, setAddingFeed] = useState(null);
+    const [addingVaccinate, setAddingVaccinate] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingFeed, setEditingFeed] = useState(null);
-    const [totalDataFeed, setTotalDataFeed] = useState([]);
+    const [editingVaccinate, setEditingVaccinate] = useState(null);
+    const [totalDataVaccinate, setTotalDataVaccinate] = useState([]);
 
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
-    const [filterRecommend, setFilterRecommend] = useState([]);
     const [dataSource, setDataSource] = useState([]);
 
-    const [isDetail, setIsDetail] = useState(false);
+    const [isHistory, setIsHistory] = useState(false);
     const [isAddingHistory, setIsAddingHistory] = useState(false);
     const [addingHistory, setAddingHistory] = useState(null);
     const [isEditingHistory, setIsEditingHistory] = useState(false);
@@ -32,18 +30,18 @@ export default function PakanContent() {
 
     const [farm, setFarm] = useState([]);
 
-    const [feedRecommend, setFeedRecommend] = useState([]);
+    const [vaccinateRecommend, setVaccinateRecommend] = useState([]);
     const [isAddingRecommend, setIsAddingRecommend] = useState(false);
     const [addingRecommend, setAddingRecommend] = useState(null);
     const [isEditingRecommend, setIsEditingRecommend] = useState(false);
     const [editingRecommend, setEditingRecommend] = useState(null);
     const [totalDataRecommend, setTotalDataRecommend] = useState([]);
 
-    const getData = async (pageFeed) => {
+    const getData = async (page) => {
         try {
             const responseFeed = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/feed?page=${pageFeed}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin?page=${page}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -54,7 +52,7 @@ export default function PakanContent() {
                 )
                 .then((res) => {
                     console.log(res.data.items);
-                    setTotalDataFeed(res.data.meta.totalItems);
+                    setTotalDataVaccinate(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
 
@@ -84,7 +82,7 @@ export default function PakanContent() {
             const response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/feed",
-                    addingFeed,
+                    addingVaccinate,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -104,12 +102,12 @@ export default function PakanContent() {
     };
 
     const editDataFeed = async () => {
-        const feedId = editingFeed.id;
-        const breedId = editingFeed.breedId;
+        const feedId = editingVaccinate.id;
+        const breedId = editingVaccinate.breedId;
         const updateFeed = {
-            feedName: editingFeed.feedName,
-            feedType: editingFeed.feedType,
-            pricePerKg: editingFeed.pricePerKg,
+            feedName: editingVaccinate.feedName,
+            feedType: editingVaccinate.feedType,
+            pricePerKg: editingVaccinate.pricePerKg,
         };
         const updateBreed = {
             id: feedId,
@@ -259,7 +257,7 @@ export default function PakanContent() {
                 .then((res) => {
                     getData(1);
                     resetEditingHistory();
-                    setTimeout((res) => setIsDetail(false), 500);
+                    setTimeout((res) => setIsHistory(false), 500);
                 });
         } catch (error) {}
     };
@@ -280,7 +278,7 @@ export default function PakanContent() {
                 .then((res) => {
                     console.log(res.data);
                     setTotalDataRecommend(res.data.meta.totalItems);
-                    setFeedRecommend(res.data.items);
+                    setVaccinateRecommend(res.data.items);
                 });
         } catch (error) {}
     };
@@ -299,7 +297,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    setFeedRecommend(res.data.items);
+                    setVaccinateRecommend(res.data.items);
                 });
         } catch (error) {}
     };
@@ -320,7 +318,7 @@ export default function PakanContent() {
                     }
                 )
                 .then((res) => {
-                    setFeedRecommend(feedRecommend.concat(res.data));
+                    setVaccinateRecommend(vaccinateRecommend.concat(res.data));
                     resetAddRecomendation();
                 });
         } catch (error) {
@@ -518,12 +516,12 @@ export default function PakanContent() {
 
     const onAddFeed = () => {
         setIsAdding(true);
-        setAddingFeed(null);
+        setAddingVaccinate(null);
     };
 
     const resetAdd = () => {
         setIsAdding(false);
-        setAddingFeed(null);
+        setAddingVaccinate(null);
     };
 
     const onDeleteFeed = (record) => {
@@ -548,7 +546,7 @@ export default function PakanContent() {
             okText: "Yes",
             okType: "danger",
             onOk: () => {
-                setFeedRecommend((pre) => {
+                setVaccinateRecommend((pre) => {
                     return pre.filter((recomend) => recomend.id !== record.id);
                 });
                 deleteRecomendation(record);
@@ -557,11 +555,11 @@ export default function PakanContent() {
     };
     const onEditFeed = (record) => {
         setIsEditing(true);
-        setEditingFeed({ ...record });
+        setEditingVaccinate({ ...record });
     };
     const resetEditing = () => {
         setIsEditing(false);
-        setEditingFeed(null);
+        setEditingVaccinate(null);
     };
 
     const onAddHistory = () => {
@@ -604,10 +602,10 @@ export default function PakanContent() {
 
     const onDetail = (record) => {
         getHistory(record);
-        setIsDetail(true);
+        setIsHistory(true);
     };
     const resetDetail = () => {
-        setIsDetail(false);
+        setIsHistory(false);
     };
 
     const onChangeForm = (e) => {
@@ -655,7 +653,7 @@ export default function PakanContent() {
                     pagination={{
                         pageSize: 10,
                         className: "pt-2",
-                        total: totalDataFeed,
+                        total: totalDataVaccinate,
                         onChange: (page) => {
                             getData(page);
                         },
@@ -680,10 +678,10 @@ export default function PakanContent() {
                         <Label forInput={"feedName"}>Feed Name</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingFeed?.feedName}
+                            value={addingVaccinate?.feedName}
                             placeholder={"Feed Name"}
                             onChange={(e) => {
-                                setAddingFeed((pre) => {
+                                setAddingVaccinate((pre) => {
                                     return { ...pre, feedName: e.target.value };
                                 });
                             }}
@@ -691,10 +689,10 @@ export default function PakanContent() {
                         <Label forInput={"pricePerKg"}>Price / Kg</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingFeed?.pricePerKg}
+                            value={addingVaccinate?.pricePerKg}
                             placeholder={"Feed Price / Kg"}
                             onChange={(e) => {
-                                setAddingFeed((pre) => {
+                                setAddingVaccinate((pre) => {
                                     return {
                                         ...pre,
                                         pricePerKg: e.target.value,
@@ -705,10 +703,10 @@ export default function PakanContent() {
                         <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingFeed?.feedQuantity}
+                            value={addingVaccinate?.feedQuantity}
                             placeholder={"Feed quantity"}
                             onChange={(e) => {
-                                setAddingFeed((pre) => {
+                                setAddingVaccinate((pre) => {
                                     return {
                                         ...pre,
                                         feedQuantity: e.target.value,
@@ -721,7 +719,7 @@ export default function PakanContent() {
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose feed type"
                             onSelect={(value) => {
-                                setAddingFeed((pre) => {
+                                setAddingVaccinate((pre) => {
                                     return { ...pre, feedType: value };
                                 });
                             }}
@@ -745,7 +743,7 @@ export default function PakanContent() {
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Farm Category"
                             onSelect={(value) => {
-                                setAddingFeed((pre) => {
+                                setAddingVaccinate((pre) => {
                                     return { ...pre, breedId: value };
                                 });
                             }}
@@ -809,9 +807,9 @@ export default function PakanContent() {
                     <Label forInput={"feedName"}>Feed Name</Label>
                     <Input
                         className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingFeed?.feedName}
+                        value={editingVaccinate?.feedName}
                         onChange={(e) => {
-                            setEditingFeed((pre) => {
+                            setEditingVaccinate((pre) => {
                                 return { ...pre, feedName: e.target.value };
                             });
                         }}
@@ -819,9 +817,9 @@ export default function PakanContent() {
                     <Label forInput={"feedType"}>Feed Type</Label>
                     <Select
                         className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        placeholder={editingFeed?.feedType}
+                        placeholder={editingVaccinate?.feedType}
                         onSelect={(value) => {
-                            setEditingFeed((pre) => {
+                            setEditingVaccinate((pre) => {
                                 return { ...pre, feedType: value };
                             });
                         }}
@@ -843,9 +841,9 @@ export default function PakanContent() {
                     <Label forInput={"pricePerKg"}>Price / Kg</Label>
                     <Input
                         className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingFeed?.pricePerKg}
+                        value={editingVaccinate?.pricePerKg}
                         onChange={(e) => {
-                            setEditingFeed((pre) => {
+                            setEditingVaccinate((pre) => {
                                 return { ...pre, pricePerKg: e.target.value };
                             });
                         }}
@@ -853,9 +851,9 @@ export default function PakanContent() {
                     <Label forInput={"breed"}>Farm Category</Label>
                     <Select
                         className="w-1/3 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        defaultValue={editingFeed?.breed.breedType}
+                        defaultValue={editingVaccinate?.breed.breedType}
                         onSelect={(value) => {
-                            setEditingFeed((pre) => {
+                            setEditingVaccinate((pre) => {
                                 return { ...pre, breedId: value };
                             });
                         }}
@@ -904,7 +902,7 @@ export default function PakanContent() {
                 {/* Detail Feed */}
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl "
-                    visible={isDetail}
+                    visible={isHistory}
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
                             {feedName} History
@@ -1074,7 +1072,7 @@ export default function PakanContent() {
                     className="ant-pagination-simple"
                     bordered={true}
                     columns={columnRecommend}
-                    dataSource={feedRecommend}
+                    dataSource={vaccinateRecommend}
                     pagination={{
                         pageSize: 10,
                         className: "pt-2",

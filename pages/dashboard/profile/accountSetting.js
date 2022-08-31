@@ -6,7 +6,6 @@ import DashboardLayout from "../../../layouts/DashboardLayout";
 export default function accountSetting() {
     return (
         <>
-            <SideNavbar />
             <ProfileSetting />
         </>
     );

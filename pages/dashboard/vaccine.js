@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import KandangContent from "../../components/content/KandangContent";
 import ProfileMenu from "../../components/ProfileMenu";
-import SideNavbar from "../../components/SideNavbar";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { useRouter } from "next/router";
+import VaccineContent from "../../components/content/VaccineContent";
 
-export default function kandang() {
+export default function vaccine() {
     const router = useRouter();
     const CheckToken = () => {
         try {
@@ -23,11 +22,9 @@ export default function kandang() {
     return (
         <div>
             <ProfileMenu/>
-            <KandangContent />
+            <VaccineContent/>
         </div>
     );
 }
 
-kandang.getLayout = (page) => (
-    <DashboardLayout title="Kandang" children={page} />
-);
+vaccine.getLayout = (page) => <DashboardLayout title="Pakan" children={page} />;

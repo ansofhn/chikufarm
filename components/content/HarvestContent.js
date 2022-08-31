@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Button, Table, Modal, Input, Select } from "antd";
+import { Button, Table, Modal, Input, Select, DatePicker } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Label from "../Label";
@@ -415,15 +415,12 @@ export default function HarvestContent() {
                             }}
                         />
                         <Label forInput={"harvestTime"}>Harvest Time</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Year-Month-Day"
-                            onChange={(e) => {
+                        <DatePicker
+                            className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
+                            format={"YYYY-MM-DD"}
+                            onSelect={(e) => {
                                 setCreatingHarvest((pre) => {
-                                    return {
-                                        ...pre,
-                                        harvestTime: e.target.value,
-                                    };
+                                    return { ...pre, harvestTime: e._d };
                                 });
                             }}
                         />
@@ -514,18 +511,16 @@ export default function HarvestContent() {
                         }}
                     />
                     <Label forInput={"harvestTime"}>Harvest Time</Label>
-                    <Input
-                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        placeholder={editingHarvest?.harvestTime}
-                        onChange={(e) => {
-                            setEditingHarvest((pre) => {
-                                return {
-                                    ...pre,
-                                    harvestTime: e.target.value,
-                                };
-                            });
-                        }}
-                    />
+                    <DatePicker
+                            className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
+                            format={"YYYY-MM-DD"}
+                            placeholder={editingHarvest?.harvestTime}
+                            onSelect={(e) => {
+                                setEditingHarvest((pre) => {
+                                    return { ...pre, harvestTime: e._d };
+                                });
+                            }}
+                        />
                     <div className="flex justify-center gap-2 mt-6">
                         <Button
                             className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"

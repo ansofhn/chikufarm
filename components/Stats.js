@@ -11,7 +11,6 @@ export default function Stats() {
             const report = await axios
                 .get("https://chikufarm-app.herokuapp.com/api/report/array")
                 .then((res) => {
-                    console.log(res.data);
                     setDataSource(res.data);
                 });
         } catch (error) {
@@ -22,8 +21,6 @@ export default function Stats() {
     useEffect(() => {
         getData();
     }, []);
-
-    console.log(dataSource)
 
     const totalPakan = () => {
         const total = dataSource.totalFeedStock;
@@ -72,7 +69,7 @@ export default function Stats() {
                     <Image src={Line} />
                 </div>
                 <div className="p-2">
-                    <h3 className="text-2xl font-bold text-textColor">25</h3>
+                    <h3 className="text-2xl font-bold text-textColor">{dataSource.farmers}</h3>
                     <p className="text-sm text-textColor">Total Farmer</p>
                 </div>
             </div>

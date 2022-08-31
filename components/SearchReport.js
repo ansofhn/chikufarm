@@ -13,7 +13,7 @@ const SearchReport = ({ onChangeSearch }) => {
     };
 
     return (
-        <div className="items-center px-4 flex justify-center">
+        <div className="items-center flex justify-center">
             <div className="relative mr-3">
                 <div
                     className="absolute top-3 left-3 items-center"

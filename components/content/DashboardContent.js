@@ -3,6 +3,8 @@ import axios from "axios";
 import ProgressChartComp from "../ProgressChartComp";
 import PieChartComp from "../PieChartComp";
 import { MinusSquareFilled } from "@ant-design/icons";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 export default function DashboardContent() {
     const [dataSource, setDataSource] = useState([]);
@@ -11,6 +13,8 @@ export default function DashboardContent() {
     const [dataAduan, setDataAduan] = useState([]);
     const [first, setFirst] = useState([]);
     const [last, setLast] = useState([]);
+
+    const router = useRouter();
 
     const getData = async () => {
         try {
@@ -25,10 +29,13 @@ export default function DashboardContent() {
                 .then((res) => {
                     console.log(res.data);
                     setDataSource(res.data);
-                    setFirst(res.data.weeklyCoopPopulation[0].population);
-                    setLast(
-                        res.data.weeklyCoopPopulation.slice(-1)[0].population
-                    );
+                    if (res.data.weeklyCoopPopulation == 0) {
+                        setFirst(0);
+                        setLast(0);
+                    } else {
+                        setFirst(res.data.weeklyCoopPopulation[0].population);
+                        setLast(res.data.weeklyCoopPopulation.slice(-1)[0].population);
+                    }
                     setDataPedaging(res.data.populationPerBreed[0]);
                     setDataPetelur(res.data.populationPerBreed[1]);
                     setDataAduan(res.data.populationPerBreed[2]);
@@ -42,18 +49,31 @@ export default function DashboardContent() {
         getData();
     }, []);
 
-    const totalPakan = () => {
-        const total = dataSource.totalFeedStock
-        if (total >= 1000) {
-            return `${(total / 1000).toFixed(1)} Ton`
+    const percentBreed = (breed, population) => {
+        if (population == 0) {
+            return 0;
         } else {
-            return `${(total / 1).toFixed(1)} Kg`
+            return ((breed / population) * 100).toFixed(1);
+        }
+    };
+
+    const totalPakan = () => {
+        const total = dataSource.totalFeedStock;
+        if (total >= 1000) {
+            return `${(total / 1000).toFixed(1)} Ton`;
+        } else {
+            return `${(total / 1).toFixed(1)} Kg`;
         }
     };
 
     const progress = () => {
         const all = dataSource.currentPopulation;
-        return ((last - first) / all) * 100;
+        if (all == 0) {
+            return 0;
+        } else {
+            return ((last - first) / all) * 100;
+        }
+        
     };
 
     return (
@@ -63,7 +83,9 @@ export default function DashboardContent() {
             </div>
             <div className="grid grid-cols-4 gap-5 p-2">
                 <div className="w-full p-3 bg-white rounded-lg">
-                    <div className="text-sm text-textColor">Total Population</div>
+                    <div className="text-sm text-textColor">
+                        Total Population
+                    </div>
                     <div className="text-lg font-bold text-textColor">
                         {dataSource.currentPopulation}
                     </div>
@@ -124,11 +146,10 @@ export default function DashboardContent() {
                                     <MinusSquareFilled className="text-maroon" />
                                     {dataPedaging.breed}
                                     <span className="ml-2 text-sm font-semibold">
-                                        {(
-                                            (dataPedaging.population /
-                                                dataSource.currentPopulation) *
-                                            100
-                                        ).toFixed(1)}
+                                        {percentBreed(
+                                            dataPedaging.population,
+                                            dataSource.currentPopulation
+                                        )}
                                         %
                                     </span>
                                 </div>
@@ -136,11 +157,10 @@ export default function DashboardContent() {
                                     <MinusSquareFilled className="text-gray-500" />
                                     {dataPetelur.breed}
                                     <span className="ml-2 text-sm font-semibold">
-                                        {(
-                                            (dataPetelur.population /
-                                                dataSource.currentPopulation) *
-                                            100
-                                        ).toFixed(1)}
+                                        {percentBreed(
+                                            dataPetelur.population,
+                                            dataSource.currentPopulation
+                                        )}
                                         %
                                     </span>
                                 </div>
@@ -148,11 +168,10 @@ export default function DashboardContent() {
                                     <MinusSquareFilled className="text-softBrown" />
                                     {dataAduan.breed}
                                     <span className="ml-2 text-sm font-semibold">
-                                        {(
-                                            (dataAduan.population /
-                                                dataSource.currentPopulation) *
-                                            100
-                                        ).toFixed(1)}
+                                        {percentBreed(
+                                            dataAduan.population,
+                                            dataSource.currentPopulation
+                                        )}
                                         %
                                     </span>
                                 </div>

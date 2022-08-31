@@ -22,8 +22,7 @@ export default function user() {
     }, []);
     return (
         <div>
-            <ProfileMenu />
-            <SideNavbar />
+            <ProfileMenu/>
             <UserContent />
         </div>
     );

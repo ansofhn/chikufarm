@@ -22,8 +22,7 @@ export default function pakan() {
     }, []);
     return (
         <div>
-            <ProfileMenu />
-            <SideNavbar />
+            <ProfileMenu/>
             <PakanContent />
         </div>
     );

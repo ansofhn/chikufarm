@@ -23,8 +23,7 @@ export default function ternak() {
     return (
         <div>
             <ProfileMenu/>
-            <SideNavbar/>
-            <TernakContent/>
+            <TernakContent />
         </div>
     );
 }
