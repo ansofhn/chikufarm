@@ -6,6 +6,8 @@ import axios from "axios";
 import Label from "../Label";
 import SearchFeed from "../SearchFeed";
 import FilterFeedRecommend from "../FilterFeedRecommend";
+import SearchVaccine from "../SearchVaccine";
+import Swal from "sweetalert2";
 
 const { Option } = Select;
 
@@ -26,7 +28,7 @@ export default function VaccineContent() {
     const [isEditingHistory, setIsEditingHistory] = useState(false);
     const [editingHistory, setEditingHistory] = useState(null);
     const [historySource, setHistorySource] = useState([]);
-    const [feedName, setFeedName] = useState([]);
+    const [vaccineName, setVaccineName] = useState([]);
 
     const [farm, setFarm] = useState([]);
 
@@ -39,7 +41,7 @@ export default function VaccineContent() {
 
     const getData = async (page) => {
         try {
-            const responseFeed = await axios
+            const responseVaccine = await axios
                 .get(
                     `https://chikufarm-app.herokuapp.com/api/vaccin?page=${page}`,
                     {
@@ -65,6 +67,7 @@ export default function VaccineContent() {
                     },
                 })
                 .then((res) => {
+                    console.log(res.data.items);
                     setFarm(res.data.items);
                 });
         } catch (error) {
@@ -77,11 +80,11 @@ export default function VaccineContent() {
         getDataRecommend(1);
     }, []);
 
-    const addDataFeed = async () => {
+    const addDataVaccine = async () => {
         try {
             const response = await axios
                 .post(
-                    "https://chikufarm-app.herokuapp.com/api/feed",
+                    "https://chikufarm-app.herokuapp.com/api/vaccin",
                     addingVaccinate,
                     {
                         headers: {
@@ -101,48 +104,26 @@ export default function VaccineContent() {
         }
     };
 
-    const editDataFeed = async () => {
-        const feedId = editingVaccinate.id;
-        const breedId = editingVaccinate.breedId;
-        const updateFeed = {
-            feedName: editingVaccinate.feedName,
-            feedType: editingVaccinate.feedType,
-            pricePerKg: editingVaccinate.pricePerKg,
-        };
-        const updateBreed = {
-            id: feedId,
-            breedId: breedId,
+    const editDataVaccine = async () => {
+        const vaccineId = editingVaccinate.id;
+        const updateVaccine = {
+            vaccinName: editingVaccinate.vaccinName,
+            quantity: editingVaccinate.quantity,
+            price: editingVaccinate.price,
+            application: editingVaccinate.application,
         };
 
         try {
             const responseFeed = await axios
                 .put(
-                    `https://chikufarm-app.herokuapp.com/api/feed/${feedId}`,
-                    updateFeed,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin/${vaccineId}`,
+                    updateVaccine,
                     {
                         headers: {
                             "content-type": "application/json",
                             Authorization: `Bearer ${localStorage.getItem(
                                 "access_token"
                             )}`,
-                        },
-                    }
-                )
-                .then((res) => {
-                    getData(1);
-                    resetEditing();
-                });
-
-            const responseBreed = await axios
-                .put(
-                    "https://chikufarm-app.herokuapp.com/api/feed/breed/update",
-                    updateBreed,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "access_token"
-                            )}`,
-                            "content-type": "application/json",
                         },
                     }
                 )
@@ -153,22 +134,39 @@ export default function VaccineContent() {
         } catch (error) {}
     };
 
-    const deleteDataFeed = async (record) => {
+    const deleteDataVaccine = async (record) => {
         const id = record.id;
         try {
             const response = await axios
-                .delete(`https://chikufarm-app.herokuapp.com/api/feed/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                })
+                .delete(
+                    `https://chikufarm-app.herokuapp.com/api/vaccin/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
                 .then((res) => {
                     console.log(res);
+                    setDataSource((pre) => {
+                        return pre.filter((vaccin) => vaccin.id !== record.id);
+                    });
                 });
         } catch (error) {
             console.log(error.response.data.error);
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: `${error.response.data.error}`,
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 
@@ -176,7 +174,7 @@ export default function VaccineContent() {
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/feed?search=${search}&breed=${filter}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin?search=${search}&application=${filter}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -195,7 +193,7 @@ export default function VaccineContent() {
         const id = record.id;
         try {
             const response = await axios
-                .get(`https://chikufarm-app.herokuapp.com/api/feed/${id}`, {
+                .get(`https://chikufarm-app.herokuapp.com/api/vaccin/${id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "access_token"
@@ -203,8 +201,9 @@ export default function VaccineContent() {
                     },
                 })
                 .then((res) => {
-                    setHistorySource(res.data.feedHistory);
-                    setFeedName(res.data.feedName);
+                    console.log(res.data);
+                    setHistorySource(res.data.vaccinHistory);
+                    setVaccineName(res.data.vaccinName);
                 });
         } catch (error) {
             console.log(error);
@@ -215,7 +214,7 @@ export default function VaccineContent() {
         try {
             const response = await axios
                 .post(
-                    "https://chikufarm-app.herokuapp.com/api/feed-history",
+                    "https://chikufarm-app.herokuapp.com/api/vaccin-history",
                     addingHistory,
                     {
                         headers: {
@@ -238,12 +237,12 @@ export default function VaccineContent() {
     const editHistory = async () => {
         const historyId = editingHistory.id;
         const updateHistory = {
-            feedQuantity: editingHistory.feedQuantity,
+            quantity: editingHistory.quantity,
         };
         try {
             const response = await axios
                 .put(
-                    `https://chikufarm-app.herokuapp.com/api/feed-history/${historyId}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin-history/${historyId}`,
                     updateHistory,
                     {
                         headers: {
@@ -266,7 +265,7 @@ export default function VaccineContent() {
         try {
             const responseRecommend = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/feed-recomendation?page=${pageRecommend}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin-recommendation?page=${pageRecommend}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -276,7 +275,6 @@ export default function VaccineContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
                     setTotalDataRecommend(res.data.meta.totalItems);
                     setVaccinateRecommend(res.data.items);
                 });
@@ -287,7 +285,7 @@ export default function VaccineContent() {
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/feed-recomendation?farmName=${filterRecommend}`,
+                    `https://chikufarm-app.herokuapp.com/api/feed-recommendation?farmName=${filterRecommend}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -378,29 +376,33 @@ export default function VaccineContent() {
 
     const columns = [
         {
-            title: "Feed Name",
-            dataIndex: "feedName",
+            title: "Vaccine Name",
+            dataIndex: "vaccinName",
         },
         {
-            title: "Feed Type",
-            dataIndex: "feedType",
+            title: "Application",
+            dataIndex: "application",
             align: "center",
+            render: (application) => {
+                if (application == "tetes") {
+                    return "Drops";
+                } else if (application == "suntik") {
+                    return "Inject";
+                } else {
+                    return "Water Drink";
+                }
+            },
         },
         {
-            title: "Price / Kg",
-            dataIndex: "pricePerKg",
-        },
-        {
-            title: "Farm Category",
-            dataIndex: "breed",
-            render: (breed) => breed.breedType,
+            title: "Price",
+            dataIndex: "price",
         },
         {
             title: "Stock",
             align: "center",
-            dataIndex: "feedStock",
-            render: (feedStock) => {
-                return `${(feedStock.stock / 1).toFixed(1)} Kg`;
+            dataIndex: "vaccinStock",
+            render: (vaccinStock) => {
+                return vaccinStock.stock;
             },
         },
         {
@@ -411,19 +413,19 @@ export default function VaccineContent() {
                     <div className="text-center">
                         <EditOutlined
                             onClick={() => {
-                                onEditFeed(record);
+                                onEditVaccinate(record);
                             }}
                         />
                         <DeleteOutlined
                             className="ml-3 text-maroon"
                             onClick={() => {
-                                onDeleteFeed(record);
+                                onDeleteVaccinate(record);
                             }}
                         />
                         <EyeOutlined
                             className="ml-3 text-textColor"
                             onClick={() => {
-                                onDetail(record);
+                                onHistory(record);
                             }}
                         />
                     </div>
@@ -442,10 +444,7 @@ export default function VaccineContent() {
         },
         {
             title: "Quantity",
-            dataIndex: "feedQuantity",
-            render: (feedQuantity) => {
-                return `${feedQuantity} Kg`;
-            },
+            dataIndex: "quantity",
         },
         {
             title: "Status",
@@ -471,23 +470,23 @@ export default function VaccineContent() {
 
     const columnRecommend = [
         {
-            title: "Week",
-            dataIndex: "week",
+            title: "Day",
+            dataIndex: "day",
             align: "center",
         },
         {
             title: "Farm Name",
-            dataIndex: "farm",
+            dataIndex: "farmName",
             render: (farm) => farm.farmName,
         },
         {
-            title: "Feed Name",
-            dataIndex: "masterFeed",
+            title: "Vaccine Name",
+            dataIndex: "vaccinName",
             render: (masterFeed) => masterFeed.feedName,
         },
         {
-            title: "Feed Quantity",
-            dataIndex: "feedQuantityOnGram",
+            title: "Usage Rules",
+            dataIndex: "usageRules",
             render: (feedQuantityOnGram) => `${feedQuantityOnGram} gram`,
         },
         {
@@ -514,7 +513,7 @@ export default function VaccineContent() {
         },
     ];
 
-    const onAddFeed = () => {
+    const onAddVaccin = () => {
         setIsAdding(true);
         setAddingVaccinate(null);
     };
@@ -524,17 +523,14 @@ export default function VaccineContent() {
         setAddingVaccinate(null);
     };
 
-    const onDeleteFeed = (record) => {
+    const onDeleteVaccinate = (record) => {
         Modal.confirm({
             title: "Are you sure?",
-            content: "Delete this feed",
+            content: "Delete this vaccine",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
-                setDataSource((pre) => {
-                    return pre.filter((feed) => feed.id !== record.id);
-                });
-                deleteDataFeed(record);
+                deleteDataVaccine(record);
             },
         });
     };
@@ -553,7 +549,7 @@ export default function VaccineContent() {
             },
         });
     };
-    const onEditFeed = (record) => {
+    const onEditVaccinate = (record) => {
         setIsEditing(true);
         setEditingVaccinate({ ...record });
     };
@@ -600,7 +596,7 @@ export default function VaccineContent() {
         setEditingRecommend(null);
     };
 
-    const onDetail = (record) => {
+    const onHistory = (record) => {
         getHistory(record);
         setIsHistory(true);
     };
@@ -612,15 +608,25 @@ export default function VaccineContent() {
         e.preventDefault();
     };
 
+    const checkApply = (method) => {
+        if (method == "tetes") {
+            return "Drops";
+        } else if (method == "suntik") {
+            return "Inject";
+        } else {
+            return "Water Drink";
+        }
+    };
+    console.log(addingRecommend)
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
-                Feed Data / All
+                Vaccination Data / All
             </div>
 
             <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
-                    <SearchFeed
+                    <SearchVaccine
                         onChangeSearch={(e) => {
                             setSearch(e.target.value);
                             searchData(e.target.value, filter);
@@ -635,13 +641,13 @@ export default function VaccineContent() {
                             className="mx-2 font-medium rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                             onClick={onAddHistory}
                         >
-                            Add Feed Stock
+                            Add Vaccine History
                         </Button>
                         <Button
                             className="flex items-center gap-2 px-6 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                            onClick={onAddFeed}
+                            onClick={onAddVaccin}
                         >
-                            Add Feed
+                            Add Vaccine
                         </Button>
                     </div>
                 </div>
@@ -660,12 +666,12 @@ export default function VaccineContent() {
                     }}
                 ></Table>
 
-                {/* Add Feed */}
+                {/* Add Vaccine */}
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Add New Feed
+                            Add New Vaccine
                         </div>,
                     ]}
                     onCancel={() => {
@@ -675,99 +681,76 @@ export default function VaccineContent() {
                     footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"feedName"}>Feed Name</Label>
+                        <Label forInput={"vaccinName"}>Vaccine Name</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingVaccinate?.feedName}
-                            placeholder={"Feed Name"}
-                            onChange={(e) => {
-                                setAddingVaccinate((pre) => {
-                                    return { ...pre, feedName: e.target.value };
-                                });
-                            }}
-                        />
-                        <Label forInput={"pricePerKg"}>Price / Kg</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingVaccinate?.pricePerKg}
-                            placeholder={"Feed Price / Kg"}
+                            placeholder={"Vaccine name"}
                             onChange={(e) => {
                                 setAddingVaccinate((pre) => {
                                     return {
                                         ...pre,
-                                        pricePerKg: e.target.value,
+                                        vaccinName: e.target.value,
                                     };
                                 });
                             }}
                         />
-                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
+                        <Label forInput={"price"}>Price</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingVaccinate?.feedQuantity}
-                            placeholder={"Feed quantity"}
+                            placeholder={"Price"}
                             onChange={(e) => {
                                 setAddingVaccinate((pre) => {
                                     return {
                                         ...pre,
-                                        feedQuantity: e.target.value,
+                                        price: e.target.value,
                                     };
                                 });
                             }}
                         />
-                        <Label forInput={"feedType"}>Feed Type</Label>
+                        <Label forInput={"quantity"}>Quantity</Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder={"Quantity"}
+                            onChange={(e) => {
+                                setAddingVaccinate((pre) => {
+                                    return {
+                                        ...pre,
+                                        quantity: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"application"}>Application</Label>
                         <Select
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Choose feed type"
+                            placeholder="Choose application"
                             onSelect={(value) => {
                                 setAddingVaccinate((pre) => {
-                                    return { ...pre, feedType: value };
+                                    return { ...pre, application: value };
                                 });
                             }}
                             bordered={false}
                         >
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="starter"
+                                value="tetes"
                             >
-                                Starter
+                                Drops
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="finisher"
+                                value="air minum"
                             >
-                                Finisher
+                                Water Drink
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="suntik"
+                            >
+                                Inject
                             </Option>
                         </Select>
-                        <Label forInput={"categoryTernak"}>Farm Category</Label>
-                        <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Farm Category"
-                            onSelect={(value) => {
-                                setAddingVaccinate((pre) => {
-                                    return { ...pre, breedId: value };
-                                });
-                            }}
-                            bordered={false}
-                        >
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="62db6618-43ab-4fc6-b2ef-189c0a5a033f"
-                            >
-                                Ayam Petelur
-                            </Option>
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="84beb255-4ce4-476e-b42a-d79c935e780f"
-                            >
-                                Ayam Pedaging
-                            </Option>
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="40625ead-1a06-41cf-b35e-dceb97fb4487"
-                            >
-                                Ayam Aduan
-                            </Option>
-                        </Select>
+
                         <div className="flex justify-center gap-2 mt-6">
                             <Button
                                 className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
@@ -782,7 +765,7 @@ export default function VaccineContent() {
                                 className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                                 key="submit"
                                 type="submit"
-                                onClick={addDataFeed}
+                                onClick={addDataVaccine}
                             >
                                 Add
                             </Button>
@@ -790,12 +773,12 @@ export default function VaccineContent() {
                     </form>
                 </Modal>
 
-                {/* Edit Feed */}
+                {/* Edit Vaccine */}
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Edit Feed
+                            Edit Vaccine
                         </div>,
                     ]}
                     onCancel={() => {
@@ -804,78 +787,64 @@ export default function VaccineContent() {
                     visible={isEditing}
                     footer={null}
                 >
-                    <Label forInput={"feedName"}>Feed Name</Label>
+                    <Label forInput={"vaccinName"}>Vaccine Name</Label>
                     <Input
                         className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingVaccinate?.feedName}
+                        placeholder={editingVaccinate?.vaccinName}
                         onChange={(e) => {
                             setEditingVaccinate((pre) => {
-                                return { ...pre, feedName: e.target.value };
+                                return { ...pre, vaccinName: e.target.value };
                             });
                         }}
                     />
-                    <Label forInput={"feedType"}>Feed Type</Label>
+                    <Label forInput={"quantity"}>Quantity</Label>
+                    <Input
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        placeholder={editingVaccinate?.vaccinStock.stock}
+                        onChange={(e) => {
+                            setEditingVaccinate((pre) => {
+                                return { ...pre, quantity: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"price"}>Price</Label>
+                    <Input
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        placeholder={editingVaccinate?.price}
+                        onChange={(e) => {
+                            setEditingVaccinate((pre) => {
+                                return { ...pre, price: e.target.value };
+                            });
+                        }}
+                    />
+                    <Label forInput={"application"}>Application</Label>
                     <Select
                         className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        placeholder={editingVaccinate?.feedType}
+                        placeholder={checkApply(editingVaccinate?.application)}
                         onSelect={(value) => {
                             setEditingVaccinate((pre) => {
-                                return { ...pre, feedType: value };
+                                return { ...pre, application: value };
                             });
                         }}
                         bordered={false}
                     >
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="starter"
+                            value="tetes"
                         >
-                            Starter
+                            Drops
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="finisher"
+                            value="air minum"
                         >
-                            Finisher
-                        </Option>
-                    </Select>
-                    <Label forInput={"pricePerKg"}>Price / Kg</Label>
-                    <Input
-                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingVaccinate?.pricePerKg}
-                        onChange={(e) => {
-                            setEditingVaccinate((pre) => {
-                                return { ...pre, pricePerKg: e.target.value };
-                            });
-                        }}
-                    />
-                    <Label forInput={"breed"}>Farm Category</Label>
-                    <Select
-                        className="w-1/3 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        defaultValue={editingVaccinate?.breed.breedType}
-                        onSelect={(value) => {
-                            setEditingVaccinate((pre) => {
-                                return { ...pre, breedId: value };
-                            });
-                        }}
-                        bordered={false}
-                    >
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="62db6618-43ab-4fc6-b2ef-189c0a5a033f"
-                        >
-                            Ayam Petelur
+                            Water Drink
                         </Option>
                         <Option
                             className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="84beb255-4ce4-476e-b42a-d79c935e780f"
+                            value="suntik"
                         >
-                            Ayam Pedaging
-                        </Option>
-                        <Option
-                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                            value="40625ead-1a06-41cf-b35e-dceb97fb4487"
-                        >
-                            Ayam Aduan
+                            Inject
                         </Option>
                     </Select>
                     <div className="flex justify-center gap-2 mt-6">
@@ -892,20 +861,20 @@ export default function VaccineContent() {
                             className="w-full font-semibold rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                             key="submit"
                             type="submit"
-                            onClick={editDataFeed}
+                            onClick={editDataVaccine}
                         >
                             Save
                         </Button>
                     </div>
                 </Modal>
 
-                {/* Detail Feed */}
+                {/* Vaccine History */}
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl "
                     visible={isHistory}
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            {feedName} History
+                            {vaccineName} History
                         </div>,
                     ]}
                     onCancel={() => {
@@ -929,7 +898,7 @@ export default function VaccineContent() {
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Add Feed Stock
+                            Add Vaccine History
                         </div>,
                     ]}
                     onCancel={() => {
@@ -939,41 +908,66 @@ export default function VaccineContent() {
                     footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
+                        <Label forInput={"quantity"}>Quantity</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingHistory?.feedQuantity}
-                            placeholder={"Feed Quantity"}
+                            value={addingHistory?.quantity}
+                            placeholder={"Quantity"}
                             onChange={(e) => {
                                 setAddingHistory((pre) => {
                                     return {
                                         ...pre,
-                                        feedQuantity: e.target.value,
+                                        quantity: e.target.value,
                                     };
                                 });
                             }}
                         />
-                        <Label forInput={"feedName"}>Feed Name</Label>
+                        <Label forInput={"vaccinName"}>Vaccine Name</Label>
                         <Select
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Choose Feed Name"
+                            placeholder="Choose Vaccine"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
-                                    return { ...pre, masterFeedId: value };
+                                    return { ...pre, vaccinId: value };
                                 });
                             }}
                             bordered={false}
                         >
                             {dataSource.map((dataId) => {
+                                // console.log(dataId)
                                 return (
                                     <Option
                                         className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                         value={dataId.id}
                                     >
-                                        {dataId.feedName}
+                                        {dataId.vaccinName}
                                     </Option>
                                 );
                             })}
+                        </Select>
+                        <Label forInput={"historyStatus"}>Status</Label>
+                        <Select
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Choose Status"
+                            onSelect={(value) => {
+                                setAddingHistory((pre) => {
+                                    return { ...pre, historyStatus: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="usage"
+                            >
+                                Usage
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="in"
+                            >
+                                In
+                            </Option>
                         </Select>
                         <div className="flex justify-center gap-2 mt-6">
                             <Button
@@ -1003,7 +997,7 @@ export default function VaccineContent() {
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Edit Feed Quantity
+                            Edit Vaccine Quantity
                         </div>,
                     ]}
                     onCancel={() => {
@@ -1032,15 +1026,15 @@ export default function VaccineContent() {
                         </div>,
                     ]}
                 >
-                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
+                    <Label forInput={"Quantity"}>Quantity</Label>
                     <Input
                         className="my-1 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingHistory?.feedQuantity}
+                        value={editingHistory?.quantity}
                         onChange={(e) => {
                             setEditingHistory((pre) => {
                                 return {
                                     ...pre,
-                                    feedQuantity: e.target.value,
+                                    quantity: e.target.value,
                                 };
                             });
                         }}
@@ -1052,9 +1046,9 @@ export default function VaccineContent() {
             <div className="p-10 mt-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
-                        Feed Recommendation
+                        Vaccine Recommendation
                     </div>
-                    <div className="gap-2 flex"> 
+                    <div className="gap-2 flex">
                         <FilterFeedRecommend
                             onChangeSelect={(value) => {
                                 filterRecommendation(value);
@@ -1085,10 +1079,10 @@ export default function VaccineContent() {
 
                 {/* Add Recomendation */}
                 <Modal
-                    className="p-0 overflow-hidden rounded-xl"
+                    className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Add Feed Recommendation
+                            Add Vaccine Recommendation
                         </div>,
                     ]}
                     onCancel={() => {
@@ -1098,34 +1092,42 @@ export default function VaccineContent() {
                     footer={null}
                 >
                     <form onSubmit={onChangeForm} method="POST">
-                        <Label forInput={"week"}>Week</Label>
+                        <Label forInput={"day"}>Day</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingRecommend?.week}
-                            placeholder={"week"}
+                            placeholder={"Day"}
                             onChange={(e) => {
                                 setAddingRecommend((pre) => {
                                     return {
                                         ...pre,
-                                        week: e.target.value,
+                                        day: e.target.value,
                                     };
                                 });
                             }}
                         />
-                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingRecommend?.feedQuantity}
-                            placeholder={"Feed Quantity"}
-                            onChange={(e) => {
+                        <Label forInput={"vaccineName"}>Vaccine Name</Label>
+                        <Select
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Choose Farm Name"
+                            onSelect={(value) => {
                                 setAddingRecommend((pre) => {
-                                    return {
-                                        ...pre,
-                                        feedQuantity: e.target.value,
-                                    };
+                                    return { ...pre, vaccinId: value };
                                 });
                             }}
-                        />
+                            bordered={false}
+                        >
+                            {dataSource.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {dataId.vaccinName}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
                         <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
@@ -1148,28 +1150,21 @@ export default function VaccineContent() {
                                 );
                             })}
                         </Select>
-                        <Label forInput={"feedName"}>Feed Name</Label>
-                        <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Choose Feed Name"
-                            onSelect={(value) => {
+                        <Label forInput={"usageRules"}>Usage Rule</Label>
+                        <textarea
+                            id="message"
+                            rows="8"
+                            className="mb-2 block p-2.5 w-full text-sm text-textColor border-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Enter the rule.."
+                            onChange={(e) => {
                                 setAddingRecommend((pre) => {
-                                    return { ...pre, masterFeedId: value };
+                                    return {
+                                        ...pre,
+                                        usageRules: e.target.value,
+                                    };
                                 });
                             }}
-                            bordered={false}
-                        >
-                            {dataSource.map((dataId) => {
-                                return (
-                                    <Option
-                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                        value={dataId.id}
-                                    >
-                                        {dataId.feedName}
-                                    </Option>
-                                );
-                            })}
-                        </Select>
+                        />
                         <div className="flex justify-center gap-2 mt-6">
                             <Button
                                 className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"

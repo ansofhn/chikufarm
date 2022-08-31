@@ -19,7 +19,6 @@ export default function PakanContent() {
 
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
-    const [filterRecommend, setFilterRecommend] = useState([]);
     const [dataSource, setDataSource] = useState([]);
 
     const [isDetail, setIsDetail] = useState(false);
@@ -614,6 +613,7 @@ export default function PakanContent() {
         e.preventDefault();
     };
 
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -637,7 +637,7 @@ export default function PakanContent() {
                             className="mx-2 font-medium rounded-md border-maroon bg-maroon text-cream hover:maroon hover:bg-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
                             onClick={onAddHistory}
                         >
-                            Add Feed Stock
+                            Add Feed History
                         </Button>
                         <Button
                             className="flex items-center gap-2 px-6 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
@@ -798,6 +798,7 @@ export default function PakanContent() {
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
                             Edit Feed
+                            <div className="text-xs font-medium">{editingFeed?.feedName}</div>
                         </div>,
                     ]}
                     onCancel={() => {
@@ -931,7 +932,7 @@ export default function PakanContent() {
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Add Feed Stock
+                            Add Feed History
                         </div>,
                     ]}
                     onCancel={() => {
@@ -955,6 +956,30 @@ export default function PakanContent() {
                                 });
                             }}
                         />
+                        <Label forInput={"historyStatus"}>Status</Label>
+                        <Select
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Choose Status"
+                            onSelect={(value) => {
+                                setAddingHistory((pre) => {
+                                    return { ...pre, historyStatus: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="usage"
+                            >
+                                Usage
+                            </Option>
+                            <Option
+                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                value="in"
+                            >
+                                In
+                            </Option>
+                        </Select>
                         <Label forInput={"feedName"}>Feed Name</Label>
                         <Select
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"

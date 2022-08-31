@@ -27,4 +27,4 @@ export default function vaccine() {
     );
 }
 
-vaccine.getLayout = (page) => <DashboardLayout title="Pakan" children={page} />;
+vaccine.getLayout = (page) => <DashboardLayout title="Vaccine" children={page} />;
