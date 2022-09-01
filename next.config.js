@@ -9,7 +9,10 @@ const nextConfig = {
     },
     images: {
         domains: ["https://chikufarm-app.herokuapp.com/"],
-      },
+    },
+    eslint: {
+        ignoreDuringBuilds: true
+    }
 };
 
 module.exports = nextConfig;

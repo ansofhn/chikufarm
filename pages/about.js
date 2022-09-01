@@ -39,7 +39,7 @@ export default function about() {
                             </h3>
                             <p className="mb-4">
                                 Make everyone can farming as easy as it can compared to others. 
-                                "Lets Just Farm"
+                                Lets Just Farm
                             </p>
                         </div>
                         <div className="bg-softBrown rounded-lg p-8">
