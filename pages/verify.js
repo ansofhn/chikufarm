@@ -51,7 +51,6 @@ export default function verify() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
                     if (res.data.message === "Token valid") {
                         let timerInterval;
                         Swal.fire({
@@ -83,7 +82,6 @@ export default function verify() {
                     }
                 });
         } catch (error) {
-            console.log(error);
             let timerInterval;
             Swal.fire({
                 position: "top",
@@ -105,7 +103,6 @@ export default function verify() {
                     `https://chikufarm-app.herokuapp.com/api/auth/forgot-password/${username}`
                 )
                 .then((res) => {
-                    console.log(res.data);
                     if (res.data === "Email sent") {
                         let timerInterval;
                         Swal.fire({
@@ -134,7 +131,6 @@ export default function verify() {
                     clearInterval(timerInterval);
                 },
             });
-            console.log(error);
         }
     };
 

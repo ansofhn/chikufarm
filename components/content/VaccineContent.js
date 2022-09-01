@@ -4,7 +4,6 @@ import { Button, Table, Modal, Input, Select } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Label from "../Label";
-import SearchFeed from "../SearchFeed";
 import FilterFeedRecommend from "../FilterFeedRecommend";
 import SearchVaccine from "../SearchVaccine";
 import Swal from "sweetalert2";
@@ -38,7 +37,7 @@ export default function VaccineContent() {
     const [isEditingRecommend, setIsEditingRecommend] = useState(false);
     const [editingRecommend, setEditingRecommend] = useState(null);
     const [totalDataRecommend, setTotalDataRecommend] = useState([]);
-
+    
     const getData = async (page) => {
         try {
             const responseVaccine = await axios
@@ -53,7 +52,6 @@ export default function VaccineContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data.items);
                     setTotalDataVaccinate(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
@@ -67,7 +65,6 @@ export default function VaccineContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data.items);
                     setFarm(res.data.items);
                 });
         } catch (error) {
@@ -285,7 +282,7 @@ export default function VaccineContent() {
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/feed-recommendation?farmName=${filterRecommend}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin-recommendation?farmName=${filterRecommend}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -304,7 +301,7 @@ export default function VaccineContent() {
         try {
             const response = await axios
                 .post(
-                    "https://chikufarm-app.herokuapp.com/api/feed-recomendation",
+                    "https://chikufarm-app.herokuapp.com/api/vaccin-recommendation",
                     addingRecommend,
                     {
                         headers: {
@@ -326,15 +323,15 @@ export default function VaccineContent() {
     const editRecomendation = async () => {
         const recomendationId = editingRecommend.id;
         const updateRecomendation = {
-            week: editingRecommend.week,
-            feedQuantity: editingRecommend.feedQuantity,
+            day: editingRecommend.day,
+            vaccinId: editingRecommend.vaccinId,
             farmId: editingRecommend.farmId,
-            masterFeedId: editingRecommend.masterFeedId,
+            usageRules: editingRecommend.usageRules,
         };
         try {
             const response = await axios
                 .put(
-                    `https://chikufarm-app.herokuapp.com/api/feed-recomendation/${recomendationId}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin-recommendation/${recomendationId}`,
                     updateRecomendation,
                     {
                         headers: {
@@ -357,7 +354,7 @@ export default function VaccineContent() {
         try {
             const response = await axios
                 .delete(
-                    `https://chikufarm-app.herokuapp.com/api/feed-recomendation/${id}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccin-recommendation/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -473,25 +470,28 @@ export default function VaccineContent() {
             title: "Day",
             dataIndex: "day",
             align: "center",
+            width: 100
         },
         {
             title: "Farm Name",
-            dataIndex: "farmName",
+            dataIndex: "farm",
+            width: 100,
             render: (farm) => farm.farmName,
         },
         {
             title: "Vaccine Name",
-            dataIndex: "vaccinName",
-            render: (masterFeed) => masterFeed.feedName,
+            dataIndex: "vaccin",
+            width: 100,
+            render: (vaccin) => vaccin.vaccinName,
         },
         {
             title: "Usage Rules",
             dataIndex: "usageRules",
-            render: (feedQuantityOnGram) => `${feedQuantityOnGram} gram`,
         },
         {
             align: "center",
             title: "Actions",
+            width: 100,
             render: (record) => {
                 return (
                     <div className="text-center">
@@ -514,8 +514,8 @@ export default function VaccineContent() {
     ];
 
     const onAddVaccin = () => {
-        setIsAdding(true);
         setAddingVaccinate(null);
+        setIsAdding(true);
     };
 
     const resetAdd = () => {
@@ -592,8 +592,8 @@ export default function VaccineContent() {
         setEditingRecommend({ ...record });
     };
     const resetEditingRecomendation = () => {
-        setIsEditingRecommend(false);
         setEditingRecommend(null);
+        setIsEditingRecommend(false);
     };
 
     const onHistory = (record) => {
@@ -617,7 +617,6 @@ export default function VaccineContent() {
             return "Water Drink";
         }
     };
-    console.log(addingRecommend)
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
             <div className="p-4 text-lg font-bold text-textColor">
@@ -1109,7 +1108,7 @@ export default function VaccineContent() {
                         <Label forInput={"vaccineName"}>Vaccine Name</Label>
                         <Select
                             className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            placeholder="Choose Farm Name"
+                            placeholder="Choose Vaccine Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
                                     return { ...pre, vaccinId: value };
@@ -1189,10 +1188,10 @@ export default function VaccineContent() {
 
                 {/* Edit Recomendation */}
                 <Modal
-                    className="p-0 overflow-hidden rounded-xl"
+                    className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
                         <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
-                            Edit Feed Recommendation
+                            Edit Vaccine Recommendation
                         </div>,
                     ]}
                     onCancel={() => {
@@ -1201,76 +1200,78 @@ export default function VaccineContent() {
                     visible={isEditingRecommend}
                     footer={null}
                 >
-                    <Label forInput={"week"}>Week</Label>
-                    <Input
-                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingRecommend?.week}
-                        onChange={(e) => {
-                            setEditingRecommend((pre) => {
-                                return {
-                                    ...pre,
-                                    week: e.target.value,
-                                };
-                            });
-                        }}
-                    />
-                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
-                    <Input
-                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        placeholder={editingRecommend?.feedQuantityOnGram}
-                        onChange={(e) => {
-                            setEditingRecommend((pre) => {
-                                return {
-                                    ...pre,
-                                    feedQuantity: e.target.value,
-                                };
-                            });
-                        }}
-                    />
-                    <Label forInput={"farmName"}>Farm Name</Label>
-                    <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        defaultValue={editingRecommend?.farm.farmName}
-                        onSelect={(value) => {
-                            setEditingRecommend((pre) => {
-                                return { ...pre, farmId: value };
-                            });
-                        }}
-                        bordered={false}
-                    >
-                        {farm.map((dataId) => {
-                            return (
-                                <Option
-                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                    value={dataId.id}
-                                >
-                                    {dataId.farmName}
-                                </Option>
-                            );
-                        })}
-                    </Select>
-                    <Label forInput={"feedName"}>Feed Name</Label>
-                    <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        defaultValue={editingRecommend?.masterFeed.feedName}
-                        onSelect={(value) => {
-                            setEditingRecommend((pre) => {
-                                return { ...pre, masterFeedId: value };
-                            });
-                        }}
-                        bordered={false}
-                    >
-                        {dataSource.map((dataId) => {
-                            return (
-                                <Option
-                                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                    value={dataId.id}
-                                >
-                                    {dataId.feedName}
-                                </Option>
-                            );
-                        })}
-                    </Select>
+                    <Label forInput={"day"}>Day</Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            value={editingRecommend?.day}
+                            onChange={(e) => {
+                                setEditingRecommend((pre) => {
+                                    return {
+                                        ...pre,
+                                        day: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"vaccineName"}>Vaccine Name</Label>
+                        <Select
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder={editingRecommend?.vaccin.vaccinName}
+                            onSelect={(value) => {
+                                setEditingRecommend((pre) => {
+                                    return { ...pre, vaccinId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            {dataSource.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {dataId.vaccinName}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"farmName"}>Farm Name</Label>
+                        <Select
+                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder={editingRecommend?.farm.farmName}
+                            onSelect={(value) => {
+                                setEditingRecommend((pre) => {
+                                    return { ...pre, farmId: value };
+                                });
+                            }}
+                            bordered={false}
+                        >
+                            {farm.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {dataId.farmName}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"usageRules"}>Usage Rule</Label>
+                        <textarea
+                            id="message"
+                            rows="8"
+                            className="mb-2 block p-2.5 w-full text-sm text-textColor border-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream"
+                            value={editingRecommend?.usageRules}
+                            onChange={(e) => {
+                                setEditingRecommend((pre) => {
+                                    return {
+                                        ...pre,
+                                        usageRules: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
                     <div className="flex justify-center gap-2 mt-6">
                         <Button
                             className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"

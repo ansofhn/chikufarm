@@ -39,7 +39,6 @@ export default function Register() {
                 phone: phone,
                 password: password,
             };
-            console.log(data);
             let response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/users/register",

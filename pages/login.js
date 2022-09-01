@@ -36,7 +36,6 @@ export default function Login() {
                 username: userName,
                 password: password,
             };
-            console.log(dataLogin);
             let response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/auth/login",
@@ -48,7 +47,6 @@ export default function Login() {
                     }
                 )
                 .then((respond) => {
-                    console.log(respond.data.access_token);
                     const access_token = respond.data.access_token;
                     localStorage.setItem("access_token", access_token);
                     if (respond.status === 201 || 200) {
@@ -84,11 +82,9 @@ export default function Login() {
 
     const onChangeUsername = (e) => {
         setUserName(e.target.value);
-        console.log(userName);
     };
     const onChangePassword = (e) => {
         setPassword(e.target.value);
-        console.log(password);
     };
     const onChangeForm = (e) => {
         e.preventDefault();

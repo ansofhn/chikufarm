@@ -17,6 +17,7 @@ import { Button } from "antd";
 import { useRouter } from "next/router";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { io } from "socket.io-client";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -24,7 +25,20 @@ function classNames(...classes) {
 
 export default function SideNavbar() {
     const [role, setRole] = useState("");
+    const [newMessage, setNewMessage] = useState(0);
     const router = useRouter();
+
+    const socket = io("https://chikufarm-app.herokuapp.com");
+
+    useEffect(() => {
+        socket.on("newMessage", (message) => {
+            setNewMessage(newMessage += 1);
+        });
+    });
+    console.log(newMessage)
+    const onHandleForum = () => {
+        setNewMessage(0);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("access_token");
@@ -105,7 +119,7 @@ export default function SideNavbar() {
                                         <Menu.Button className="flex items-center justify-start gap-4 py-2 pl-2 pr-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group ">
                                             <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
                                             <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                                Daily Report
+                                                Report
                                             </h3>
                                             <svg
                                                 aria-hidden="true"
@@ -283,7 +297,7 @@ export default function SideNavbar() {
                                         <Menu.Button className="flex items-center justify-start gap-4 py-2 pl-2 pr-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group ">
                                             <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
                                             <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                                Daily Report
+                                                Report
                                             </h3>
                                             <svg
                                                 aria-hidden="true"
@@ -458,14 +472,14 @@ export default function SideNavbar() {
                                     className="relative inline-block text-left"
                                 >
                                     <div>
-                                        <Menu.Button className="flex items-center justify-start gap-4 py-2 pl-2 pr-5 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-cream group ">
+                                        <Menu.Button className="flex items-center justify-between gap-4 py-2 pl-2 pr-4 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-cream group ">
                                             <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
-                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                                Daily Report
+                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-12">
+                                                Report
                                             </h3>
                                             <svg
                                                 aria-hidden="true"
-                                                class="w-4 h-4"
+                                                className="w-4 h-4"
                                                 fill="maroon"
                                                 viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -504,7 +518,8 @@ export default function SideNavbar() {
                                                                     "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
                                                                 )}
                                                             >
-                                                                Report by Coop
+                                                                Daily Coop
+                                                                Report
                                                             </div>
                                                         </Link>
                                                     )}
@@ -531,6 +546,28 @@ export default function SideNavbar() {
                                                         </Link>
                                                     )}
                                                 </Menu.Item>
+
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <Link
+                                                            href={
+                                                                "/dashboard/report/vaccineReport"
+                                                            }
+                                                        >
+                                                            <div
+                                                                className={classNames(
+                                                                    active
+                                                                        ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                        : "text-gray-700",
+                                                                    "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
+                                                                )}
+                                                            >
+                                                                Vaccination
+                                                                Report
+                                                            </div>
+                                                        </Link>
+                                                    )}
+                                                </Menu.Item>
                                             </div>
                                         </Menu.Items>
                                     </Transition>
@@ -543,12 +580,18 @@ export default function SideNavbar() {
                                         </h3>
                                     </div>
                                 </Link>
-                                <Link href={"/dashboard/chat"}>
+                                <Link
+                                    href={"/dashboard/chat"}
+                                    onClick={onHandleForum}
+                                >
                                     <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <BiChat className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-9">
                                             Forum
                                         </h3>
+                                        <span class="inline-flex items-center justify-center w-3 h-3 p-2.5 ml-3 text-xs font-medium text-cream bg-maroon rounded-full">
+                                            {newMessage}
+                                        </span>
                                     </div>
                                 </Link>
                                 <Link href={"/dashboard/vaccine"}>

@@ -38,11 +38,8 @@ export default function about() {
                                 Our vision
                             </h3>
                             <p className="mb-4">
-                                Sunt ut pariatur labore anim ut mollit.Est
-                                ullamco pariatur aliquip officia adipisicing
-                                labore ea non laborum veniam ut.Non cupidatat
-                                nostrud consequat occaecat excepteur dolor
-                                voluptate sunt eu non officia
+                                Make everyone can farming as easy as it can compared to others. 
+                                "Lets Just Farm"
                             </p>
                         </div>
                         <div className="bg-softBrown rounded-lg p-8">

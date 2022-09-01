@@ -217,6 +217,7 @@ export default function DetailReportContent() {
         {
             align: "center",
             title: "Actions",
+            width: 150,
             render: (record) => {
                 return (
                     <>
@@ -276,7 +277,7 @@ export default function DetailReportContent() {
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72">
-            <div className="p-10 bg-white rounded-lg">
+            <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
                         All Detail Report

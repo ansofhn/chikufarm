@@ -20,7 +20,6 @@ export default function forgot() {
                     `https://chikufarm-app.herokuapp.com/api/auth/forgot-password/${username}`
                 )
                 .then((res) => {
-                    console.log(res.data);
                     const userName = username
                     localStorage.setItem("username", userName)
                     if (res.data === "Email sent") {

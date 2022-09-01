@@ -60,7 +60,7 @@ export default function Chat() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="mt-6 lg:w-3/4 lg:ml-72">
             <div
                 id="message-container"
                 className="rounded-xl bg-white container h-[69vh] overflow-auto p-5"
