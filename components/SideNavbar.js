@@ -32,10 +32,10 @@ export default function SideNavbar() {
 
     useEffect(() => {
         socket.on("newMessage", (message) => {
-            setNewMessage(newMessage += 1);
+            setNewMessage((newMessage += 1));
         });
     });
-    console.log(newMessage)
+    console.log(newMessage);
     const onHandleForum = () => {
         setNewMessage(0);
     };
@@ -468,6 +468,7 @@ export default function SideNavbar() {
                                     </div>
                                 </Link>
                                 <Menu
+
                                     as="div"
                                     className="relative inline-block text-left"
                                 >
@@ -501,7 +502,7 @@ export default function SideNavbar() {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none">
+                                        <Menu.Items static className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none">
                                             <div className="py-1">
                                                 <Menu.Item>
                                                     {({ active }) => (
@@ -551,7 +552,7 @@ export default function SideNavbar() {
                                                     {({ active }) => (
                                                         <Link
                                                             href={
-                                                                "/dashboard/report/vaccineReport"
+                                                                "/dashboard/report/vaccinationReport"
                                                             }
                                                         >
                                                             <div
@@ -572,14 +573,7 @@ export default function SideNavbar() {
                                         </Menu.Items>
                                     </Transition>
                                 </Menu>
-                                <Link href={"/dashboard/user"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <BiUser className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            User
-                                        </h3>
-                                    </div>
-                                </Link>
+
                                 <Link
                                     href={"/dashboard/chat"}
                                     onClick={onHandleForum}
@@ -589,16 +583,24 @@ export default function SideNavbar() {
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-9">
                                             Forum
                                         </h3>
-                                        <span class="inline-flex items-center justify-center w-3 h-3 p-2.5 ml-3 text-xs font-medium text-cream bg-maroon rounded-full">
+                                        <span class="inline-flex items-center justify-center w-2 h-2 p-2.5 ml-3 text-xs font-medium text-cream bg-maroon rounded-full">
                                             {newMessage}
                                         </span>
+                                    </div>
+                                </Link>
+                                <Link href={"/dashboard/user"}>
+                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                        <BiUser className="text-2xl text-maroon group-hover:text-maroon" />
+                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                            User
+                                        </h3>
                                     </div>
                                 </Link>
                                 <Link href={"/dashboard/vaccine"}>
                                     <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <TbVaccine className="text-2xl text-maroon group-hover:text-maroon" />
                                         <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Vaccinate
+                                            Vaccine
                                         </h3>
                                     </div>
                                 </Link>

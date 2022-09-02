@@ -1,30 +1,36 @@
-import React from "react";
-import { useEffect, useState } from "react";
 import { Button, Table, Modal, Input, Select } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import Label from "../Label";
-import FilterCoopNumber from "../FilterCoopNumber";
+import { MdAdd } from "react-icons/md";
+import axios from "axios";
+import SearchReport from "../SearchReport";
 
 const { Option } = Select;
 
-export default function DetailReportContent() {
+export default function VaccinationReportContent() {
     const [isAdding, setIsAdding] = useState(false);
-    const [addingDailyReport, setAddingDailyReport] = useState(null);
+    const [addingVaccination, setAddingVaccination] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editingDailyReport, setEditingDailyReport] = useState(null);
+    const [editingVaccination, setEditingVaccination] = useState(null);
+    const [search, setSearch] = useState([]);
+    const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [totalDataVaccination, setTotalDataVaccination] = useState([]);
+
     const [coop, setCoop] = useState([]);
     const [feedName, setFeedName] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
-    const [totalDataReport, setTotalDataReport] = useState([]);
+    
+    const [detailReport, setDetailReport] = useState([]);
+    const [isDetail, setIsDetail] = useState(false);
 
     const getData = async (page) => {
         try {
-            const dailycoop = await axios
+            const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/daily-coop?page=${page}`,
+                    `https://chikufarm-app.herokuapp.com/api/coop/vaccination/all?page=${page}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -34,8 +40,8 @@ export default function DetailReportContent() {
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
-                    setTotalDataReport(res.data.meta.totalItems);
+                    console.log(res.data.items);
+                    setTotalDataVaccination(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
 
@@ -50,18 +56,24 @@ export default function DetailReportContent() {
                 .then((res) => {
                     setCoop(res.data.items);
                 });
+
         } catch (error) {
             console.log(error);
         }
     };
 
+    const getDetail = async (record) => {
+        console.log(record.dailyCoop);
+        setDetailReport(record.dailyCoop);
+    };
+
     const addData = async () => {
-        console.log(addingDailyReport);
+        console.log(addingVaccination);
         try {
             const response = await axios
                 .post(
                     "https://chikufarm-app.herokuapp.com/api/daily-coop",
-                    addingDailyReport,
+                    addingVaccination,
                     {
                         headers: {
                             "content-type": "application/json",
@@ -72,8 +84,9 @@ export default function DetailReportContent() {
                     }
                 )
                 .then((res) => {
-                    getData(1);
+                    console.log(res);
                     resetAdd();
+                    getData(1);
                 });
         } catch (error) {
             console.log(error);
@@ -81,11 +94,11 @@ export default function DetailReportContent() {
     };
 
     const editData = async () => {
-        console.log(editingDailyReport);
-        const id = editingDailyReport.id;
+        console.log(editingVaccination);
+        const id = editingVaccination.id;
         const update = {
-            death: editingDailyReport.death,
-            feedQuantity: editingDailyReport.feedQuantity,
+            death: editingVaccination.death,
+            feedQuantity: editingVaccination.feedQuantity,
         };
         try {
             const response = await axios
@@ -134,6 +147,27 @@ export default function DetailReportContent() {
         }
     };
 
+    const searchData = async (search) => {
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/coop/daily/report?search=${search}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setDataSource(res.data.items);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const getOneCoop = async (id) => {
         try {
             const response = await axios
@@ -156,73 +190,125 @@ export default function DetailReportContent() {
         }
     };
 
-    const filterByCoop = async (filter) => {
-        try {
-            const response = await axios
-                .get(
-                    `https://chikufarm-app.herokuapp.com/api/daily-coop?coopNumber=${filter}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "access_token"
-                            )}`,
-                        },
-                    }
-                )
-                .then((res) => {
-                    setDataSource(res.data.items);
-                });
-        } catch (error) {}
-    };
-
     useEffect(() => {
         getData(1);
     }, []);
 
     const columns = [
         {
-            title: "Date",
-            dataIndex: "createdAt",
-            render: (createdAt) => createdAt.substring(0, 10),
-            width: 150,
-            align: "center",
-        },
-        {
             title: "Coop Number",
             align: "center",
-            width: 100,
-            dataIndex: "coop",
-            render: (coop) => {
-                if (coop == undefined) {
-                    return "-";
-                } else {
-                    return coop.coopNumber;
-                }
+            dataIndex: "coopNumber",
+            render: (coopNumber) => {
+                return `Coop ${coopNumber}`;
+            },
+        },
+        {
+            title: "Farm Name",
+            align: "center",
+            dataIndex: "farm",
+            render: (farm) => {
+                return farm.farmName;
             },
         },
         {
             title: "Feed Name",
-            width: 150,
+            align: "center",
             dataIndex: "masterFeed",
-            render: (masterFeed) => masterFeed.feedName,
+            render: (masterFeed) => {
+                return masterFeed.feedName;
+            },
         },
         {
-            title: "Feed Quantity",
-            dataIndex: "feedQuantity",
-            width: 100,
+            title: "Population",
+            dataIndex: "populationUpdate",
             align: "center",
         },
         {
             title: "Death",
-            dataIndex: "death",
             align: "center",
-            width: 100,
+            render: (_, record) => {
+                return record.populationStart - record.populationUpdate;
+            },
+        },
+        {
+            title: "Feed Status",
+            children: [
+                {
+                    title: "Morning",
+                    dataIndex: "dailyCoop",
+                    align: "center",
+                    width: 125,
+                    render: (dailyCoop) => {
+                        if (dailyCoop.length >= 1) {
+                            return (
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
+                                    given
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
+                                    Not given
+                                </div>
+                            );
+                        }
+                    },
+                },
+                {
+                    title: "Afternoon",
+                    dataIndex: "dailyCoop",
+                    align: "center",
+                    width: 125,
+                    render: (dailyCoop) => {
+                        if (dailyCoop.length >= 2) {
+                            return (
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
+                                    given
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
+                                    Not given
+                                </div>
+                            );
+                        }
+                    },
+                },
+            ],
+        },
+        {
+            align: "center",
+            title: "Actions",
+            render: (record) => {
+                return (
+                    <>
+                        <EyeOutlined
+                            className="text-textColor"
+                            onClick={() => {
+                                onDetail(record);
+                            }}
+                        />
+                    </>
+                );
+            },
+        },
+    ];
+
+    const columnDetail = [
+        {
+            title: "Date",
+            width: 150,
+            dataIndex: "createdAt",
+            render: (createdAt) => {
+                return `${createdAt.substring(0, 10)}`;
+            },
         },
         {
             title: "Usage Time",
             dataIndex: "usageTime",
             align: "center",
-            width: 130,
             render: (usageTime) => {
                 if (usageTime == "pagi") {
                     return (
@@ -240,60 +326,81 @@ export default function DetailReportContent() {
             },
         },
         {
+            title: "Feed Quantity",
+            align: "center",
+            dataIndex: "feedQuantity",
+            render: (feedQuantity) => {
+                return `${feedQuantity} Kg`;
+            },
+        },
+        {
+            title: "Death",
+            dataIndex: "death",
+            align: "center",
+        },
+
+        {
             align: "center",
             title: "Actions",
-            width: 150,
             render: (record) => {
                 return (
-                    <>
+                    <div className="text-center">
                         <EditOutlined
                             onClick={() => {
-                                onEditDaily(record);
+                                onEditReport(record);
                             }}
                         />
                         <DeleteOutlined
                             onClick={() => {
-                                onDeleteDaily(record);
+                                onDeleteReport(record);
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
-                    </>
+                    </div>
                 );
             },
         },
     ];
 
-    const onAddDaily = () => {
+    const onAddReport = () => {
         setIsAdding(true);
-        setAddingDailyReport(null);
+        setAddingVaccination(null);
     };
 
     const resetAdd = () => {
+        setAddingVaccination(null);
         setIsAdding(false);
-        setAddingDailyReport(null);
     };
 
-    const onDeleteDaily = (record) => {
+    const onDeleteReport = (record) => {
         Modal.confirm({
             title: "Are you sure?",
             content: "Delete this report",
             okText: "Yes",
             okType: "danger",
             onOk: () => {
-                setDataSource((pre) => {
+                setDetailReport((pre) => {
                     return pre.filter((report) => report.id !== record.id);
                 });
                 deleteData(record);
             },
         });
     };
-    const onEditDaily = (record) => {
+    const onEditReport = (record) => {
         setIsEditing(true);
-        setEditingDailyReport({ ...record });
+        setEditingVaccination({ ...record });
     };
     const resetEditing = () => {
+        setEditingVaccination(null);
         setIsEditing(false);
-        setEditingDailyReport(null);
+    };
+
+    const onDetail = (record) => {
+        getDetail(record);
+        setIsDetail(true);
+    };
+    const resetDetail = () => {
+        setIsDetail(false);
     };
 
     const onChangeForm = (e) => {
@@ -301,25 +408,28 @@ export default function DetailReportContent() {
     };
 
     return (
-        <div className="my-8 lg:w-3/4 lg:ml-72 2xl:w-10/12">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
+            <div className="p-4 text-lg font-bold text-textColor">
+                Vaccination Report / All
+            </div>
             <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
-                    <div className="pb-4 text-lg font-bold text-textColor">
-                        All Detail Report
-                    </div>
-                    <div className="flex gap-2">
-                        <FilterCoopNumber
-                            onChangeSelect={(value) => {
-                                filterByCoop(value);
-                            }}
-                        />
-                        <Button
-                            className="flex items-center self-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                            onClick={onAddDaily}
-                        >
-                            Create Report
-                        </Button>
-                    </div>
+                    <SearchReport
+                        onChangeSearch={(e) => {
+                            setSearch(e.target.value);
+                            searchData(e.target.value, filter);
+                        }}
+                        onChangeSelect={(value) => {
+                            setFilter(value);
+                            searchData(search, value);
+                        }}
+                    />
+                    <Button
+                        className="flex items-center gap-2 px-4 py-3 transition duration-300 border-none rounded-md text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        onClick={onAddReport}
+                    >
+                        Create Report
+                    </Button>
                 </div>
                 <Table
                     className="ant-pagination-simple"
@@ -329,7 +439,7 @@ export default function DetailReportContent() {
                     pagination={{
                         pageSize: 10,
                         className: "pt-2",
-                        total: totalDataReport,
+                        total: totalDataVaccination,
                         onChange: (page) => {
                             getData(page);
                         },
@@ -356,7 +466,7 @@ export default function DetailReportContent() {
                             className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
                             placeholder="Choose coop"
                             onSelect={(value) => {
-                                setAddingDailyReport((pre) => {
+                                setAddingVaccination((pre) => {
                                     return { ...pre, coopId: value };
                                 });
                                 getOneCoop(value);
@@ -377,10 +487,10 @@ export default function DetailReportContent() {
                         <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingDailyReport?.feedQuantity}
+                            value={addingVaccination?.feedQuantity}
                             placeholder={"Jumlah Pakan"}
                             onChange={(e) => {
-                                setAddingDailyReport((pre) => {
+                                setAddingVaccination((pre) => {
                                     return {
                                         ...pre,
                                         feedQuantity: e.target.value,
@@ -404,10 +514,10 @@ export default function DetailReportContent() {
                         <Label forInput={"death"}>Death</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingDailyReport?.death}
+                            value={addingVaccination?.death}
                             placeholder={"Death"}
                             onChange={(e) => {
-                                setAddingDailyReport((pre) => {
+                                setAddingVaccination((pre) => {
                                     return { ...pre, death: e.target.value };
                                 });
                             }}
@@ -417,7 +527,7 @@ export default function DetailReportContent() {
                             className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
                             placeholder={"Usage Time"}
                             onSelect={(value) => {
-                                setAddingDailyReport((pre) => {
+                                setAddingVaccination((pre) => {
                                     return { ...pre, usageTime: value };
                                 });
                             }}
@@ -427,13 +537,13 @@ export default function DetailReportContent() {
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                 value="pagi"
                             >
-                                Pagi
+                                Morning
                             </Option>
                             <Option
                                 className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                 value="sore"
                             >
-                                Sore
+                                Afternoon
                             </Option>
                         </Select>
                         <div className="flex justify-center gap-2 mt-6">
@@ -458,6 +568,28 @@ export default function DetailReportContent() {
                     </form>
                 </Modal>
 
+                <Modal
+                    width={700}
+                    className="p-0 -my-10 overflow-hidden rounded-xl "
+                    visible={isDetail}
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Detail Report
+                        </div>,
+                    ]}
+                    onCancel={() => {
+                        resetDetail();
+                    }}
+                    footer={null}
+                >
+                    <Table
+                        bordered={true}
+                        columns={columnDetail}
+                        dataSource={detailReport}
+                        pagination={false}
+                    ></Table>
+                </Modal>
+
                 {/* Edit Report */}
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
@@ -475,9 +607,9 @@ export default function DetailReportContent() {
                     <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingDailyReport?.feedQuantity}
+                        value={editingVaccination?.feedQuantity}
                         onChange={(e) => {
-                            setEditingDailyReport((pre) => {
+                            setEditingVaccination((pre) => {
                                 return {
                                     ...pre,
                                     feedQuantity: e.target.value,
@@ -488,16 +620,16 @@ export default function DetailReportContent() {
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={`Feed Quantity Recommendation : ${(
-                            editingDailyReport?.feedQuantityRecomendation / 2
+                            editingVaccination?.feedQuantityRecomendation / 2
                         ).toFixed(1)} Kg`}
                         disabled={true}
                     />
                     <Label forInput={"death"}>Death</Label>
                     <Input
                         className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingDailyReport?.death}
+                        value={editingVaccination?.death}
                         onChange={(e) => {
-                            setEditingDailyReport((pre) => {
+                            setEditingVaccination((pre) => {
                                 return { ...pre, death: e.target.value };
                             });
                         }}

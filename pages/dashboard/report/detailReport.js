@@ -22,7 +22,6 @@ export default function detailReport() {
     }, []);
     return (
         <div>
-            <ProfileMenu/>
             <DetailReportContent />
         </div>
     );

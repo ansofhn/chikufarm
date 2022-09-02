@@ -3,7 +3,7 @@ import Head from "next/head";
 import ProfileMenu from "../components/ProfileMenu";
 import SideNavbar from "../components/SideNavbar";
 
-export default function DashboardLayout({ title, children }) {
+export default function SettingLayout({ title, children }) {
     return (
         <div className="h-screen bg-gray-200">
             <div className="p-5 bg-gray-200">
@@ -12,7 +12,6 @@ export default function DashboardLayout({ title, children }) {
                 </Head>
                 <div>
                     <SideNavbar />
-                    <ProfileMenu />
                     {children}
                 </div>
             </div>

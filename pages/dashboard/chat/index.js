@@ -24,8 +24,6 @@ export default function chat() {
     
     return (
         <div>
-            <ProfileMenu />
-            <SideNavbar />
             <Chat />
         </div>
     );

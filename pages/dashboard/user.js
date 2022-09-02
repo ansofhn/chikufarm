@@ -22,7 +22,6 @@ export default function user() {
     }, []);
     return (
         <div>
-            <ProfileMenu/>
             <UserContent />
         </div>
     );

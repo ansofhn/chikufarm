@@ -22,7 +22,6 @@ export default function kandang() {
     }, []);
     return (
         <div>
-            <ProfileMenu/>
             <KandangContent />
         </div>
     );

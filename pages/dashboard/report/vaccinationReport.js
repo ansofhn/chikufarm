@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import PakanContent from "../../components/content/PakanContent";
-import ProfileMenu from "../../components/ProfileMenu";
-import SideNavbar from "../../components/SideNavbar";
-import DashboardLayout from "../../layouts/DashboardLayout";
+import ReportContent from "../../../components/content/ReportContent";
+import ProfileMenu from "../../../components/ProfileMenu";
+import SideNavbar from "../../../components/SideNavbar";
+import DashboardLayout from "../../../layouts/DashboardLayout";
 import { useRouter } from "next/router";
+import VaccinationReportContent from "../../../components/content/VaccinationReportContent";
 
-export default function pakan() {
+export default function vaccinationReport() {
     const router = useRouter();
     const CheckToken = () => {
         try {
@@ -22,9 +23,9 @@ export default function pakan() {
     }, []);
     return (
         <div>
-            <PakanContent />
+            <VaccinationReportContent />
         </div>
     );
 }
 
-pakan.getLayout = (page) => <DashboardLayout title="Pakan" children={page} />;
+vaccinationReport.getLayout = (page) => <DashboardLayout title="Report" children={page} />;

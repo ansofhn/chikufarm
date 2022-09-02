@@ -24,7 +24,6 @@ export default function dashboard() {
 
     return (
         <>
-            <ProfileMenu/>
             <DashboardContent />
         </>
     );

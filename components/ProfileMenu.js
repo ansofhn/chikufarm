@@ -157,7 +157,7 @@ export default function ProfileMenu() {
                                                 "block px-4 py-2 w-full text-sm text-left"
                                             )}
                                         >
-                                            Sign out
+                                            Logout
                                         </button>
                                     )}
                                 </Menu.Item>

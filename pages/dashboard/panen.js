@@ -22,7 +22,6 @@ export default function panen() {
     }, []);
     return (
         <div>
-            <ProfileMenu/>
             <HarvestContent />
         </div>
     );

@@ -21,7 +21,6 @@ export default function vaccine() {
     }, []);
     return (
         <div>
-            <ProfileMenu/>
             <VaccineContent/>
         </div>
     );

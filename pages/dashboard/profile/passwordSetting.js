@@ -1,7 +1,6 @@
 import React from "react";
 import PasswordSetting from "../../../components/content/PasswordSetting";
-import SideNavbar from "../../../components/SideNavbar";
-import DashboardLayout from "../../../layouts/DashboardLayout";
+import SettingLayout from "../../../layouts/SettingLayout";
 
 export default function passwordSetting() {
     return (
@@ -12,5 +11,5 @@ export default function passwordSetting() {
 }
 
 passwordSetting.getLayout = (page) => (
-    <DashboardLayout title="Password Setting" children={page} />
+    <SettingLayout title="Password Setting" children={page} />
 );
