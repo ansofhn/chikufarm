@@ -245,7 +245,7 @@ export default function TernakContent() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 Farm Data / All
             </div>
@@ -262,7 +262,7 @@ export default function TernakContent() {
                         }}
                     />
                     <Button
-                        className="flex gap-2 items-center px-4 py-3 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex items-center gap-2 px-4 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddFarm}
                     >
                         Add Farm
@@ -285,9 +285,9 @@ export default function TernakContent() {
 
                 {/* Add Ternak */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-xl"
+                    className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add New Farm
                         </div>,
                     ]}
@@ -336,7 +336,7 @@ export default function TernakContent() {
                         />
                         <Label forInput={"breed"}>Farm Category</Label>
                         <Select
-                            className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder={"Choose category"}
                             onSelect={(value) => {
                                 setAddingFarm((pre) => {
@@ -388,9 +388,9 @@ export default function TernakContent() {
 
                 {/* Edit Ternak */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-xl"
+                    className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Farm
                         </div>,
                     ]}
@@ -432,7 +432,7 @@ export default function TernakContent() {
                     />
                     <Label forInput={"breed"}>Farm Category</Label>
                     <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingFarm?.breed.breedType}
                         onSelect={(value) => {
                             setEditingFarm((pre) => {

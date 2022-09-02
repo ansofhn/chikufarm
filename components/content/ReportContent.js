@@ -202,6 +202,22 @@ export default function ReportContent() {
             },
         },
         {
+            title: "Farm Name",
+            align: "center",
+            dataIndex: "farm",
+            render: (farm) => {
+                return farm.farmName
+            },
+        },
+        {
+            title: "Feed Name",
+            align: "center",
+            dataIndex: "masterFeed",
+            render: (masterFeed) => {
+                return masterFeed.feedName
+            },
+        },
+        {
             title: "Population",
             dataIndex: "populationUpdate",
             align: "center",
@@ -224,13 +240,13 @@ export default function ReportContent() {
                     render: (dailyCoop) => {
                         if (dailyCoop.length >= 1) {
                             return (
-                                <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
                                     given
                                 </div>
                             );
                         } else {
                             return (
-                                <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
                                     Not given
                                 </div>
                             );
@@ -245,13 +261,13 @@ export default function ReportContent() {
                     render: (dailyCoop) => {
                         if (dailyCoop.length >= 2) {
                             return (
-                                <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
                                     given
                                 </div>
                             );
                         } else {
                             return (
-                                <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
+                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
                                     Not given
                                 </div>
                             );
@@ -294,13 +310,13 @@ export default function ReportContent() {
             render: (usageTime) => {
                 if (usageTime == "pagi") {
                     return (
-                        <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
+                        <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
                             Morning
                         </div>
                     );
                 } else {
                     return (
-                        <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
+                        <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
                             Afternoon
                         </div>
                     );
@@ -390,12 +406,12 @@ export default function ReportContent() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 Daily Report / All
             </div>
             <div className="p-10 bg-white rounded-xl">
-                <div className="flex justify-between mb-5 pb-5 border-b border-gray-200">
+                <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <SearchReport
                         onChangeSearch={(e) => {
                             setSearch(e.target.value);
@@ -407,7 +423,7 @@ export default function ReportContent() {
                         }}
                     />
                     <Button
-                        className="transition duration-300 text-semibold rounded-md items-center gap-2 flex px-4 py-3 bg-maroon text-cream border-none hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex items-center gap-2 px-4 py-3 transition duration-300 border-none rounded-md text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddReport}
                     >
                         Create Report
@@ -430,7 +446,7 @@ export default function ReportContent() {
 
                 {/* Add Report */}
                 <Modal
-                    className="rounded-xl overflow-hidden p-0 -my-20"
+                    className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Create Report
@@ -481,7 +497,7 @@ export default function ReportContent() {
                             }}
                         />
                         <Input
-                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor "
                             value={`Feed Quantity Recommendation : ${(
                                 ((feedRecomend / 1000) * totalPopulation) /
                                 2
@@ -489,13 +505,13 @@ export default function ReportContent() {
                             disabled={true}
                         />
                         <Input
-                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor "
                             value={`Feed Name : ${feedName}`}
                             disabled={true}
                         />
                         <Label forInput={"death"}>Death</Label>
                         <Input
-                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingReport?.death}
                             placeholder={"Death"}
                             onChange={(e) => {
@@ -506,7 +522,7 @@ export default function ReportContent() {
                         />
                         <Label forInput={"usageTime"}>Usage Time</Label>
                         <Select
-                            className=" w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
                             placeholder={"Usage Time"}
                             onSelect={(value) => {
                                 setAddingReport((pre) => {
@@ -574,7 +590,7 @@ export default function ReportContent() {
 
                 {/* Edit Report */}
                 <Modal
-                    className="rounded-xl overflow-hidden p-0"
+                    className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Report
@@ -588,7 +604,7 @@ export default function ReportContent() {
                 >
                     <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingReport?.feedQuantity}
                         onChange={(e) => {
                             setEditingReport((pre) => {
@@ -600,7 +616,7 @@ export default function ReportContent() {
                         }}
                     />
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={`Feed Quantity Recommendation : ${(
                             editingReport?.feedQuantityRecomendation / 2
                         ).toFixed(1)} Kg`}
@@ -608,7 +624,7 @@ export default function ReportContent() {
                     />
                     <Label forInput={"death"}>Death</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingReport?.death}
                         onChange={(e) => {
                             setEditingReport((pre) => {

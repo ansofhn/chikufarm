@@ -60,7 +60,7 @@ export default function ProfileMenu() {
     }, []);
 
     return (
-        <div className="flex justify-end my-4 ml-72 md:mx-10 text-textColor">
+        <div className="flex justify-end my-4 ml-72 md:mx-10 text-textColor 2xl:mx-6">
             <Menu as="div" className="relative inline-block text-left">
                 <div>
                     <Menu.Button className="inline-flex justify-center px-2.5 py-2.5 mr-2 w-full text-sm font-medium bg-white rounded-lg shadow-sm text-textColor focus:outline-none">

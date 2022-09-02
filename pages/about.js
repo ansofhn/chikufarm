@@ -8,70 +8,74 @@ export default function about() {
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">
-                    <div className="grid grid-cols-2 p-2 gap-4 mx-20 my-32 bg-white">
+                    <div className="grid grid-cols-2 gap-4 p-2 mx-20 my-32 bg-white">
                         <div className="p-2">
-                            <h3 className="font-bold text-3xl text-textColor">
+                            <h3 className="text-3xl font-bold text-textColor">
                                 Chikufarm Platform
                             </h3>
                             <p className="mb-14">
                                 Your daily management for best investment
                             </p>
                         </div>
-                        <div className="bg-gray-100 pb-96 rounded-lg col-start-1 p-8">
-                            <h3 className="font-bold text-xl mb-2 text-textColor">
+                        <div className="col-start-1 p-8 bg-gray-100 rounded-lg pb-96">
+                            <h3 className="mb-2 text-xl font-bold text-textColor">
                                 What we do
                             </h3>
                             <p className="mb-4 text-sm">
-                                Sunt ut pariatur labore anim ut mollit.Est
-                                ullamco pariatur aliquip officia adipisicing
-                                labore ea non laborum veniam ut.
+                                We make farm management system services,
+                                especially chickens and ducks. management is
+                                carried out with proven research and can improve
+                                quality and quantity as well as increase or
+                                maximize profits.
                             </p>
                             <p>
-                                Laboris voluptate culpa ea minim sit
-                                reprehenderit dolore in ut.Ad esse cillum id
-                                est.Et voluptate ut nulla sunt sint cupidatat
-                                magna veniam laborum officia in cillum.
+                                The service we create will manage daily report
+                                data and then feed recommendations, a good
+                                harvest system, to vaccination schedules and
+                                also recommendations ranging from types to how
+                                to use them.
                             </p>
                         </div>
-                        <div className="bg-cream rounded-lg p-8">
-                            <h3 className="font-bold text-xl mb-2 text-textColor">
+                        <div className="p-8 rounded-lg bg-cream">
+                            <h3 className="mb-2 text-xl font-bold text-textColor">
                                 Our vision
                             </h3>
                             <p className="mb-4">
-                                Make everyone can farming as easy as it can compared to others. 
-                                Lets Just Farm
+                                Our vision is to make it easier for poultry
+                                farmers and also to improve people's welfare by
+                                improving quality at competitive prices.
+                            </p>
+                            <p>Everyone can farm easily as easy as it</p>
+                            <p className="mt-4 font-medium text-md">
+                                "Let's Just Farm"
                             </p>
                         </div>
-                        <div className="bg-softBrown rounded-lg p-8">
-                            <h3 className="font-bold text-xl mb-2 text-textColor">
+                        <div className="p-8 rounded-lg bg-softBrown">
+                            <h3 className="mb-2 text-xl font-bold text-textColor">
                                 Who we serve
                             </h3>
                             <p className="mb-4">
-                                Sunt ut pariatur labore anim ut mollit.Est
-                                ullamco pariatur aliquip officia adipisicing
-                                labore ea non laborum veniam ut.
+                                We offer many features that are needed in
+                                today's livestock world, which are tested and
+                                comply with international standards.
                             </p>
                             <p className="mb-4">
-                                Laboris voluptate culpa ea minim sit
-                                reprehenderit dolore in ut.Ad esse cillum id
-                                est.Et voluptate ut nulla sunt sint cupidatat
-                                magna veniam laborum officia in cillum.
+                                Live reports with statistics, daily reports,
+                                feed management, coop management, livestock
+                                management, harvest system, to vaccinations.
                             </p>
                         </div>
-                        <div className="bg-softGrey rounded-lg p-8">
-                            <h3 className="font-bold text-xl mb-2 text-textColor">
+                        <div className="p-8 rounded-lg bg-softGrey">
+                            <h3 className="mb-2 text-xl font-bold text-textColor">
                                 Going global
                             </h3>
                             <p className="mb-4">
-                                Sunt ut pariatur labore anim ut mollit.Est
-                                ullamco pariatur aliquip officia adipisicing
-                                labore ea non laborum veniam ut.
+                                Together with chikufarm, the farm management
+                                system globally.
                             </p>
                             <p className="mb-4">
-                                Laboris voluptate culpa ea minim sit
-                                reprehenderit dolore in ut.Ad esse cillum id
-                                est.Et voluptate ut nulla sunt sint cupidatat
-                                magna veniam laborum officia in cillum.
+                                For global news, announcements, and more on our
+                                contact admin, visit our contact page.
                             </p>
                         </div>
                     </div>

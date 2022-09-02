@@ -618,9 +618,9 @@ export default function VaccineContent() {
         }
     };
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
-                Vaccination Data / All
+                Vaccine Data / All
             </div>
 
             <div className="p-10 bg-white rounded-xl">
@@ -669,7 +669,7 @@ export default function VaccineContent() {
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add New Vaccine
                         </div>,
                     ]}
@@ -721,7 +721,7 @@ export default function VaccineContent() {
                         />
                         <Label forInput={"application"}>Application</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose application"
                             onSelect={(value) => {
                                 setAddingVaccinate((pre) => {
@@ -776,7 +776,7 @@ export default function VaccineContent() {
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Vaccine
                         </div>,
                     ]}
@@ -818,7 +818,7 @@ export default function VaccineContent() {
                     />
                     <Label forInput={"application"}>Application</Label>
                     <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={checkApply(editingVaccinate?.application)}
                         onSelect={(value) => {
                             setEditingVaccinate((pre) => {
@@ -872,7 +872,7 @@ export default function VaccineContent() {
                     className="p-0 -my-20 overflow-hidden rounded-xl "
                     visible={isHistory}
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             {vaccineName} History
                         </div>,
                     ]}
@@ -896,7 +896,7 @@ export default function VaccineContent() {
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add Vaccine History
                         </div>,
                     ]}
@@ -923,7 +923,7 @@ export default function VaccineContent() {
                         />
                         <Label forInput={"vaccinName"}>Vaccine Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Vaccine"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
@@ -946,7 +946,7 @@ export default function VaccineContent() {
                         </Select>
                         <Label forInput={"historyStatus"}>Status</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Status"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
@@ -995,7 +995,7 @@ export default function VaccineContent() {
                     width={400}
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Vaccine Quantity
                         </div>,
                     ]}
@@ -1047,14 +1047,14 @@ export default function VaccineContent() {
                     <div className="pb-4 text-lg font-bold text-textColor">
                         Vaccine Recommendation
                     </div>
-                    <div className="gap-2 flex">
+                    <div className="flex gap-2">
                         <FilterFeedRecommend
                             onChangeSelect={(value) => {
                                 filterRecommendation(value);
                             }}
                         />
                         <Button
-                            className="flex items-center justify-center self-center gap-2 px-9 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center self-center justify-center gap-2 py-3 font-medium transition duration-300 border-none rounded-md px-9 bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddRecomendation}
                         >
                             Create
@@ -1080,7 +1080,7 @@ export default function VaccineContent() {
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add Vaccine Recommendation
                         </div>,
                     ]}
@@ -1107,7 +1107,7 @@ export default function VaccineContent() {
                         />
                         <Label forInput={"vaccineName"}>Vaccine Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Vaccine Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
@@ -1129,7 +1129,7 @@ export default function VaccineContent() {
                         </Select>
                         <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
@@ -1190,7 +1190,7 @@ export default function VaccineContent() {
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Vaccine Recommendation
                         </div>,
                     ]}
@@ -1215,7 +1215,7 @@ export default function VaccineContent() {
                         />
                         <Label forInput={"vaccineName"}>Vaccine Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder={editingRecommend?.vaccin.vaccinName}
                             onSelect={(value) => {
                                 setEditingRecommend((pre) => {
@@ -1237,7 +1237,7 @@ export default function VaccineContent() {
                         </Select>
                         <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder={editingRecommend?.farm.farmName}
                             onSelect={(value) => {
                                 setEditingRecommend((pre) => {

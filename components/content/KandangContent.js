@@ -329,7 +329,7 @@ export default function KandangContent() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 Coop Data / All
             </div>
@@ -348,14 +348,14 @@ export default function KandangContent() {
                     />
                     <div className="flex gap-2">
                         <Button
-                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onCreatePanen}
                         >
                             Coop Harvest
                         </Button>
 
                         <Button
-                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddKandang}
                         >
                             Add Coop
@@ -379,9 +379,9 @@ export default function KandangContent() {
 
                 {/* Add Coop */}
                 <Modal
-                    className="-my-16 overflow-hidden p-0 rounded-xl"
+                    className="p-0 -my-16 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add New Coop
                         </div>,
                     ]}
@@ -435,7 +435,7 @@ export default function KandangContent() {
 
                         <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
-                            className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
                                 setAddingCoop((pre) => {
@@ -457,7 +457,7 @@ export default function KandangContent() {
                         </Select>
                         <Label forInput={"farmer"}>Farmer</Label>
                         <Select
-                            className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farmer"
                             onSelect={(value) => {
                                 setAddingCoop((pre) => {
@@ -501,9 +501,9 @@ export default function KandangContent() {
 
                 {/* Edit Coop */}
                 <Modal
-                    className="overflow-hidden p-0 rounded-xl"
+                    className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Coop
                         </div>,
                     ]}
@@ -552,7 +552,7 @@ export default function KandangContent() {
                         />
                     <Label forInput={"farmer"}>Responsible Farmer</Label>
                     <Select
-                        className="mb-2 text-sm rounded-md w-2/5 border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingCoop?.user.fullName}
                         onSelect={(value) => {
                             setEditingCoop((pre) => {
@@ -595,9 +595,9 @@ export default function KandangContent() {
 
                 {/* Create Harvest */}
                 <Modal
-                    className=" -my-16 overflow-hidden p-0 rounded-xl"
+                    className="p-0 -my-16 overflow-hidden  rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Create Harvest
                         </div>,
                     ]}
@@ -610,7 +610,7 @@ export default function KandangContent() {
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose coop"
                             onSelect={(value) => {
                                 setCreatingHarvest((pre) => {

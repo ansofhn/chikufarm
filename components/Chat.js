@@ -36,7 +36,7 @@ export default function Chat() {
             div.className = "flex justify-end";
         } else {
             div.innerHTML = `<div class="font-semibold text-maroon"> ${message.sender.userName} - ${message.sender.role.roleName}</div>${message.message}`;
-            div.className = "py-2 px-4 rounded-t-lg rounded-br-lg bg-gray-100 w-fit mb-2";
+            div.className = "px-4 py-2 mb-2 bg-gray-100 rounded-t-lg rounded-br-lg w-fit";
         }
         document.getElementById("message-container").append(div);
     };
@@ -60,14 +60,14 @@ export default function Chat() {
     };
 
     return (
-        <div className="mt-6 lg:w-3/4 lg:ml-72">
+        <div className="mt-8 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div
                 id="message-container"
-                className="rounded-xl bg-white container h-[69vh] overflow-auto p-5"
+                className="rounded-xl bg-white container h-[69vh] overflow-auto p-10"
             ></div>
             <form
                 onSubmit={onChangeForm}
-                className="flex bg-white rounded-xl my-2"
+                className="flex my-2 bg-white rounded-xl"
             >
                 <Input
                     className="my-1 w-full py-2.5 px-3 text-textColor text-sm font-sans font-normal rounded-lg border-none focus:ring-0"
@@ -85,7 +85,7 @@ export default function Chat() {
                 <Button
                     onClick={onHandleSubmit}
                     type="submit"
-                    className="my-1 self-center border-none transition duration-200 cursor-pointer mx-2 rounded-lg shadow-none ring-0"
+                    className="self-center mx-2 my-1 transition duration-200 border-none rounded-lg shadow-none cursor-pointer ring-0"
                 >
                     <BiSend className="text-2xl text-maroon group-hover:text-maroon" />
                 </Button>

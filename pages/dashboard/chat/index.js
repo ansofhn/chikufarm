@@ -17,9 +17,11 @@ export default function chat() {
             console.log(error);
         }
     };
+
     useEffect(() => {
         CheckToken();
     }, []);
+    
     return (
         <div>
             <ProfileMenu />

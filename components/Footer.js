@@ -7,9 +7,9 @@ export default function Footer() {
     return (
         <>
             <footer className="text-gray-100 text-start lg:text-left bg-textColor">
-                <div className="pt-20 mr-24 text-center pb-14 md:text-left">
-                    <div className="grid grid-cols-2 gap-20">
-                        <div className="p-2 mx-auto text-sm text-center">
+                <div className="pt-20 mr-24 text-center 2xl:mx-24 pb-14 md:text-left">
+                    <div className="grid grid-cols-2 gap-20 2xl:gap-0">
+                        <div className="p-2 mx-auto text-sm text-center 2xl:ml-60">
                             <p className="mb-2">Copyright @ 2022</p>
                             <p>All rights reserved</p>
                             <div className="grid grid-cols-3 gap-2 mt-5">
@@ -69,7 +69,7 @@ export default function Footer() {
                                 </h3>
                                 <Input
                                     className={
-                                        "rounded-lg bg-gray-500 focus:ring-0 w-full transition duration-300 border-none placeholder:text-gray-100 placeholder:text-xs focus:border-none text-gray-100 text-xs p-2"
+                                        "rounded-lg bg-gray-500 focus:ring-0 w-full 2xl:w-40 transition duration-300 border-none placeholder:text-gray-100 placeholder:text-xs focus:border-none text-gray-100 text-xs p-2"
                                     }
                                     type="email"
                                     name="email"

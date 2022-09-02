@@ -95,7 +95,7 @@ export default function Login() {
             <div className="mb-6">
                 <Label forInput="username"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     name="username"
                     id="username"
                     placeholder="Username"
@@ -105,7 +105,7 @@ export default function Login() {
             <div className="mb-6">
                 <Label forInput="password"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     type="password"
                     name="password"
                     id="password"
@@ -118,7 +118,7 @@ export default function Login() {
                     type="submit"
                     onClick={onFinish}
                     className={
-                        "transition duration-300 text-semibold px-6 py-2.5 ml-1 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
+                        "transition duration-300 text-semibold px-6 py-2 ml-1 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
                     }
                 >
                     Login

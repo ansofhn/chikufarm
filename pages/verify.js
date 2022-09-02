@@ -144,7 +144,7 @@ export default function verify() {
                     <Head>
                         <title>Email Verification</title>
                     </Head>
-                    <div className="px-4 py-4 rounded-2xl">
+                    <div className="px-4 py-4 mx-auto rounded-2xl 2xl:px-28">
                         <div className="items-center p-8 text-center">
                             <h3 className="py-2 text-3xl font-bold text-textColor">
                                 Get Your Code

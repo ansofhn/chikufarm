@@ -12,14 +12,14 @@ export default function RegisterLayout({ header, title, children }) {
                 </Head>
                 {/* Login Section */}
                 <div className="w-2/5 px-12 py-40 shadow-md bg-maroon text-cream rounded-tl-2xl rounded-bl-2xl">
-                    <h2 className="mb-2 text-3xl font-sans text-cream font-bold">Dear Guest!</h2>
-                    <p className="mb-10">
+                    <h2 className="mb-2 font-sans text-3xl font-bold text-cream">Dear Guest!</h2>
+                    <p className="mb-10 2xl:mx-10">
                         Lets have a look our farm management system
                     </p>
                     <Link href={"/login"}>
                         <Button
                             className={
-                                "transition duration-300 border-2 px-6 py-2.5 border-cream text-cream hover:bg-cream hover:text-maroon"
+                                "transition duration-300 border-2 px-6 py-2 border-cream text-cream hover:bg-cream hover:text-maroon"
                             }
                         >
                             Login

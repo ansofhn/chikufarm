@@ -298,7 +298,7 @@ export default function UserContent() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 User Data / All
             </div>

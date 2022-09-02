@@ -32,8 +32,8 @@ export default function Stats() {
     };
 
     return (
-        <div className="grid grid-cols-4 gap-10 mx-auto my-40 w-4/5">
-            <div className="container flex gap-2 ml-10">
+        <div className="grid w-4/5 grid-cols-4 gap-10 mx-auto my-40">
+            <div className="container flex gap-2 ml-10 2xl:ml-24">
                 <div className="p-2">
                     <Image src={Line} />
                 </div>

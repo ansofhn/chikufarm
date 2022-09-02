@@ -102,7 +102,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="fullname"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     name="fullname"
                     id="fullname"
                     placeholder="Fullname"
@@ -112,7 +112,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="username"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     name="username"
                     id="username"
                     placeholder="Username"
@@ -122,7 +122,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="email"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     type="email"
                     name="email"
                     id="email"
@@ -133,7 +133,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="phone"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     name="phone"
                     id="phone"
                     placeholder="Phone"
@@ -143,7 +143,7 @@ export default function Register() {
             <div className="mb-6">
                 <Label forInput="password"></Label>
                 <Input
-                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2 px-4 text-sm border-none focus:ring-0"
+                    className="rounded-lg text-textColor shadow-sm shadow-shadowColor w-full py-2.5 px-4 text-sm border-none focus:ring-0"
                     type="password"
                     name="password"
                     id="password"
@@ -156,7 +156,7 @@ export default function Register() {
                 type="submit"
                 onClick={onFinish}
                 className={
-                    "transition duration-300 w-full font-semibold px-6 py-2.5 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
+                    "transition duration-300 w-full font-semibold px-6 py-2 border-2 border-maroon text-maroon hover:bg-maroon hover:text-cream"
                 }
             >
                 Sign Up

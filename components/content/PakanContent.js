@@ -615,7 +615,7 @@ export default function PakanContent() {
 
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 Feed Data / All
             </div>
@@ -666,7 +666,7 @@ export default function PakanContent() {
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add New Feed
                         </div>,
                     ]}
@@ -718,7 +718,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"feedType"}>Feed Type</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose feed type"
                             onSelect={(value) => {
                                 setAddingFeed((pre) => {
@@ -742,7 +742,7 @@ export default function PakanContent() {
                         </Select>
                         <Label forInput={"categoryTernak"}>Farm Category</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Farm Category"
                             onSelect={(value) => {
                                 setAddingFeed((pre) => {
@@ -796,7 +796,7 @@ export default function PakanContent() {
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Feed
                             <div className="text-xs font-medium">{editingFeed?.feedName}</div>
                         </div>,
@@ -819,7 +819,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"feedType"}>Feed Type</Label>
                     <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={editingFeed?.feedType}
                         onSelect={(value) => {
                             setEditingFeed((pre) => {
@@ -853,7 +853,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"breed"}>Farm Category</Label>
                     <Select
-                        className="w-1/3 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-1/3 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingFeed?.breed.breedType}
                         onSelect={(value) => {
                             setEditingFeed((pre) => {
@@ -907,7 +907,7 @@ export default function PakanContent() {
                     className="p-0 -my-20 overflow-hidden rounded-xl "
                     visible={isDetail}
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             {feedName} History
                         </div>,
                     ]}
@@ -931,7 +931,7 @@ export default function PakanContent() {
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add Feed History
                         </div>,
                     ]}
@@ -958,7 +958,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"historyStatus"}>Status</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Status"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
@@ -982,7 +982,7 @@ export default function PakanContent() {
                         </Select>
                         <Label forInput={"feedName"}>Feed Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
                                 setAddingHistory((pre) => {
@@ -1029,7 +1029,7 @@ export default function PakanContent() {
                     width={400}
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Feed Quantity
                         </div>,
                     ]}
@@ -1081,14 +1081,14 @@ export default function PakanContent() {
                     <div className="pb-4 text-lg font-bold text-textColor">
                         Feed Recommendation
                     </div>
-                    <div className="gap-2 flex"> 
+                    <div className="flex gap-2"> 
                         <FilterFeedRecommend
                             onChangeSelect={(value) => {
                                 filterRecommendation(value);
                             }}
                         />
                         <Button
-                            className="flex items-center justify-center self-center gap-2 px-9 py-3 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center self-center justify-center gap-2 py-3 font-medium transition duration-300 border-none rounded-md px-9 bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onAddRecomendation}
                         >
                             Create
@@ -1114,7 +1114,7 @@ export default function PakanContent() {
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Add Feed Recommendation
                         </div>,
                     ]}
@@ -1155,7 +1155,7 @@ export default function PakanContent() {
                         />
                         <Label forInput={"farmName"}>Farm Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Farm Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
@@ -1177,7 +1177,7 @@ export default function PakanContent() {
                         </Select>
                         <Label forInput={"feedName"}>Feed Name</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose Feed Name"
                             onSelect={(value) => {
                                 setAddingRecommend((pre) => {
@@ -1223,7 +1223,7 @@ export default function PakanContent() {
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Feed Recommendation
                         </div>,
                     ]}
@@ -1261,7 +1261,7 @@ export default function PakanContent() {
                     />
                     <Label forInput={"farmName"}>Farm Name</Label>
                     <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingRecommend?.farm.farmName}
                         onSelect={(value) => {
                             setEditingRecommend((pre) => {
@@ -1283,7 +1283,7 @@ export default function PakanContent() {
                     </Select>
                     <Label forInput={"feedName"}>Feed Name</Label>
                     <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         defaultValue={editingRecommend?.masterFeed.feedName}
                         onSelect={(value) => {
                             setEditingRecommend((pre) => {

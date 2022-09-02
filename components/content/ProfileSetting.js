@@ -133,7 +133,7 @@ export default function ProfileSetting() {
     };
 
     return (
-        <div className="lg:w-3/4 lg:ml-72">
+        <div className="lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 mb-4 text-lg font-bold text-textColor">
                 Account Setting
                 <p className="text-sm font-normal text-textColor">
@@ -143,34 +143,34 @@ export default function ProfileSetting() {
 
             <div className="p-10 bg-white rounded-xl">
                 <div className="grid grid-cols-4 gap-4">
-                    <div className="grid grid-rows-2 h-48">
+                    <div className="grid h-48 grid-rows-2">
                         <Link href={"/dashboard/profile/accountSetting"}>
-                            <Button className="mr-4 text-textColor font-semibold">
-                                <IdcardOutlined className="text-center text-xl mr-4" />
+                            <Button className="mr-4 font-semibold text-textColor">
+                                <IdcardOutlined className="mr-4 text-xl text-center" />
                                 Account
                             </Button>
                         </Link>
                         <Link href={"/dashboard/profile/passwordSetting"}>
-                            <Button className="mr-4 text-textColor font-semibold">
-                                <LockOutlined className="text-center text-xl mr-4" />
+                            <Button className="mr-4 font-semibold text-textColor">
+                                <LockOutlined className="mr-4 text-xl text-center" />
                                 Password
                             </Button>
                         </Link>
                     </div>
                     <div className="col-span-3 p-5 border-l border-shadowColor">
-                        <div className="ml-6 text-lg text-textColor font-bold">
+                        <div className="ml-6 text-lg font-bold text-textColor">
                             General Info
                         </div>
-                        <div className="ml-6 my-4">
+                        <div className="my-4 ml-6">
                             {checkImage()}
                             <UploadImage onChangeImage={handleChangeImage} />
                         </div>
 
-                        <div className="ml-6 mt-10 grid-cols-2 grid gap-4">
+                        <div className="grid grid-cols-2 gap-4 mt-10 ml-6">
                             <div className="mb-4">
                                 <Label forInput="fullname">Fullname</Label>
                                 <Input
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
+                                    className="w-full px-4 py-2 text-sm rounded-lg text-textColor border-cream focus:border-maroon focus:ring-0"
                                     defaultValue={dataUser.fullName}
                                     onChange={(e) => {
                                         setEditingUser((pre) => {
@@ -185,7 +185,7 @@ export default function ProfileSetting() {
                             <div className="mb-4">
                                 <Label forInput="username">Username</Label>
                                 <Input
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
+                                    className="w-full px-4 py-2 text-sm rounded-lg text-textColor border-cream focus:border-maroon focus:ring-0"
                                     defaultValue={dataUser.userName}
                                     onChange={(e) => {
                                         setEditingUser((pre) => {
@@ -200,7 +200,7 @@ export default function ProfileSetting() {
                             <div className="mb-4">
                                 <Label forInput="email">Email</Label>
                                 <Input
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
+                                    className="w-full px-4 py-2 text-sm rounded-lg text-textColor border-cream focus:border-maroon focus:ring-0"
                                     type="email"
                                     defaultValue={dataUser.email}
                                     onChange={(e) => {
@@ -216,7 +216,7 @@ export default function ProfileSetting() {
                             <div className="mb-4">
                                 <Label forInput="phone">Phone</Label>
                                 <Input
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
+                                    className="w-full px-4 py-2 text-sm rounded-lg text-textColor border-cream focus:border-maroon focus:ring-0"
                                     defaultValue={dataUser.phone}
                                     onChange={(e) => {
                                         setEditingUser((pre) => {
@@ -228,9 +228,9 @@ export default function ProfileSetting() {
                                     }}
                                 />
                             </div>
-                            <div className="mt-5 col-span-2">
+                            <div className="col-span-2 mt-5">
                                 <Button
-                                    className="w-full rounded-lg bg-cream text-maroon text-sm font-semibold"
+                                    className="w-full text-sm font-semibold rounded-lg bg-cream text-maroon"
                                     key="submit"
                                     type="submit"
                                     onClick={onFinish}

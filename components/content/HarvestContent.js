@@ -313,7 +313,7 @@ export default function HarvestContent() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-6 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
@@ -326,7 +326,7 @@ export default function HarvestContent() {
                             }
                         >
                             <Button
-                                className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                                className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                                 onClick={getExcel}
                             >
                                 Export
@@ -334,7 +334,7 @@ export default function HarvestContent() {
                         </Link>
 
                         <Button
-                            className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                            className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onCreatePanen}
                         >
                             Coop Harvest
@@ -351,9 +351,9 @@ export default function HarvestContent() {
 
                 {/* Create Harvest */}
                 <Modal
-                    className=" -my-16 overflow-hidden p-0 rounded-xl"
+                    className="p-0 -my-16 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Create Harvest
                         </div>,
                     ]}
@@ -366,7 +366,7 @@ export default function HarvestContent() {
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             placeholder="Choose coop"
                             onSelect={(value) => {
                                 setCreatingHarvest((pre) => {
@@ -448,9 +448,9 @@ export default function HarvestContent() {
 
                 {/* Edit Harvest */}
                 <Modal
-                    className=" -my-16 overflow-hidden p-0 rounded-xl"
+                    className="p-0 -my-16 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Harvest Data
                         </div>,
                     ]}
@@ -462,7 +462,7 @@ export default function HarvestContent() {
                 >
                     <Label forInput={"coopNumber"}>Coop Number</Label>
                     <Select
-                        className="w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         placeholder={`Coop ${editingHarvest?.coop.coopNumber}`}
                         onSelect={(value) => {
                             setEditingHarvest((pre) => {
@@ -547,7 +547,7 @@ export default function HarvestContent() {
                     width={700}
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
-                        <div className="font-semibold my-1 mx-1 font-montserrat text-textColor">
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Harvest Detail
                         </div>,
                     ]}

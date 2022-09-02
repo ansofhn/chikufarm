@@ -19,16 +19,16 @@ export default function LoginLayout({ header, title, children }) {
                 </div>
                 {/* Sign Up Section */}
                 <div className="w-2/5 px-12 shadow-md bg-maroon text-cream rounded-tr-2xl rounded-br-2xl py-36">
-                    <h2 className="mb-2 text-3xl font-sans text-cream font-bold">
+                    <h2 className="mb-2 font-sans text-3xl font-bold text-cream">
                         Let's be Partner!
                     </h2>
-                    <p className="mb-10">
+                    <p className="mb-10 2xl:mx-10">
                         Create a guest account and start journey with us
                     </p>
                     <Link href={"/register"}>
                         <Button
                             className={
-                                "transition duration-300 border-2 px-6 py-2.5 border-cream text-cream hover:bg-cream hover:text-maroon"
+                                "transition duration-300 border-2 px-6 py-2 border-cream text-cream hover:bg-cream hover:text-maroon"
                             }
                         >
                             Sign Up

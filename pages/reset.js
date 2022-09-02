@@ -128,16 +128,16 @@ export default function reset() {
     return (
         <form onSubmit={onChangeForm} method="POST">
             <div className="flex flex-col items-center justify-center w-full antialiased tracking-tighter text-center md:bg-gray-100 md:min-h-screen">
-                <div className="flex items-center w-3/6 max-w-4xl shadow-md shadow-shadowColor bg-white rounded-xl">
+                <div className="flex items-center w-3/6 max-w-4xl bg-white shadow-md shadow-shadowColor rounded-xl">
                     <Head>
                         <title>Reset Password</title>
                     </Head>
-                    <div className="grid grid-cols-2 py-4 px-4 rounded-2xl">
-                        <div className="items-center p-2 my-auto mx-auto">
+                    <div className="grid grid-cols-2 px-4 py-4 my-auto rounded-2xl">
+                        <div className="items-center pt-4 mx-auto my-auto">
                             <Image src={Reset} />
                         </div>
-                        <div className="p-8 items-center text-left">
-                            <h3 className="text-2xl py-2 font-bold text-textColor">
+                        <div className="items-center p-8 my-auto text-left 2xl:mx-4">
+                            <h3 className="py-2 text-2xl font-bold text-textColor">
                                 Enter New Password
                             </h3>
                             <p className="text-sm font-medium text-textColor">
@@ -154,7 +154,7 @@ export default function reset() {
                                 <Input
                                     type="password"
                                     id="password"
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-2 focus:border-cream focus:ring-0"
+                                    className="w-full px-4 py-2 text-sm rounded-lg text-textColor border-cream focus:border-2 focus:border-cream focus:ring-0"
                                     placeholder="••••••••"
                                     onChange={(e) => {
                                         setPassword((pre) => {
@@ -177,7 +177,7 @@ export default function reset() {
                                 <Input
                                     type="password"
                                     id="confirm_password"
-                                    className="rounded-lg text-textColor w-full py-2 px-4 text-sm border-cream focus:border-maroon focus:ring-0"
+                                    className="w-full px-4 py-2 text-sm rounded-lg text-textColor border-cream focus:border-maroon focus:ring-0"
                                     placeholder="••••••••"
                                     onChange={(e) => {
                                         setPassword((pre) => {

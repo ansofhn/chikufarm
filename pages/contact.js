@@ -1,5 +1,4 @@
 import React from "react";
-import { MdOutlineWavingHand } from "react-icons/md";
 import { Select } from "antd";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
@@ -15,8 +14,8 @@ export default function contact() {
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">
-                    <form className="grid grid-cols-2 p-2 gap-8 mx-40 my-32 bg-white">
-                        <div className="mb-6 text-4xl text-textColor font-semibold">
+                    <form className="grid grid-cols-2 gap-8 p-2 mx-40 my-32 bg-white">
+                        <div className="mb-6 text-4xl font-semibold text-textColor 2xl:mr-24">
                             Love to hear from you, Get in touch
                         </div>
                         <div className="col-start-1">
@@ -48,7 +47,7 @@ export default function contact() {
                         <div>
                             <Label forInput="email">What your role</Label>
                             <Select
-                                className="text-sm p-1 rounded-md w-full bg-gray-100 border-none focus:ring-0"
+                                className="w-full p-1 text-sm bg-gray-100 border-none rounded-md focus:ring-0"
                                 placeholder="Choose Your Role"
                                 onSelect={""}
                                 bordered={false}
@@ -85,7 +84,7 @@ export default function contact() {
                         <div>
                             <Button
                                 type="submit"
-                                className="mt-5 transition duration-300 text-semibold px-6 py-3 rounded-md text-cream w-full bg-maroon border-none focus:ring-0"
+                                className="w-full px-6 py-3 mt-5 transition duration-300 border-none rounded-md text-semibold text-cream bg-maroon focus:ring-0"
                             >
                                 Send Message
                             </Button>

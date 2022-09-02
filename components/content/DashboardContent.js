@@ -27,14 +27,16 @@ export default function DashboardContent() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data);
                     setDataSource(res.data);
                     if (res.data.weeklyCoopPopulation == 0) {
                         setFirst(0);
                         setLast(0);
                     } else {
                         setFirst(res.data.weeklyCoopPopulation[0].population);
-                        setLast(res.data.weeklyCoopPopulation.slice(-1)[0].population);
+                        setLast(
+                            res.data.weeklyCoopPopulation.slice(-1)[0]
+                                .population
+                        );
                     }
                     setDataPedaging(res.data.populationPerBreed[0]);
                     setDataPetelur(res.data.populationPerBreed[1]);
@@ -73,16 +75,15 @@ export default function DashboardContent() {
         } else {
             return ((last - first) / all) * 100;
         }
-        
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 Dashboard / Home
             </div>
             <div className="grid grid-cols-4 gap-5 p-2">
-                <div className="w-full p-3 bg-white rounded-lg">
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
                     <div className="text-sm text-textColor">
                         Total Population
                     </div>
@@ -90,19 +91,19 @@ export default function DashboardContent() {
                         {dataSource.currentPopulation}
                     </div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-lg">
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
                     <div className="text-sm text-textColor">Total Coop</div>
                     <div className="text-lg font-bold text-textColor">
                         {dataSource.totalCoop}
                     </div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-lg">
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
                     <div className="text-sm text-textColor">Total Feed</div>
                     <div className="text-lg font-bold text-textColor">
                         {totalPakan()}
                     </div>
                 </div>
-                <div className="w-full p-3 bg-white rounded-lg">
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
                     <div className="text-sm text-textColor">Death</div>
                     <div className="text-lg font-bold text-textColor">
                         {dataSource.death}
@@ -135,16 +136,18 @@ export default function DashboardContent() {
                             {dataSource.populationStart}
                         </div>
                     </div>
-                    <div className="grid w-full h-56 col-span-2 p-2 text-sm bg-white rounded-lg text-textColor">
-                        <div className="grid w-full grid-cols-2 p-4 text-sm font-semibold bg-white rounded-lg text-textColor">
+                    <div className="grid w-full col-span-2 p-2 text-sm bg-white rounded-lg text-textColor 2xl:pr-16 2xl:pl-4 2xl:py-4">
+                        <div className="grid w-full grid-cols-2 p-4 text-sm font-semibold rounded-lg text-textColor">
                             LiveStock Category
                             <div className="col-start-1 font-semibold">
                                 <PieChartComp />
                             </div>
-                            <div className="self-center font-medium text-sm">
-                                <div className="mb-1 flex items-center justify-between mr-3">
-                                    <MinusSquareFilled className="text-maroon" />
-                                    {dataPedaging.breed}
+                            <div className="self-center text-sm font-medium">
+                                <div className="flex items-center justify-between mb-1 mr-3">
+                                    <div className="flex items-center gap-3">
+                                        <MinusSquareFilled className="text-maroon" />
+                                        {dataPedaging.breed}
+                                    </div>
                                     <span className="ml-2 text-sm font-semibold">
                                         {percentBreed(
                                             dataPedaging.population,
@@ -153,9 +156,12 @@ export default function DashboardContent() {
                                         %
                                     </span>
                                 </div>
-                                <div className="mb-1 flex items-center justify-between mr-3">
-                                    <MinusSquareFilled className="text-gray-500" />
-                                    {dataPetelur.breed}
+                                <div className="flex items-center justify-between mb-1 mr-3">
+                                    <div className="flex items-center gap-3">
+                                        <MinusSquareFilled className="text-gray-500" />
+                                        {dataPetelur.breed}
+                                    </div>
+
                                     <span className="ml-2 text-sm font-semibold">
                                         {percentBreed(
                                             dataPetelur.population,
@@ -164,9 +170,11 @@ export default function DashboardContent() {
                                         %
                                     </span>
                                 </div>
-                                <div className="mb-1 flex items-center justify-between mr-3">
-                                    <MinusSquareFilled className="text-softBrown" />
-                                    {dataAduan.breed}
+                                <div className="flex items-center justify-between mb-1 mr-3">
+                                    <div className="flex items-center gap-3">
+                                        <MinusSquareFilled className="text-softBrown" />
+                                        {dataAduan.breed}
+                                    </div>
                                     <span className="ml-2 text-sm font-semibold">
                                         {percentBreed(
                                             dataAduan.population,

@@ -17,11 +17,12 @@ export default function DetailReportContent() {
     const [feedName, setFeedName] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
+    const [totalDataReport, setTotalDataReport] = useState([]);
 
-    const getData = async () => {
+    const getData = async (page) => {
         try {
             const dailycoop = await axios
-                .get("https://chikufarm-app.herokuapp.com/api/daily-coop", {
+                .get(`https://chikufarm-app.herokuapp.com/api/daily-coop?page=${page}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "access_token"
@@ -30,6 +31,7 @@ export default function DetailReportContent() {
                 })
                 .then((res) => {
                     console.log(res.data);
+                    setTotalDataReport(res.data.meta.totalItems);
                     setDataSource(res.data.items);
                 });
 
@@ -66,7 +68,7 @@ export default function DetailReportContent() {
                     }
                 )
                 .then((res) => {
-                    getData();
+                    getData(1);
                     resetAdd();
                 });
         } catch (error) {
@@ -151,7 +153,7 @@ export default function DetailReportContent() {
     };
 
     useEffect(() => {
-        getData();
+        getData(1);
     }, []);
 
     const columns = [
@@ -201,13 +203,13 @@ export default function DetailReportContent() {
             render: (usageTime) => {
                 if (usageTime == "pagi") {
                     return (
-                        <div className="bg-cream p-2 rounded-md text-xs font-medium uppercase text-maroon">
+                        <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
                             Morning
                         </div>
                     );
                 } else {
                     return (
-                        <div className="bg-maroon p-2 rounded-md text-xs font-medium uppercase text-cream">
+                        <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
                             Afternoon
                         </div>
                     );
@@ -276,14 +278,14 @@ export default function DetailReportContent() {
     };
 
     return (
-        <div className="my-4 lg:w-3/4 lg:ml-72">
+        <div className="my-8 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
                     <div className="pb-4 text-lg font-bold text-textColor">
                         All Detail Report
                     </div>
                     <Button
-                        className="flex gap-2 items-center px-4 py-4 rounded-md border-none transition duration-300 font-medium bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
+                        className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                         onClick={onAddDaily}
                     >
                         Create Report
@@ -294,12 +296,19 @@ export default function DetailReportContent() {
                     bordered={true}
                     columns={columns}
                     dataSource={dataSource}
-                    pagination={false}
+                    pagination={{
+                        pageSize: 10,
+                        className: "pt-2",
+                        total: totalDataReport,
+                        onChange: (page) => {
+                            getData(page);
+                        },
+                    }}
                 ></Table>
 
                 {/* Add Report */}
                 <Modal
-                    className="rounded-xl overflow-hidden p-0 -my-20"
+                    className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Create Report
@@ -350,7 +359,7 @@ export default function DetailReportContent() {
                             }}
                         />
                         <Input
-                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor "
                             value={`Feed Quantity Recommendation : ${(
                                 ((feedRecomend / 1000) * totalPopulation) /
                                 2
@@ -358,13 +367,13 @@ export default function DetailReportContent() {
                             disabled={true}
                         />
                         <Input
-                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor "
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor "
                             value={`Feed Name : ${feedName}`}
                             disabled={true}
                         />
                         <Label forInput={"death"}>Death</Label>
                         <Input
-                            className="mb-2 text-sm rounded-md border-textColor  hover:border-textColor focus:ring-maroon focus:border-cream"
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingDailyReport?.death}
                             placeholder={"Death"}
                             onChange={(e) => {
@@ -375,7 +384,7 @@ export default function DetailReportContent() {
                         />
                         <Label forInput={"usageTime"}>Usage Time</Label>
                         <Select
-                            className=" w-2/5 mb-2 text-sm rounded-md border border-textColor hover:border-textColor"
+                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
                             placeholder={"Usage Time"}
                             onSelect={(value) => {
                                 setAddingDailyReport((pre) => {
@@ -421,7 +430,7 @@ export default function DetailReportContent() {
 
                 {/* Edit Report */}
                 <Modal
-                    className="rounded-xl overflow-hidden p-0"
+                    className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Report
@@ -435,7 +444,7 @@ export default function DetailReportContent() {
                 >
                     <Label forInput={"feedQuantity"}>Feed Quantity</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingDailyReport?.feedQuantity}
                         onChange={(e) => {
                             setEditingDailyReport((pre) => {
@@ -447,7 +456,7 @@ export default function DetailReportContent() {
                         }}
                     />
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor "
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
                         value={`Feed Quantity Recommendation : ${(
                             editingDailyReport?.feedQuantityRecomendation / 2
                         ).toFixed(1)} Kg`}
@@ -455,7 +464,7 @@ export default function DetailReportContent() {
                     />
                     <Label forInput={"death"}>Death</Label>
                     <Input
-                        className="rounded-lg text-sm border-textColor my-1 hover:border-textColor focus:ring-maroon focus:border-cream"
+                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                         value={editingDailyReport?.death}
                         onChange={(e) => {
                             setEditingDailyReport((pre) => {

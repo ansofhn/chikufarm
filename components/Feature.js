@@ -12,16 +12,16 @@ export default function Feature() {
             </div>
 
             <div className="self-center p-10 text-left text-textColor">
-                <div className="text-3xl font-montserrat font-bold">Our Features</div>
+                <div className="text-3xl font-bold font-montserrat">Our Features</div>
                 <div className="my-2 text-sm">
                     Specially developed to manage
                 </div>
-                <div className="mt-10 text-base font-bold">Manage Your Farm</div>
+                <div className="mt-10 text-base font-bold">Farm Management</div>
                 <div className="mt-2 text-sm">managing livestock, feed, coop</div>
-                <div className="mt-4 text-base font-bold">Make Your Daily Report</div>
+                <div className="mt-4 text-base font-bold">Daily Report System</div>
                 <div className="mt-2 text-sm">manage your daily data and report</div>
                 <div className="mt-4 text-base font-bold">Summary Data by Report</div>
-                <div className="mt-2 text-sm mb-10">see summary and start analyzing</div>
+                <div className="mt-2 mb-10 text-sm">see summary and start analyzing</div>
 
                 <Link href={"/register"}>
                     <Button
