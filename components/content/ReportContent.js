@@ -24,6 +24,7 @@ export default function ReportContent() {
     const [totalDataReport, setTotalDataReport] = useState([]);
     const [detailReport, setDetailReport] = useState([]);
     const [isDetail, setIsDetail] = useState(false);
+    const [reportStats, setReportStats] = useState([])
 
     const getData = async (page) => {
         try {
@@ -55,6 +56,19 @@ export default function ReportContent() {
                 .then((res) => {
                     setCoop(res.data.items);
                 });
+
+            const report = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/report/array", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    setReportStats(res.data);
+                });
+
         } catch (error) {
             console.log(error);
         }
@@ -206,7 +220,7 @@ export default function ReportContent() {
             align: "center",
             dataIndex: "farm",
             render: (farm) => {
-                return farm.farmName
+                return farm.farmName;
             },
         },
         {
@@ -214,7 +228,7 @@ export default function ReportContent() {
             align: "center",
             dataIndex: "masterFeed",
             render: (masterFeed) => {
-                return masterFeed.feedName
+                return masterFeed.feedName;
             },
         },
         {
@@ -405,10 +419,47 @@ export default function ReportContent() {
         e.preventDefault();
     };
 
+    const totalPakan = () => {
+        const total = reportStats.totalFeedStock;
+        if (total >= 1000) {
+            return `${(total / 1000).toFixed(1)} Ton`;
+        } else {
+            return `${(total / 1).toFixed(1)} Kg`;
+        }
+    };
+
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
             <div className="p-4 text-lg font-bold text-textColor">
                 Daily Report / All
+            </div>
+            <div className="grid grid-cols-4 gap-5 mb-6">
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
+                    <div className="text-sm text-textColor">
+                        Total Population
+                    </div>
+                    <div className="text-lg font-bold text-textColor">
+                        {reportStats.currentPopulation}
+                    </div>
+                </div>
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
+                    <div className="text-sm text-textColor">Total Coop</div>
+                    <div className="text-lg font-bold text-textColor">
+                        {reportStats.totalCoop}
+                    </div>
+                </div>
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
+                    <div className="text-sm text-textColor">Total Feed</div>
+                    <div className="text-lg font-bold text-textColor">
+                        {totalPakan()}
+                    </div>
+                </div>
+                <div className="w-full p-3 bg-white rounded-lg 2xl:p-4">
+                    <div className="text-sm text-textColor">Death</div>
+                    <div className="text-lg font-bold text-textColor">
+                        {reportStats.death}
+                    </div>
+                </div>
             </div>
             <div className="p-10 bg-white rounded-xl">
                 <div className="flex justify-between pb-5 mb-5 border-b border-gray-200">
