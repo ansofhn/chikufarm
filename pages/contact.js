@@ -5,12 +5,16 @@ import Footer from "../components/Footer";
 import Input from "../components/Input";
 import Label from "../components/Label";
 import Navbar from "../components/Navbar";
+import Head from "next/head";
 
 const { Option } = Select;
 
 export default function contact() {
     return (
         <>
+            <Head>
+                <title>Contact Us</title>
+            </Head>
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">

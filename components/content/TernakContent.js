@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Table, Modal, Input, Select } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import Label from "../Label";
 import SearchFarm from "../SearchFarm";

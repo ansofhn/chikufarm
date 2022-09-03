@@ -232,7 +232,13 @@ export default function KandangContent() {
             title: "Feed Name",
             width: 150,
             dataIndex: "masterFeed",
-            render: (masterFeed) => masterFeed.feedName,
+            render: (masterFeed) => {
+                if (masterFeed?.feedName == null) {
+                    return "-";
+                } else {
+                    return masterFeed?.feedName;
+                }
+            },
         },
         {
             title: "Population Start",
@@ -541,15 +547,15 @@ export default function KandangContent() {
                     />
                     <Label forInput={"dateIn"}>Date In</Label>
                     <DatePicker
-                            className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
-                            format={"YYYY-MM-DD"}
-                            placeholder={editingCoop?.dateIn}
-                            onSelect={(e) => {
-                                setEditingCoop((pre) => {
-                                    return { ...pre, dateIn: e._d };
-                                });
-                            }}
-                        />
+                        className=" mb-2 w-2/5 border-textColor text-textColor rounded-md hover:border-textColor focus:ring-maroon focus:border-cream px-2.5 py-1.5"
+                        format={"YYYY-MM-DD"}
+                        placeholder={editingCoop?.dateIn}
+                        onSelect={(e) => {
+                            setEditingCoop((pre) => {
+                                return { ...pre, dateIn: e._d };
+                            });
+                        }}
+                    />
                     <Label forInput={"farmer"}>Responsible Farmer</Label>
                     <Select
                         className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"

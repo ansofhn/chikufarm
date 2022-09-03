@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useEffect } from "react";
 import Feature from "../components/Feature";
 import Flow from "../components/Flow";
@@ -10,8 +11,8 @@ import App from "../layouts/App";
 export default function Home() {
     const CheckToken = () => {
         try {
-            if((localStorage.getItem("access_token")) !== null){
-                localStorage.removeItem("access_token")
+            if (localStorage.getItem("access_token") !== null) {
+                localStorage.removeItem("access_token");
             }
         } catch (error) {
             console.log(error);
@@ -21,9 +22,12 @@ export default function Home() {
     useEffect(() => {
         CheckToken();
     }, []);
-    
+
     return (
         <>
+            <Head>
+                <title>Chikufarm</title>
+            </Head>
             <Hero />
             <Stats />
             <Flow />

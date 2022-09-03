@@ -35,7 +35,6 @@ export default function SideNavbar() {
             setNewMessage((newMessage += 1));
         });
     });
-    console.log(newMessage);
     const onHandleForum = () => {
         setNewMessage(0);
     };
@@ -116,14 +115,14 @@ export default function SideNavbar() {
                                     className="relative inline-block text-left"
                                 >
                                     <div>
-                                        <Menu.Button className="flex items-center justify-start gap-4 py-2 pl-2 pr-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group ">
+                                        <Menu.Button className="flex items-center justify-between gap-4 py-2 pl-2 pr-4 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-cream group ">
                                             <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
-                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-12">
                                                 Report
                                             </h3>
                                             <svg
                                                 aria-hidden="true"
-                                                class="w-4 h-4"
+                                                className="w-4 h-4"
                                                 fill="maroon"
                                                 viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +144,10 @@ export default function SideNavbar() {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none">
+                                        <Menu.Items
+                                            static
+                                            className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none"
+                                        >
                                             <div className="py-1">
                                                 <Menu.Item>
                                                     {({ active }) => (
@@ -162,7 +164,8 @@ export default function SideNavbar() {
                                                                     "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
                                                                 )}
                                                             >
-                                                                Report by Coop
+                                                                Daily Coop
+                                                                Report
                                                             </div>
                                                         </Link>
                                                     )}
@@ -189,62 +192,51 @@ export default function SideNavbar() {
                                                         </Link>
                                                     )}
                                                 </Menu.Item>
+
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <Link
+                                                            href={
+                                                                "/dashboard/report/vaccinationReport"
+                                                            }
+                                                        >
+                                                            <div
+                                                                className={classNames(
+                                                                    active
+                                                                        ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                        : "text-gray-700",
+                                                                    "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
+                                                                )}
+                                                            >
+                                                                Vaccination
+                                                                Report
+                                                            </div>
+                                                        </Link>
+                                                    )}
+                                                </Menu.Item>
                                             </div>
                                         </Menu.Items>
                                     </Transition>
                                 </Menu>
-                                <Link href={"/dashboard/user"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <BiUser className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            User
-                                        </h3>
-                                    </div>
-                                </Link>
-                                <Link href={"/dashboard/chat"}>
+
+                                <Link
+                                    href={"/dashboard/chat"}
+                                    onClick={onHandleForum}
+                                >
                                     <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <BiChat className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-9">
                                             Forum
                                         </h3>
-                                    </div>
-                                </Link>
-                                <Link href={"/dashboard/panen"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <MdOutlineSell className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Harvest
-                                        </h3>
-                                    </div>
-                                </Link>
-                                <Link href={"/dashboard/kandang"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <RiHome2Line className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Coop
-                                        </h3>
-                                    </div>
-                                </Link>
-                                <Link href={"/dashboard/pakan"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <RiHandCoinLine className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Feed
-                                        </h3>
-                                    </div>
-                                </Link>
-                                <Link href={"/dashboard/ternak"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <FiFeather className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            Farm
-                                        </h3>
+                                        <span class="inline-flex items-center justify-center w-2 h-2 p-2.5 ml-3 text-xs font-medium text-cream bg-maroon rounded-full">
+                                            {newMessage}
+                                        </span>
                                     </div>
                                 </Link>
                             </div>
 
                             {/* logout Section */}
-                            <div className="w-full pb-4 my-16 border-gray-100">
+                            <div className="w-full pb-4 my-4 border-gray-100">
                                 <Button
                                     onClick={handleLogout}
                                     className="flex items-center justify-start w-full gap-4 px-6 py-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group focus:border-cream focus:ring-0"
@@ -294,14 +286,14 @@ export default function SideNavbar() {
                                     className="relative inline-block text-left"
                                 >
                                     <div>
-                                        <Menu.Button className="flex items-center justify-start gap-4 py-2 pl-2 pr-5 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group ">
+                                        <Menu.Button className="flex items-center justify-between gap-4 py-2 pl-2 pr-4 mb-2 transition duration-200 rounded-md cursor-pointer hover:bg-cream group ">
                                             <TbReportAnalytics className="text-2xl text-maroon group-hover:text-maroon" />
-                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                            <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-12">
                                                 Report
                                             </h3>
                                             <svg
                                                 aria-hidden="true"
-                                                class="w-4 h-4"
+                                                className="w-4 h-4"
                                                 fill="maroon"
                                                 viewBox="0 0 20 20"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -323,7 +315,10 @@ export default function SideNavbar() {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none">
+                                        <Menu.Items
+                                            static
+                                            className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none"
+                                        >
                                             <div className="py-1">
                                                 <Menu.Item>
                                                     {({ active }) => (
@@ -340,7 +335,8 @@ export default function SideNavbar() {
                                                                     "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
                                                                 )}
                                                             >
-                                                                Report by Coop
+                                                                Daily Coop
+                                                                Report
                                                             </div>
                                                         </Link>
                                                     )}
@@ -367,23 +363,53 @@ export default function SideNavbar() {
                                                         </Link>
                                                     )}
                                                 </Menu.Item>
+
+                                                <Menu.Item>
+                                                    {({ active }) => (
+                                                        <Link
+                                                            href={
+                                                                "/dashboard/report/vaccinationReport"
+                                                            }
+                                                        >
+                                                            <div
+                                                                className={classNames(
+                                                                    active
+                                                                        ? "bg-white text-textColor hover:bg-gray-50 hover:text-textColor"
+                                                                        : "text-gray-700",
+                                                                    "block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 hover:text-textColor"
+                                                                )}
+                                                            >
+                                                                Vaccination
+                                                                Report
+                                                            </div>
+                                                        </Link>
+                                                    )}
+                                                </Menu.Item>
                                             </div>
                                         </Menu.Items>
                                     </Transition>
                                 </Menu>
-                                <Link href={"/dashboard/user"}>
-                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
-                                        <BiUser className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
-                                            User
-                                        </h3>
-                                    </div>
-                                </Link>
-                                <Link href={"/dashboard/chat"}>
+
+                                <Link
+                                    href={"/dashboard/chat"}
+                                    onClick={onHandleForum}
+                                >
                                     <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
                                         <BiChat className="text-2xl text-maroon group-hover:text-maroon" />
-                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon mr-9">
                                             Forum
+                                        </h3>
+                                        <span class="inline-flex items-center justify-center w-2 h-2 p-2.5 ml-3 text-xs font-medium text-cream bg-maroon rounded-full">
+                                            {newMessage}
+                                        </span>
+                                    </div>
+                                </Link>
+                                
+                                <Link href={"/dashboard/vaccine"}>
+                                    <div className="flex items-center justify-start gap-4 px-2 py-2 mb-2 transition duration-200 rounded-md cursor-pointer focus:bg-cream hover:bg-cream group">
+                                        <TbVaccine className="text-2xl text-maroon group-hover:text-maroon" />
+                                        <h3 className="text-sm font-semibold text-textColor group-hover:text-maroon">
+                                            Vaccine
                                         </h3>
                                     </div>
                                 </Link>
@@ -422,7 +448,7 @@ export default function SideNavbar() {
                             </div>
 
                             {/* logout Section */}
-                            <div className="w-full pb-4 my-16 border-gray-100">
+                            <div className="w-full pb-4 my-4 border-gray-100">
                                 <Button
                                     onClick={handleLogout}
                                     className="flex items-center justify-start w-full gap-4 px-6 py-5 mb-2 transition duration-200 border rounded-md cursor-pointer border-shadowColor hover:border-cream hover:bg-cream group focus:border-cream focus:ring-0"
@@ -468,7 +494,6 @@ export default function SideNavbar() {
                                     </div>
                                 </Link>
                                 <Menu
-
                                     as="div"
                                     className="relative inline-block text-left"
                                 >
@@ -502,7 +527,10 @@ export default function SideNavbar() {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items static className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none">
+                                        <Menu.Items
+                                            static
+                                            className="absolute top-0 z-10 ml-56 origin-top-left bg-white rounded-md shadow-md w-44 focus:outline-none"
+                                        >
                                             <div className="py-1">
                                                 <Menu.Item>
                                                     {({ active }) => (

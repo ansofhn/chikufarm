@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -5,6 +6,9 @@ import Navbar from "../components/Navbar";
 export default function about() {
     return (
         <>
+            <Head>
+                <title>About Us</title>
+            </Head>
             <Navbar />
             <div className="w-full bg-white">
                 <div className="container">

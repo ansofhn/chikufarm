@@ -220,7 +220,11 @@ export default function ReportContent() {
             align: "center",
             dataIndex: "farm",
             render: (farm) => {
-                return farm.farmName;
+                if (farm?.farmName == null) {
+                    return "-";
+                } else {
+                    return farm?.farmName
+                }
             },
         },
         {
@@ -228,7 +232,11 @@ export default function ReportContent() {
             align: "center",
             dataIndex: "masterFeed",
             render: (masterFeed) => {
-                return masterFeed.feedName;
+                if (masterFeed?.feedName == null) {
+                    return "-";
+                } else {
+                    return masterFeed?.feedName
+                }
             },
         },
         {

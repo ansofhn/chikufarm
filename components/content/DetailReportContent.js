@@ -204,7 +204,13 @@ export default function DetailReportContent() {
             title: "Feed Name",
             width: 150,
             dataIndex: "masterFeed",
-            render: (masterFeed) => masterFeed.feedName,
+            render: (masterFeed) => {
+                if (masterFeed?.feedName == null) {
+                    return "-";
+                } else {
+                    return masterFeed?.feedName;
+                }
+            },
         },
         {
             title: "Feed Quantity",

@@ -484,7 +484,13 @@ export default function PakanContent() {
         {
             title: "Feed Name",
             dataIndex: "masterFeed",
-            render: (masterFeed) => masterFeed.feedName,
+            render: (masterFeed) => {
+                if (masterFeed?.feedName == null) {
+                    return "-";
+                } else {
+                    return masterFeed?.feedName
+                }
+            },
         },
         {
             title: "Feed Quantity",
@@ -612,7 +618,6 @@ export default function PakanContent() {
     const onChangeForm = (e) => {
         e.preventDefault();
     };
-
 
     return (
         <div className="my-4 lg:w-3/4 lg:ml-72 2xl:w-10/12">
@@ -798,7 +803,9 @@ export default function PakanContent() {
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
                             Edit Feed
-                            <div className="text-xs font-medium">{editingFeed?.feedName}</div>
+                            <div className="text-xs font-medium">
+                                {editingFeed?.feedName}
+                            </div>
                         </div>,
                     ]}
                     onCancel={() => {
@@ -1081,7 +1088,7 @@ export default function PakanContent() {
                     <div className="pb-4 text-lg font-bold text-textColor">
                         Feed Recommendation
                     </div>
-                    <div className="flex gap-2"> 
+                    <div className="flex gap-2">
                         <FilterFeedRecommend
                             onChangeSelect={(value) => {
                                 filterRecommendation(value);
