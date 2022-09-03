@@ -337,7 +337,7 @@ export default function HarvestContent() {
                             className="flex items-center gap-2 px-4 py-4 font-medium transition duration-300 border-none rounded-md bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
                             onClick={onCreatePanen}
                         >
-                            Coop Harvest
+                            Harvest Coop
                         </Button>
                     </div>
                 </div>
@@ -397,6 +397,21 @@ export default function HarvestContent() {
                                     return {
                                         ...pre,
                                         totalFarmWeight: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
+                        <Label forInput={"sellPricePerKg"}>
+                            Sell Price / Kg
+                        </Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            placeholder="Enter Sell Price (market price)"
+                            onChange={(e) => {
+                                setCreatingHarvest((pre) => {
+                                    return {
+                                        ...pre,
+                                        sellPricePerKg: e.target.value,
                                     };
                                 });
                             }}

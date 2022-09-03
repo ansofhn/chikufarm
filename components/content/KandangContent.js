@@ -18,11 +18,12 @@ export default function KandangContent() {
     const [search, setSearch] = useState([]);
     const [filter, setFilter] = useState([]);
     const [dataSource, setDataSource] = useState([]);
+    const [dataCurrentReport, setDataCurrentReport] = useState([]);
     const [coop, setCoop] = useState([]);
     const [farm, setFarm] = useState([]);
     const [user, setUser] = useState([]);
     const [totalDataCoop, setTotalDataCoop] = useState([]);
-
+    const [isReport, setIsReport] = useState(false);
     const [isCreate, setIsCreate] = useState(false);
     const [creatingHarvest, setCreatingHarvest] = useState(null);
 
@@ -211,6 +212,27 @@ export default function KandangContent() {
         } catch (error) {}
     };
 
+    const currentReport = async (record) => {
+        const id = record.id;
+        try {
+            const response = await axios
+                .get(
+                    `https://chikufarm-app.herokuapp.com/api/report/current-report/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data)
+                    setDataCurrentReport([res.data]);
+                });
+        } catch (error) {}
+    };
+
     useEffect(() => {
         getData(1);
     }, []);
@@ -265,6 +287,7 @@ export default function KandangContent() {
             align: "center",
         },
         {
+            width: 250,
             align: "center",
             title: "Actions",
             render: (record) => {
@@ -281,11 +304,41 @@ export default function KandangContent() {
                             }}
                             style={{ color: "maroon", marginLeft: 12 }}
                         />
+                        <Button
+                            className="font-medium text-xs ml-4 my-4 rounded-md bg-maroon text-cream hover:bg-maroon border-maroon hover:text-cream hover:border-maroon focus:bg-maroon focus:text-cream focus:border-maroon"
+                            onClick={() => {
+                                onCurrentReport(record);
+                            }}
+                        >
+                            Current Report
+                        </Button>
                     </>
                 );
             },
         },
     ];
+
+    const columnCurrentReport = [
+        {
+            title: "Total Feed Used",
+            dataIndex: "totalFeedUsed",
+        },
+        {
+            title: "Total Feed Cost",
+            dataIndex: "totalFeedCost",
+        },
+        {
+            title: "Total Vaccine Cost",
+            dataIndex: "totalVaccinCost",
+            align: "center",
+        },
+        {
+            align: "center",
+            title: "Total Cost",
+            dataIndex: "totalCost"
+        },
+    ];
+
 
     const onAddKandang = () => {
         setIsAdding(true);
@@ -328,6 +381,15 @@ export default function KandangContent() {
     const resetEditing = () => {
         setIsEditing(false);
         setEditingCoop(null);
+    };
+
+    const onCurrentReport = (record) => {
+        setIsReport(true);
+        currentReport(record);
+    };
+
+    const resetCurrentReport = () => {
+        setIsReport(false);
     };
 
     const onChangeForm = (e) => {
@@ -694,6 +756,28 @@ export default function KandangContent() {
                             </Button>
                         </div>
                     </form>
+                </Modal>
+
+                <Modal
+                    width={700}
+                    className="p-0 overflow-hidden rounded-xl"
+                    title={[
+                        <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
+                            Current Report
+                        </div>,
+                    ]}
+                    onCancel={() => {
+                        resetCurrentReport();
+                    }}
+                    visible={isReport}
+                    footer={null}
+                >
+                    <Table
+                        bordered={true}
+                        columns={columnCurrentReport}
+                        dataSource={dataCurrentReport}
+                        pagination={null}
+                    ></Table>
                 </Modal>
             </div>
         </div>

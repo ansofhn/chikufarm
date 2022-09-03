@@ -26,6 +26,7 @@ export default function VaccinationReportContent() {
     const [totalPopulation, setTotalPopulation] = useState([]);
 
     const [detailVaccination, setDetailVaccination] = useState([]);
+    const [vaccineRecommend, setVaccineRecommend] = useState([])
     const [isDetail, setIsDetail] = useState(false);
 
     const getData = async (page) => {
@@ -185,10 +186,10 @@ export default function VaccinationReportContent() {
         }
     };
 
-    const getOneCoop = async (id) => {
+    const getRecommendVaccine = async (id) => {
         try {
             const response = await axios
-                .get(`https://chikufarm-app.herokuapp.com/api/coop/${id}`, {
+                .get(`https://chikufarm-app.herokuapp.com/api/vaccin-recommendation/get-recommen/${id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "access_token"
@@ -196,11 +197,8 @@ export default function VaccinationReportContent() {
                     },
                 })
                 .then((res) => {
-                    setFeedName(res.data.masterFeed.feedName);
-                    setfeedRecomend(
-                        res.data.feedRecomendation.feedQuantityOnGram
-                    );
-                    setTotalPopulation(res.data.populationUpdate);
+                    setVaccineRecommend(res.data)
+                    console.log(res.data)
                 });
         } catch (error) {
             console.log(error);
@@ -241,16 +239,16 @@ export default function VaccinationReportContent() {
             width: 250,
             align: "center",
             render: (vaccination) => {
-                if (vaccination?.length == 0) {
+                if (vaccination?.length !== 0) {
                     return (
-                        <div className="p-2 rounded-md bg-maroon text-cream font-medium">
-                            Not Vaccinated
+                        <div className="p-2 rounded-md bg-cream text-maroon font-medium">
+                            Have been Vaccinated
                         </div>
                     );
                 } else {
                     return (
-                        <div className="p-2 rounded-md bg-cream text-maroon font-medium">
-                            Have been Vaccinated
+                        <div className="p-2 rounded-md bg-maroon text-cream font-medium">
+                            Not Vaccinated
                         </div>
                     );
                 }
@@ -441,7 +439,7 @@ export default function VaccinationReportContent() {
                                 setAddingVaccination((pre) => {
                                     return { ...pre, coopId: value };
                                 });
-                                getOneCoop(value);
+                                getRecommendVaccine(value);
                             }}
                             bordered={false}
                         >
@@ -469,7 +467,7 @@ export default function VaccinationReportContent() {
                                         vaccinRecommendationId: value,
                                     };
                                 });
-                                getOneCoop(value);
+                                
                             }}
                             bordered={false}
                         >
@@ -566,7 +564,7 @@ export default function VaccinationReportContent() {
                                 setEditingVaccination((pre) => {
                                     return { ...pre, coopId: value };
                                 });
-                                getOneCoop(value);
+                                getRecommendVaccine(value);
                             }}
                             bordered={false}
                         >
@@ -594,7 +592,7 @@ export default function VaccinationReportContent() {
                                         vaccinRecommendationId: value,
                                     };
                                 });
-                                getOneCoop(value);
+                                getRecommendVaccine(value);
                             }}
                             bordered={false}
                         >
@@ -609,20 +607,20 @@ export default function VaccinationReportContent() {
                                 );
                             })}
                         </Select> */}
-                        <Label forInput={"quantity"}>Quantity</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={editingVaccination?.quantity}
-                            placeholder={"Quantity"}
-                            onChange={(e) => {
-                                setEditingVaccination((pre) => {
-                                    return {
-                                        ...pre,
-                                        quantity: e.target.value,
-                                    };
-                                });
-                            }}
-                        />
+                    <Label forInput={"quantity"}>Quantity</Label>
+                    <Input
+                        className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                        value={editingVaccination?.quantity}
+                        placeholder={"Quantity"}
+                        onChange={(e) => {
+                            setEditingVaccination((pre) => {
+                                return {
+                                    ...pre,
+                                    quantity: e.target.value,
+                                };
+                            });
+                        }}
+                    />
                     <div className="flex justify-center gap-2 mt-6">
                         <Button
                             className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
