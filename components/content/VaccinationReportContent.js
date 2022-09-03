@@ -5,6 +5,7 @@ import Label from "../Label";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import SearchReport from "../SearchReport";
+import vaccinationReport from "../../pages/dashboard/report/vaccinationReport";
 
 const { Option } = Select;
 
@@ -19,11 +20,12 @@ export default function VaccinationReportContent() {
     const [totalDataVaccination, setTotalDataVaccination] = useState([]);
 
     const [coop, setCoop] = useState([]);
+    const [recommend, setRecommend] = useState([]);
     const [feedName, setFeedName] = useState([]);
     const [feedRecomend, setfeedRecomend] = useState([]);
     const [totalPopulation, setTotalPopulation] = useState([]);
-    
-    const [detailReport, setDetailReport] = useState([]);
+
+    const [detailVaccination, setDetailVaccination] = useState([]);
     const [isDetail, setIsDetail] = useState(false);
 
     const getData = async (page) => {
@@ -57,14 +59,29 @@ export default function VaccinationReportContent() {
                     setCoop(res.data.items);
                 });
 
+            const vaccineRecommend = await axios
+                .get(
+                    "https://chikufarm-app.herokuapp.com/api/vaccin-recommendation",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "access_token"
+                            )}`,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data.items);
+                    setRecommend(res.data.items);
+                });
         } catch (error) {
             console.log(error);
         }
     };
 
     const getDetail = async (record) => {
-        console.log(record.dailyCoop);
-        setDetailReport(record.dailyCoop);
+        console.log(record.vaccination);
+        setDetailVaccination(record.vaccination);
     };
 
     const addData = async () => {
@@ -72,7 +89,7 @@ export default function VaccinationReportContent() {
         try {
             const response = await axios
                 .post(
-                    "https://chikufarm-app.herokuapp.com/api/daily-coop",
+                    "https://chikufarm-app.herokuapp.com/api/vaccination",
                     addingVaccination,
                     {
                         headers: {
@@ -98,7 +115,7 @@ export default function VaccinationReportContent() {
         const id = editingVaccination.id;
         const update = {
             death: editingVaccination.death,
-            feedQuantity: editingVaccination.feedQuantity,
+            quantity: editingVaccination.quantity,
         };
         try {
             const response = await axios
@@ -129,7 +146,7 @@ export default function VaccinationReportContent() {
         try {
             const response = await axios
                 .delete(
-                    `https://chikufarm-app.herokuapp.com/api/daily-coop/${id}`,
+                    `https://chikufarm-app.herokuapp.com/api/vaccination/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -211,72 +228,33 @@ export default function VaccinationReportContent() {
                 return farm.farmName;
             },
         },
-        {
-            title: "Feed Name",
-            align: "center",
-            dataIndex: "masterFeed",
-            render: (masterFeed) => {
-                return masterFeed.feedName;
-            },
-        },
+
         {
             title: "Population",
             dataIndex: "populationUpdate",
             align: "center",
         },
+
         {
-            title: "Death",
+            title: "Vaccination",
+            dataIndex: "vaccination",
+            width: 250,
             align: "center",
-            render: (_, record) => {
-                return record.populationStart - record.populationUpdate;
+            render: (vaccination) => {
+                if (vaccination?.length == 0) {
+                    return (
+                        <div className="p-2 rounded-md bg-maroon text-cream font-medium">
+                            Not Vaccinated
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="p-2 rounded-md bg-cream text-maroon font-medium">
+                            Have been Vaccinated
+                        </div>
+                    );
+                }
             },
-        },
-        {
-            title: "Feed Status",
-            children: [
-                {
-                    title: "Morning",
-                    dataIndex: "dailyCoop",
-                    align: "center",
-                    width: 125,
-                    render: (dailyCoop) => {
-                        if (dailyCoop.length >= 1) {
-                            return (
-                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
-                                    given
-                                </div>
-                            );
-                        } else {
-                            return (
-                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
-                                    Not given
-                                </div>
-                            );
-                        }
-                    },
-                },
-                {
-                    title: "Afternoon",
-                    dataIndex: "dailyCoop",
-                    align: "center",
-                    width: 125,
-                    render: (dailyCoop) => {
-                        if (dailyCoop.length >= 2) {
-                            return (
-                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
-                                    given
-                                </div>
-                            );
-                        } else {
-                            return (
-                                <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
-                                    Not given
-                                </div>
-                            );
-                        }
-                    },
-                },
-            ],
         },
         {
             align: "center",
@@ -298,45 +276,39 @@ export default function VaccinationReportContent() {
 
     const columnDetail = [
         {
-            title: "Date",
+            title: "Vaccine Name",
             width: 150,
-            dataIndex: "createdAt",
-            render: (createdAt) => {
-                return `${createdAt.substring(0, 10)}`;
+            dataIndex: "vaccin",
+            render: (vaccin) => {
+                return vaccin?.vaccinName;
             },
         },
         {
-            title: "Usage Time",
-            dataIndex: "usageTime",
+            title: "Quantity Usage",
+            dataIndex: "quantity",
             align: "center",
-            render: (usageTime) => {
-                if (usageTime == "pagi") {
-                    return (
-                        <div className="p-2 text-xs font-medium uppercase rounded-md bg-cream text-maroon">
-                            Morning
-                        </div>
-                    );
+        },
+        {
+            title: "Price",
+            align: "center",
+            dataIndex: "vaccin",
+            render: (vaccin) => {
+                return vaccin?.price;
+            },
+        },
+        {
+            title: "Application",
+            dataIndex: "vaccin",
+            align: "center",
+            render: (vaccin) => {
+                if (vaccin?.application == "tetes") {
+                    return "Drops";
+                } else if (vaccin?.application == "suntik") {
+                    return "Inject";
                 } else {
-                    return (
-                        <div className="p-2 text-xs font-medium uppercase rounded-md bg-maroon text-cream">
-                            Afternoon
-                        </div>
-                    );
+                    return "Water Drink";
                 }
             },
-        },
-        {
-            title: "Feed Quantity",
-            align: "center",
-            dataIndex: "feedQuantity",
-            render: (feedQuantity) => {
-                return `${feedQuantity} Kg`;
-            },
-        },
-        {
-            title: "Death",
-            dataIndex: "death",
-            align: "center",
         },
 
         {
@@ -362,7 +334,7 @@ export default function VaccinationReportContent() {
         },
     ];
 
-    const onAddReport = () => {
+    const onAddReportVaccination = () => {
         setIsAdding(true);
         setAddingVaccination(null);
     };
@@ -379,7 +351,7 @@ export default function VaccinationReportContent() {
             okText: "Yes",
             okType: "danger",
             onOk: () => {
-                setDetailReport((pre) => {
+                setDetailVaccination((pre) => {
                     return pre.filter((report) => report.id !== record.id);
                 });
                 deleteData(record);
@@ -426,9 +398,9 @@ export default function VaccinationReportContent() {
                     />
                     <Button
                         className="flex items-center gap-2 px-4 py-3 transition duration-300 border-none rounded-md text-semibold bg-maroon text-cream hover:bg-maroon hover:text-cream hover:border-none focus:text-cream focus:bg-maroon focus:border-none"
-                        onClick={onAddReport}
+                        onClick={onAddReportVaccination}
                     >
-                        Create Report
+                        Create Vaccination
                     </Button>
                 </div>
                 <Table
@@ -446,12 +418,12 @@ export default function VaccinationReportContent() {
                     }}
                 ></Table>
 
-                {/* Add Report */}
+                {/* Add Vaccination */}
                 <Modal
                     className="p-0 -my-20 overflow-hidden rounded-xl"
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
-                            Create Report
+                            Create Vaccination
                         </div>,
                     ]}
                     onCancel={() => {
@@ -463,7 +435,7 @@ export default function VaccinationReportContent() {
                     <form onSubmit={onChangeForm} method="POST">
                         <Label forInput={"coopNumber"}>Coop Number</Label>
                         <Select
-                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
+                            className="w-1/2 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
                             placeholder="Choose coop"
                             onSelect={(value) => {
                                 setAddingVaccination((pre) => {
@@ -479,73 +451,54 @@ export default function VaccinationReportContent() {
                                         className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
                                         value={dataId.id}
                                     >
-                                        {`Coop ${dataId.coopNumber}`}
+                                        {`Coop ${dataId.coopNumber} -- ${dataId?.farm.farmName}`}
                                     </Option>
                                 );
                             })}
                         </Select>
-                        <Label forInput={"feedQuantity"}>Feed Quantity</Label>
+                        <Label forInput={"recommendation"}>
+                            Recommendation
+                        </Label>
+                        <Select
+                            className="w-full mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
+                            placeholder="Choose recommendation"
+                            onSelect={(value) => {
+                                setAddingVaccination((pre) => {
+                                    return {
+                                        ...pre,
+                                        vaccinRecommendationId: value,
+                                    };
+                                });
+                                getOneCoop(value);
+                            }}
+                            bordered={false}
+                        >
+                            {recommend.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {`Day ${dataId.day} -- ${dataId?.farm.farmName} -- ${dataId?.vaccin.vaccinName}`}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"quantity"}>Quantity</Label>
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingVaccination?.feedQuantity}
-                            placeholder={"Jumlah Pakan"}
+                            value={addingVaccination?.quantity}
+                            placeholder={"Quantity"}
                             onChange={(e) => {
                                 setAddingVaccination((pre) => {
                                     return {
                                         ...pre,
-                                        feedQuantity: e.target.value,
+                                        quantity: e.target.value,
                                     };
                                 });
                             }}
                         />
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor "
-                            value={`Feed Quantity Recommendation : ${(
-                                ((feedRecomend / 1000) * totalPopulation) /
-                                2
-                            ).toFixed(1)} Kg`}
-                            disabled={true}
-                        />
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor "
-                            value={`Feed Name : ${feedName}`}
-                            disabled={true}
-                        />
-                        <Label forInput={"death"}>Death</Label>
-                        <Input
-                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                            value={addingVaccination?.death}
-                            placeholder={"Death"}
-                            onChange={(e) => {
-                                setAddingVaccination((pre) => {
-                                    return { ...pre, death: e.target.value };
-                                });
-                            }}
-                        />
-                        <Label forInput={"usageTime"}>Usage Time</Label>
-                        <Select
-                            className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
-                            placeholder={"Usage Time"}
-                            onSelect={(value) => {
-                                setAddingVaccination((pre) => {
-                                    return { ...pre, usageTime: value };
-                                });
-                            }}
-                            bordered={false}
-                        >
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="pagi"
-                            >
-                                Morning
-                            </Option>
-                            <Option
-                                className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
-                                value="sore"
-                            >
-                                Afternoon
-                            </Option>
-                        </Select>
+
                         <div className="flex justify-center gap-2 mt-6">
                             <Button
                                 className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"
@@ -568,13 +521,14 @@ export default function VaccinationReportContent() {
                     </form>
                 </Modal>
 
+                {/* Detail Vaccination */}
                 <Modal
                     width={700}
                     className="p-0 -my-10 overflow-hidden rounded-xl "
                     visible={isDetail}
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
-                            Detail Report
+                            Detail Vaccination
                         </div>,
                     ]}
                     onCancel={() => {
@@ -585,17 +539,17 @@ export default function VaccinationReportContent() {
                     <Table
                         bordered={true}
                         columns={columnDetail}
-                        dataSource={detailReport}
+                        dataSource={detailVaccination}
                         pagination={false}
                     ></Table>
                 </Modal>
 
-                {/* Edit Report */}
+                {/* Edit Vaccination */}
                 <Modal
                     className="p-0 overflow-hidden rounded-xl"
                     title={[
                         <div className="mx-1 my-1 font-semibold font-montserrat text-textColor">
-                            Edit Report
+                            Edit Vaccination
                         </div>,
                     ]}
                     onCancel={() => {
@@ -604,36 +558,71 @@ export default function VaccinationReportContent() {
                     visible={isEditing}
                     footer={null}
                 >
-                    <Label forInput={"feedQuantity"}>Feed Quantity</Label>
-                    <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingVaccination?.feedQuantity}
-                        onChange={(e) => {
-                            setEditingVaccination((pre) => {
-                                return {
-                                    ...pre,
-                                    feedQuantity: e.target.value,
-                                };
-                            });
-                        }}
-                    />
-                    <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor "
-                        value={`Feed Quantity Recommendation : ${(
-                            editingVaccination?.feedQuantityRecomendation / 2
-                        ).toFixed(1)} Kg`}
-                        disabled={true}
-                    />
-                    <Label forInput={"death"}>Death</Label>
-                    <Input
-                        className="my-1 text-sm rounded-lg border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        value={editingVaccination?.death}
-                        onChange={(e) => {
-                            setEditingVaccination((pre) => {
-                                return { ...pre, death: e.target.value };
-                            });
-                        }}
-                    />
+                    {/* <Label forInput={"coopNumber"}>Coop Number</Label>
+                        <Select
+                            className="w-1/2 mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
+                            placeholder={editingVaccination?.coopNumber}
+                            onSelect={(value) => {
+                                setEditingVaccination((pre) => {
+                                    return { ...pre, coopId: value };
+                                });
+                                getOneCoop(value);
+                            }}
+                            bordered={false}
+                        >
+                            {coop.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {`Coop ${dataId.coopNumber} -- ${dataId?.farm.farmName}`}
+                                    </Option>
+                                );
+                            })}
+                        </Select>
+                        <Label forInput={"recommendation"}>
+                            Recommendation
+                        </Label>
+                        <Select
+                            className="w-full mb-2 text-sm border rounded-md border-textColor hover:border-textColor"
+                            placeholder="Choose recommendation"
+                            onSelect={(value) => {
+                                setEditingVaccination((pre) => {
+                                    return {
+                                        ...pre,
+                                        vaccinRecommendationId: value,
+                                    };
+                                });
+                                getOneCoop(value);
+                            }}
+                            bordered={false}
+                        >
+                            {recommend.map((dataId) => {
+                                return (
+                                    <Option
+                                        className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                                        value={dataId.id}
+                                    >
+                                        {`Day ${dataId.day} -- ${dataId?.farm.farmName} -- ${dataId?.vaccin.vaccinName}`}
+                                    </Option>
+                                );
+                            })}
+                        </Select> */}
+                        <Label forInput={"quantity"}>Quantity</Label>
+                        <Input
+                            className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
+                            value={editingVaccination?.quantity}
+                            placeholder={"Quantity"}
+                            onChange={(e) => {
+                                setEditingVaccination((pre) => {
+                                    return {
+                                        ...pre,
+                                        quantity: e.target.value,
+                                    };
+                                });
+                            }}
+                        />
                     <div className="flex justify-center gap-2 mt-6">
                         <Button
                             className="w-full font-semibold rounded-md border-maroon text-maroon hover:text-maroon hover:border-maroon focus:text-maroon focus:border-maroon"

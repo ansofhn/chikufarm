@@ -18,6 +18,7 @@ const SearchCoop = ({ onChangeSearch, onChangeSelect }) => {
                     },
                 })
                 .then((res) => {
+                    console.log(res.data.items)
                     setFarm(res.data.items);
                 });
         } catch (error) {

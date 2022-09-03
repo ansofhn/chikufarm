@@ -159,11 +159,11 @@ export default function ReportContent() {
         }
     };
 
-    const searchData = async (search) => {
+    const searchData = async (search,filter) => {
         try {
             const response = await axios
                 .get(
-                    `https://chikufarm-app.herokuapp.com/api/coop/daily/report?search=${search}`,
+                    `https://chikufarm-app.herokuapp.com/api/coop/daily/report?search=${search}&farm=${filter}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(

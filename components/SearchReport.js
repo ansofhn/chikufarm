@@ -1,9 +1,34 @@
 import { Select } from "antd";
-import { useRef } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 const { Option } = Select;
 
-const SearchReport = ({ onChangeSearch }) => {
+const SearchReport = ({ onChangeSearch, onChangeSelect }) => {
+    const [farm, setFarm] = useState([]);
     const clickPoint = useRef();
+
+    const getData = async () => {
+        try {
+            const responseFarm = await axios
+                .get("https://chikufarm-app.herokuapp.com/api/farm", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                })
+                .then((res) => {
+                    setFarm(res.data.items);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     const handleFocus = () => {
         clickPoint.current.style.display = "none";
     };
@@ -41,6 +66,30 @@ const SearchReport = ({ onChangeSearch }) => {
                     onBlur={handleBlur}
                 />
             </div>
+            <Select
+                className=" w-36 text-sm border text-textColor rounded-md border-gray-300 focus:ring-0 focus:border-maroon"
+                onSelect={onChangeSelect}
+                placeholder="Category"
+                bordered={false}
+            >
+                {farm.map((dataId) => {
+                    return (
+                        <Option
+                            className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                            value={dataId.farmName}
+                        >
+                            {dataId.farmName}
+                            
+                        </Option>
+                    );
+                })}
+                <Option
+                    className="hover:bg-cream hover:text-textColor focus:bg-cream focus:text-textColor"
+                    value=""
+                >
+                    All Category
+                </Option>
+            </Select>
         </div>
     );
 };
