@@ -261,7 +261,7 @@ export default function HarvestContent() {
         {
             title: " Sell Price / Kg",
             dataIndex: "sellPricePerKg",
-            render: (sellPricePerKg) => `Rp. ${sellPricePerKg}`,
+            render: (sellPricePerKg) => `Rp. ${(sellPricePerKg/1).toFixed(2)}`,
             align: "center",
         },
         
