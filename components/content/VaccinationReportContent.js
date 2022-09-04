@@ -223,7 +223,11 @@ export default function VaccinationReportContent() {
             align: "center",
             dataIndex: "farm",
             render: (farm) => {
-                return farm.farmName;
+                if (farm?.farmName == null) {
+                    return "-";
+                } else {
+                    return farm?.farmName;
+                }
             },
         },
 
