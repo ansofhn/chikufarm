@@ -168,6 +168,9 @@ export default function PakanContent() {
                 })
                 .then((res) => {
                     console.log(res);
+                    setDataSource((pre) => {
+                        return pre.filter((feed) => feed.id !== record.id);
+                    });
                 });
         } catch (error) {
             console.log(error.response.data.error);
@@ -500,7 +503,7 @@ export default function PakanContent() {
                 if (masterFeed?.feedName == null) {
                     return "-";
                 } else {
-                    return masterFeed?.feedName
+                    return masterFeed?.feedName;
                 }
             },
         },
@@ -550,9 +553,6 @@ export default function PakanContent() {
             okText: "Yes",
             okType: "danger",
             onOk: () => {
-                setDataSource((pre) => {
-                    return pre.filter((feed) => feed.id !== record.id);
-                });
                 deleteDataFeed(record);
             },
         });
