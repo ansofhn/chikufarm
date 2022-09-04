@@ -545,7 +545,7 @@ export default function ReportContent() {
                         <Input
                             className="mb-2 text-sm rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
                             value={addingReport?.feedQuantity}
-                            placeholder={"Jumlah Pakan"}
+                            placeholder={"Feed quantity"}
                             onChange={(e) => {
                                 setAddingReport((pre) => {
                                     return {

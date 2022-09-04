@@ -4,6 +4,7 @@ import ProfileMenu from "../components/ProfileMenu";
 import SideNavbar from "../components/SideNavbar";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import { io } from "socket.io-client";
 
 export default function DashboardLayout({ title, children }) {
     const router = useRouter();
