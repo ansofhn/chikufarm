@@ -249,7 +249,13 @@ export default function HarvestContent() {
         {
             title: "Total Vaccine Cost",
             dataIndex: "totalVaccinCost",
-            render: (totalVaccinCost) => `Rp. ${totalVaccinCost}`,
+            render: (totalVaccinCost) => {
+                if (totalVaccinCost == null) {
+                    return `Rp. -`
+                } else {
+                    return `Rp. ${totalVaccinCost}`
+                }
+            },
             align: "center",
         },
         {
