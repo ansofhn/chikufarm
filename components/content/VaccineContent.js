@@ -375,6 +375,13 @@ export default function VaccineContent() {
         {
             title: "Vaccine Name",
             dataIndex: "vaccinName",
+            render: (vaccinName) => {
+                if (vaccinName == null) {
+                    return "-";
+                } else {
+                    return vaccinName;
+                }
+            }
         },
         {
             title: "Application",
