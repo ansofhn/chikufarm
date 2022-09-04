@@ -241,9 +241,15 @@ export default function HarvestContent() {
 
     const columnHarvest = [
         {
-            title: "Profit",
-            dataIndex: "profit",
-            render: (profit) => `Rp. ${profit}`,
+            title: "Total Feed Cost",
+            dataIndex: "totalFeedCost",
+            render: (totalFeedCost) => `Rp. ${totalFeedCost}`,
+            align: "center",
+        },
+        {
+            title: "Total Vaccine Cost",
+            dataIndex: "totalVaccinCost",
+            render: (totalVaccinCost) => `Rp. ${totalVaccinCost}`,
             align: "center",
         },
         {
@@ -252,17 +258,18 @@ export default function HarvestContent() {
             render: (sellPricePerKg) => `Rp. ${sellPricePerKg}`,
             align: "center",
         },
-        {
-            title: "Total Feed Cost",
-            dataIndex: "totalFeedCost",
-            render: (totalFeedCost) => `Rp. ${totalFeedCost}`,
-            align: "center",
-        },
+        
         {
             title: "Total Sell Price",
             dataIndex: "totalSellingPrice",
             render: (totalSellingPrice) =>
                 `Rp. ${(totalSellingPrice / 1).toFixed(0)}`,
+            align: "center",
+        },
+        {
+            title: "Profit",
+            dataIndex: "profit",
+            render: (profit) => `Rp. ${profit}`,
             align: "center",
         },
     ];
