@@ -7,6 +7,7 @@ import axios from "axios";
 import Label from "../Label";
 import SearchFeed from "../SearchFeed";
 import FilterFeedRecommend from "../FilterFeedRecommend";
+import Swal from "sweetalert2";
 
 const { Option } = Select;
 
@@ -170,6 +171,17 @@ export default function PakanContent() {
                 });
         } catch (error) {
             console.log(error.response.data.error);
+            let timerInterval;
+            Swal.fire({
+                position: "top",
+                html: `${error.response.data.error}`,
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            });
         }
     };
 

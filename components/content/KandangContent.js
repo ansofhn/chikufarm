@@ -621,7 +621,7 @@ export default function KandangContent() {
                     <Label forInput={"farmer"}>Responsible Farmer</Label>
                     <Select
                         className="w-2/5 mb-2 text-sm border rounded-md border-textColor hover:border-textColor focus:ring-maroon focus:border-cream"
-                        placeholder={editingCoop?.user.fullName}
+                        placeholder={editingCoop?.user}
                         onSelect={(value) => {
                             setEditingCoop((pre) => {
                                 return { ...pre, userId: value };
